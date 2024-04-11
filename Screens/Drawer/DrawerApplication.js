@@ -75,7 +75,9 @@ export default function DrawerApplication() {
                     drawerLabelStyle: {
                         marginLeft: -20,
                         fontFamily: 'Roboto-Medium'
-                    }
+                    },
+                    drawerActiveTintColor: '#FF9933',
+                    drawerInactiveTintColor: '#008374'
                 }}
             />
             <Drawer.Screen name='Services' component={Services}
