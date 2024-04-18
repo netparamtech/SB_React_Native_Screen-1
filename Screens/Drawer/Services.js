@@ -84,6 +84,7 @@ export default function Services() {
 
 
   const services = [
+    
     "Restaurant and Catering Services",
     "Food Delivery Services",
     "Grocery Delivery Services",
@@ -383,7 +384,7 @@ const styles = StyleSheet.create({
   searchContainer: {
     // margin: 10, //20
     // flexDirection: 'row',
-    borderWidth: 1,
+    borderWidth: 0.5,
     width: 338,
     margin: 10,
     borderRadius: 10,
@@ -451,7 +452,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 47,
-    borderColor: 'gray',
+    borderColor: '#008577',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 15,
@@ -509,10 +510,12 @@ const styles = StyleSheet.create({
     // left: 16,
     paddingHorizontal: 15,
     borderRadius: 8,
+    borderColor: '#008577',
+
   },
   FirstContainer: {
     // borderWidth: 4,
-    borderColor: 'red',
+    // borderColor: 'red',
     // margin: 10,
     backgroundColor: '#fff'
 
@@ -528,6 +531,8 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: "center",
     justifyContent: 'center',
+    borderColor: '#008577',
+
 
   },
   TextInputExperience: {
@@ -538,6 +543,8 @@ const styles = StyleSheet.create({
     // left: 16,
     paddingHorizontal: 15,
     borderRadius: 8,
+    borderColor: '#008577',
+
 
 
   },
@@ -549,6 +556,8 @@ const styles = StyleSheet.create({
     height: 90,
     bottom: 15,
     borderRadius: 8,
+    borderColor: '#008577',
+
 
   },
   SubmitButton: {

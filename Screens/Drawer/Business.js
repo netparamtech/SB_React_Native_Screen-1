@@ -4,7 +4,6 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-element-dropdown';
-import { SliderBox } from "react-native-image-slider-box";
 
 const BussinessInfo = [
   {
@@ -269,17 +268,23 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 10,
     gap: 10,
-    borderColor: '#008577',
+    // borderColor: '#008577',
     alignContent: "center",
     alignSelf: 'center',
+    backgroundColor:"#008577",
+    borderColor: '#ffc107',
+
   },
   FirstButtonName: {
     fontSize: 17,
-    color: '#008577',
+    // color: '#008577',
+    color:'#fff'
   },
   SecondButtonName: {
     fontSize: 18,
-    color: '#008577',
+    // color: '#008577',
+    color:'#fff'
+
   },
   SecondButtonConatiner: {
     borderWidth: 1,
@@ -289,8 +294,12 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     gap: 6,
     paddingHorizontal: 10,
-    borderColor: '#008577',
+    // borderColor: '#008577',
+    borderColor: '#ffc107',
+
     alignContent: 'center',
+    backgroundColor:"#008577"
+
   },
   Icons: {
     color: '#ffc107',
@@ -300,7 +309,7 @@ const styles = StyleSheet.create({
 
   },
   SearchContainer: {
-    borderWidth: 1,
+    borderWidth: 0.5,
     width: 320,
     margin: 10,
     borderRadius: 10,
@@ -320,7 +329,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 47,
-    borderColor: 'gray',
+    borderColor: '#008577',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,

@@ -1,26 +1,9 @@
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-
-// export default function Matrimonial() {
-//   return (
-//     <View>
-//       <Text>Matrimonial</Text>
-//     </View>
-//   )
-// }
-
-// const styles = StyleSheet.create({})
-
 import React, { useState, useRef } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image, FlatList, Button, TextInput } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome'
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-element-dropdown';
-
 import Entypo from 'react-native-vector-icons/Entypo';
-
-
-
 
 const Gender = [
   { label: 'Male', value: 'Male' },
@@ -49,7 +32,7 @@ const Gotra = [
   { label: 'Abc', value: 'Abc' }
 ];
 
-const Matrimonial = ({navigation}) => {
+const Matrimonial = ({ navigation }) => {
 
   const users = [
     {
@@ -58,7 +41,8 @@ const Matrimonial = ({navigation}) => {
       age: 26,
       Education: 'PG-Dac & B.E. Engineering',
       City: 'Dhule (Maharashtrs)',
-      profilPhoto: 'https://images.news18.com/ibnlive/uploads/2023/01/shah-rukh-khan-2-3.jpg'
+      profilPhoto: 'https://images.news18.com/ibnlive/uploads/2023/01/shah-rukh-khan-2-3.jpg',
+      Contact_no :'7770089444'
 
     },
     {
@@ -67,7 +51,9 @@ const Matrimonial = ({navigation}) => {
       age: 26,
       Education: 'PG-Dac & B.E. Engineering',
       City: 'Mumbai (Maharashtrs)',
-      profilPhoto: 'https://images.news18.com/ibnlive/uploads/2023/01/shah-rukh-khan-2-3.jpg'
+      profilPhoto: 'https://images.news18.com/ibnlive/uploads/2023/01/shah-rukh-khan-2-3.jpg',
+      Contact_no :'9990089222'
+
     },
     {
       name: 'Saaz Arora',
@@ -75,7 +61,9 @@ const Matrimonial = ({navigation}) => {
       age: 26,
       Education: 'PG-Dac & B.E. Engineering',
       City: 'Nasik (Maharashtrs)',
-      profilPhoto: 'https://images.news18.com/ibnlive/uploads/2023/01/shah-rukh-khan-2-3.jpg'
+      profilPhoto: 'https://images.news18.com/ibnlive/uploads/2023/01/shah-rukh-khan-2-3.jpg',
+      Contact_no :'3330089555'
+
 
     },
     {
@@ -84,7 +72,9 @@ const Matrimonial = ({navigation}) => {
       age: 26,
       Education: 'PG-Dac & B.E. Engineering',
       City: 'Jalgaon (Maharashtrs)',
-      profilPhoto: 'https://images.news18.com/ibnlive/uploads/2023/01/shah-rukh-khan-2-3.jpg'
+      profilPhoto: 'https://images.news18.com/ibnlive/uploads/2023/01/shah-rukh-khan-2-3.jpg',
+      Contact_no :'6660089111'
+
 
     },
   ]
@@ -180,7 +170,7 @@ const Matrimonial = ({navigation}) => {
   const [genderData, setGenderData] = useState(Gender);
 
   return (
-    <View >
+    <View style={styles.ParentContainer}>
       <FlatList
         // contentContainerStyle={styles.container}
         data={[{ key: 'dummy' }]}
@@ -553,55 +543,43 @@ const Matrimonial = ({navigation}) => {
                     setValue5(item.value);
                     setIsFocus5(false);
                   }}
-                // renderLeftIcon={() => (
-                //   <AntDesign
-                //     style={styles.iconAntDesign}
-                //     color={isFocus5 ? 'blue' : 'black'}
-                //     name="Safety"
-                //     size={20}
-                //   />
-                // )}
+          
                 />
               </View>
 
-              {/* clear Button */}
 
 
-              {/* <View>
-                <TouchableOpacity
-                  style={styles.clearButton}
-                  onPress={() => {
-                    // setSelectedGotra("Select Gotra");
-                    // if (searchRef.current) {
-                    //   searchRef.current.clear();
-                    // }
-                    clearDropdown(setValue5, setSelectedGotra)
-                  }}
-                >
-                  <Text style={styles.clearButtonText}>Clear</Text>
-                </TouchableOpacity>
-              </View> */}
-
-
-              <View style={{ marginTop: 20 }}>
+              <View style={{ marginTop: 10 }}>
                 {/* <Text style={{ fontSize: 15, fontWeight: 'bold', margin: 10 }}>Add New</Text> */}
                 <View style={{ margin: 9 }}>
-                  <Button title="ADD MATROMONIAL" color={'#ffc107'} />
+                  <Button title="ADD MATROMONIAL" color={'#ffc107'}/>
                 </View>
               </View>
               <View>
               </View>
+
+
+              <View style={[styles.SearchContainer]}>
+                  <FontAwesome name={'search'} size={18} />
+                  <TextInput placeholder='Search ...' style={{ fontSize: 15 }}></TextInput>
+                </View>
+
             </View>
-            <View style={styles.SearchContainer}>
+            {/* <View style={styles.SearchContainer}>
               <View style={styles.search}>
                 <Icon name="search" size={16} />
               </View>
               <TextInput placeholder="Search By Name" />
-            </View>
+            </View> */}
+            {/* <View style={[styles.SearchContainer]}>
+                  <FontAwesome name={'search'} size={18} />
+                  <TextInput placeholder='Search ...' style={{ fontSize: 15 }}></TextInput>
+                </View> */}
+
 
             <View style={styles.cardContainer}>
               {
-                users.map(({ name, Education, City, profilPhoto, jobProfile, age }) =>
+                users.map(({ name, Education, City, profilPhoto, jobProfile, age , Contact_no}) =>
                   <View key={name} style={styles.cards}>
                     <View style={styles.cardsImage}>
                       <Image source={{ uri: profilPhoto }} style={styles.image} />
@@ -611,16 +589,27 @@ const Matrimonial = ({navigation}) => {
                     <Text style={styles.userEducation}>Education - {Education}</Text>
                     <Text style={styles.userAge}>Age - {age}</Text>
                     <Text style={styles.userCity}>City - {City}</Text>
+                    <Text style={styles.userCity}>Contact No - {Contact_no}</Text>
+
 
                     <View style={styles.Icons}>
                       <TouchableOpacity onPress={()=>{navigation.navigate('Messages')}} >
                         <Image source={require('../Assets/image.png')} style={styles.chatIcon} />
                       </TouchableOpacity>
 
-                      <TouchableOpacity onPress={()=>{navigation.navigate('View')}} >
-                        <Text style={{ fontSize: 15.5, color: "#198754" }}>VIEW</Text>
+                      <TouchableOpacity onPress={() => { navigation.navigate('View') }} >
+                        <Text style={{ fontSize: 15.5, color: "#008577" }}>VIEW</Text>
                       </TouchableOpacity>
                     </View>
+                    
+
+                    <View >
+                      <TouchableOpacity style={styles.BiodataButtonContainer}>
+                        <Text style={styles.BiodataButtonTEXT} >Download Biodata</Text>
+                      </TouchableOpacity>
+                    </View>
+
+
                   </View>)
               }
             </View>
@@ -652,11 +641,15 @@ const styles = StyleSheet.create({
   modalText: {
     fontSize: 20,
     backgroundColor: '#e9ecef',
-    marginTop: 10,
     alignSelf: 'center',
     padding: 10,
 
 
+  },
+  ParentContainer:{
+    backgroundColor:'#fff',
+    alignContent:'center',
+    alignItems:'center'
   },
   // content: {
   //     borderWidth: 0.5,
@@ -685,23 +678,24 @@ const styles = StyleSheet.create({
   content: {
     height: 'auto', // Adjust height as needed
     width: 330,
-    backgroundColor: 'white',
     marginTop: 6,
     padding: 10,
     // borderRadius: 10,
-    alignSelf: 'center',
+    // alignSelf: 'center',
     marginLeft: 10.6,
     margin: 10,
-    paddingTop: 15,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.25, //0.25
-    shadowRadius: 3.84,//3.84
-    elevation: 4,//4
+    // paddingTop: 15,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 3,
+    // },
+    // shadowOpacity: 0.25, //0.25
+    // shadowRadius: 3.84,//3.84
+    // elevation: 4,//4
+    // alignContent:'center',
   },
+
 
 
   icon: {
@@ -743,21 +737,32 @@ const styles = StyleSheet.create({
   //   elevation: 5,
   //   alignSelf: 'center',
   // },
+  // SearchContainer: {
+  //   borderWidth: 1,
+  //   width: 300,
+  //   flexDirection: "row",
+  //   height: 46,
+  //   borderColor: '#198754',
+  //   marginTop: 10,
+
+  //   alignSelf: 'center' // new changes
+
+  // },
   SearchContainer: {
-    borderWidth: 1,
-    width: 300,
-    flexDirection: "row",
-    height: 46,
-    borderColor: '#198754',
-    marginTop: 10,
-
-    alignSelf: 'center' // new changes
-
+    borderWidth: 0.5,
+    margin: 5,
+    borderRadius: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    gap: 9,
+    borderColor: '#008577',
+    flex: 1,
   },
-  search: {
-    margin: 14,
+  // search: {
+  //   margin: 14,
 
-  },
+  // },
   PlaceHolderTitle: {
     fontSize: 16,
     marginLeft: 2,
@@ -771,11 +776,10 @@ const styles = StyleSheet.create({
 
   },
   cards: {
-    margin: 10,
+    margin: 13,
     padding: 10,
     height: 'auto',
     width: 300,
-    marginTop: 30,
 
     borderRadius: 10,
     backgroundColor: 'white', // Ensure a solid background color
@@ -792,20 +796,30 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    // width: 100,
+    // height: 100,
+    // borderRadius: 50,
+
+    height: 200,
+    width: 300,
+    alignSelf: 'center',
+    borderRadius: 10,
+    // resizeMode :'contain',
+    bottom:9.8
   },
   userName: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginTop: 10,
+    marginTop: 5,
+    paddingHorizontal:10
   },
   jobProfile: {
     fontSize: 12,
     color: '#555',
     marginTop: 1,
-    paddingBottom: 10
+    paddingBottom: 10,
+    paddingHorizontal:10
+
 
   },
   userEducation: {
@@ -837,6 +851,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginTop: 30,
+    paddingBottom:15
   },
   chatIcon: {
     width: 30,
@@ -846,20 +861,17 @@ const styles = StyleSheet.create({
   },
   //---------------------
   container: {
-    // backgroundColor: 'white',
-    padding: 12,
+    padding: 8,
   },
   dropdown: {
     height: 50,
-    borderColor: 'gray',
+    borderColor: '#008577',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
-    backgroundColor: 'white'
+    backgroundColor: '#fff',
   },
-  // iconAntDesign: {
-  //   marginRight: 5,
-  // },
+ 
   label: {
     position: 'absolute',
     backgroundColor: 'white',   /// new changes
@@ -884,6 +896,23 @@ const styles = StyleSheet.create({
     height: 40,
     fontSize: 16,
   },
+
+  BiodataButtonContainer:{
+    // borderWidth:,
+    alignSelf:'center',
+    padding:7,
+    borderRadius: 9,
+    backgroundColor: '#008577',
+    elevation: 5,
+    // top:10
+
+
+  },
+  BiodataButtonTEXT:{
+    fontSize: 15,
+    // fontWeight:'600',
+    color: '#fff',
+  }
 
 });
 

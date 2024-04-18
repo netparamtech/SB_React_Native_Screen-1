@@ -1,8 +1,10 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-native';
-import React from 'react';
-import TextTicker from 'react-native-text-ticker';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React from 'react'
+import { ScrollView } from 'react-native-gesture-handler'
+import TextTicker from 'react-native-text-ticker'
 
 export default function Dashboard() {
+
   const Cards = [
     {
       id: '1',
@@ -11,7 +13,8 @@ export default function Dashboard() {
       Icon: require('../Assets/activities.png'),
       Details: 'VIEW',
       Edit: 'EDIT',
-      bgcolor: '#025E73'
+      bgcolor : '#025E73'
+
     },
     {
       id: '2',
@@ -94,113 +97,146 @@ export default function Dashboard() {
       bgcolor : '#009BCE'
 
     },
-  ];
+  ]
 
   return (
-    <ScrollView style={styles.MainContainer}>
+    <ScrollView Style={styles.MainContainer}>
       <View style={styles.MainCardsContainer}>
-        <View style={styles.MarqueeContainer}>
-          <TextTicker
-            style={styles.Marquee}
-            loop
-            duration={30000}
-            bounce
-            repeatSpacer={500}
-            marqueeDelay={100}
-            marqueeResetDelay={1000}
+      <View style={styles.MarqueeContainer}>
+      <TextTicker
+          
+          style={styles.Marquee}
+          loop
+          duration={30000}
+          bounce
+          repeatSpacer={500}
+          marqueeDelay={100}
+          marqueeResetDelay={1000}
           >
-            "Building Bridges, Creating Bonds: Social Bharat is your gateway to community connections, meaningful relationships, and professional growth. Discover a platform where community thrives, love blossoms, careers take flight, and services unite. Explore Matrimonial Bliss, Career Opportunities, Business Networking, and more. Join us on the journey of empowerment and shared prosperity. Your community, your connection, your Social Bharat. #CommunityConnections #Matrimony #JobSearch #ServiceSearch #SocialBharat 🌐💑👔🛠️"
+          "Building Bridges, Creating Bonds: Social Bharat is your gateway to community connections, meaningful relationships, and professional growth. Discover a platform where community thrives, love blossoms, careers take flight, and services unite. Explore Matrimonial Bliss, Career Opportunities, Business Networking, and more. Join us on the journey of empowerment and shared prosperity. Your community, your connection, your Social Bharat. #CommunityConnections #Matrimony #JobSearch #ServiceSearch #SocialBharat 🌐💑👔🛠️"
+
           </TextTicker>
-        </View>
-        {Cards.map(({ TagName, HeadingName, Icon, Details, Edit, id, bgcolor }) => (
-          <View style={{ ...styles.Card, backgroundColor: bgcolor }} key={id}>
-            <Text style={styles.TagName}>{TagName}</Text>
-            <View style={styles.HeadingAndImageContainer}>
-              <Text style={styles.HeadingName}>{HeadingName}</Text>
-              <Image source={Icon} style={styles.Icon} />
+
+      </View>
+        {
+          Cards.map(({ TagName, HeadingName, Icon, Details, Edit, id,bgcolor }) => (
+
+            <View style={{...styles.Card,backgroundColor :bgcolor}} key={id}> 
+              <Text style={styles.TagName}>{TagName}</Text>
+
+              <View style={styles.HeadingAndImageConatiner}>
+                <Text style={styles.HeadingName}>{HeadingName}</Text>
+                <Image source={Icon} style={styles.Icon} />
+              </View>
+
+              <View style={styles.CardFooter}
+              >
+                <TouchableOpacity>
+                  <Text style={styles.Details}>{Details}</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity>
+                  <Text style={styles.Edit}>{Edit}</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-            <View style={styles.CardFooter}>
-              <TouchableOpacity>
-                <Text style={styles.Details}>{Details}</Text>
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Text style={styles.Edit}>{Edit}</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
+          ))
+        }
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   MainContainer: {
-    flex: 1,
+
   },
   MainCardsContainer: {
-    paddingHorizontal: 10,
+
   },
   Card: {
     borderWidth: 1,
     margin: 10,
     padding: 10,
     paddingHorizontal:20,
+    // borderTopLeftRadius:4
     borderTopRightRadius:60,
     borderBottomLeftRadius:60,
+    
+
+
+    
   },
   TagName: {
     fontSize: 15,
-    paddingBottom: 3,
-    paddingHorizontal: 6,
-    color: '#fff',
+    paddingbo:3,
+    paddingHorizontal:6,
+    color:'#fff',
+
+
   },
   HeadingName: {
     fontSize: 20,
-    paddingVertical: 3,
-    color: '#fff',
+    padding:3,
+    // paddingHorizontal:10
+    color:'#fff',
     bottom:10
+
+
+
 
   },
   Icon: {
     height: 30,
     width: 30,
+
+
+
   },
   Details: {
     fontSize: 15,
-    paddingHorizontal: 2,
-    color: '#fff',
+    // bottom:40,
+    paddingHorizontal:2,
+    color:'#fff'
+
+
+
   },
   Edit: {
     fontSize: 15,
-    color: '#fff',
-  },
-  HeadingAndImageContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingBottom: 15,
-    alignItems: 'center',
-    padding:3,
+    color:'#fff'
+
+
 
   },
-  CardFooter: {
+  HeadingAndImageConatiner: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderTopWidth: 1,
-    paddingTop: 10,
     padding:3,
+    paddingBottom:15,
+    alignItems:'center',
+
 
   },
-  Marquee: {
-    fontSize: 19,
-    color: '#fff',
-    backgroundColor: '#800000',
-    paddingBottom: 5,
-    borderRadius: 10,
-    textAlign: 'center',
-    
+  CardFooter:{
+    flexDirection:'row',
+    justifyContent:'space-between',
+    borderTopWidth:1,
+    padding:3,
+    paddingTop:10
   },
-  MarqueeContainer: {
-    margin: 10,
+  Marquee:{
+fontSize:19,
+color:'#fff',
+backgroundColor:'#800000',
+paddingBottom:5,
+borderRadius:10,
+alignContent:'center',
+alignItems:'center',
+justifyContent:'center'
+
   },
-});
+  MarqueeContainer:{
+margin:10
+  }
+})
