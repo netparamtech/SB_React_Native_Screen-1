@@ -132,7 +132,7 @@ const City = [
 
 
 
-export default function Business() {
+export default function Business({navigation}) {
 
 
   const [value2, setValue2] = useState(null);
@@ -152,7 +152,7 @@ export default function Business() {
         </TouchableOpacity>
         {/* </View> */}
 
-        <TouchableOpacity style={styles.SecondButtonConatiner}>
+        <TouchableOpacity style={styles.SecondButtonConatiner} onPress={()=>{navigation.navigate('Business_info')}}>
           <MaterialIcons name={'add-business'} size={23} style={styles.Icons} />
           <Text style={styles.SecondButtonName}>Promote Your Bussiness</Text>
         </TouchableOpacity>
@@ -274,6 +274,14 @@ const styles = StyleSheet.create({
     backgroundColor:"#008577",
     borderColor: '#ffc107',
 
+    shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 }, // Shadow direction: down
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+    
+        // Shadow property for Android
+        elevation: 5, // Increase this value to increase shadow
+
   },
   FirstButtonName: {
     fontSize: 17,
@@ -298,7 +306,15 @@ const styles = StyleSheet.create({
     borderColor: '#ffc107',
 
     alignContent: 'center',
-    backgroundColor:"#008577"
+    backgroundColor:"#008577",
+
+    shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 }, // Shadow direction: down
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+    
+        // Shadow property for Android
+        elevation: 6, // Increase this value to increase shadow
 
   },
   Icons: {
