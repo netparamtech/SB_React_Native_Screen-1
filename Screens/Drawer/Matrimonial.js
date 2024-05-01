@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Image, FlatList, Button, TextInput } from "react-native";
-import Icon from 'react-native-vector-icons/FontAwesome'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -552,7 +551,7 @@ const Matrimonial = ({ navigation }) => {
               <View style={{ marginTop: 10 }}>
                 {/* <Text style={{ fontSize: 15, fontWeight: 'bold', margin: 10 }}>Add New</Text> */}
                 <View style={{ margin: 9 }}>
-                  <Button title="ADD MATROMONIAL" color={'#ffc107'}/>
+                  <Button title="ADD MATROMONIAL" color={'#ffc107'} onPress={()=>{navigation.navigate('Add_Matrimonial')}}/>
                 </View>
               </View>
               <View>
