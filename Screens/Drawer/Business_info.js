@@ -1,7 +1,13 @@
 import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DatePicker from 'react-native-date-picker'
 import ChoosePhoto from './ChoosePhoto';
+
+
+
 const State = [
     { label: 'Maharashtra', value: '1' },
     { label: 'Goa', value: '2' },
@@ -20,17 +26,127 @@ const City = [
     { label: 'Indore', value: '6' },
     { label: 'Ayyodhya', value: '7' }
 ];
-const Country = [
-    { label: 'India', value: 'India' },
 
-];
 const Status = [
     { label: 'Active', value: '1' },
     { label: 'Inactive', value: '1' },
 ]
+const Country = [
+    { label: 'India', value: 'India' },
+];
+const Gender = [
+    { label: 'Male', value: 'Male' },
+    { label: 'Female', value: 'Female' },
+]
+const Manglik = [
+    { label: 'Yes', value: 'Yes' },
+    { label: 'No', value: 'No' },
+]
+const Education = [
+    { label: '10th', value: '10th' },
+    { label: '12th', value: '12th' },
+    { label: 'Graduation', value: 'Graduation' },
+    { label: 'Diploma', value: 'Diploma' },
+    { label: 'Post-Graduation', value: 'Post-Graduation' },
+];
+
+const Job = [
+    { label: 'Government', value: 'Government' },
+    { label: 'Private', value: 'Private' },
+    { label: 'Engineer', value: 'Engineer' },
+    { label: 'Sales', value: 'Sales' },
+    { label: 'Marketing', value: 'Marketing' },
+];
+
+const Brothers = [
+    { label: '0', value: '0' },
+    { label: '1', value: '1' },
+    { label: '2', value: '2' },
+    { label: '3', value: '3' },
+    { label: '4', value: '4' },
+];
+
+const Business_Types = [
+    { label: 'Sales', value: 'Sales' },
+    { label: 'Marketing', value: 'Marketing' },
+    { label: 'Real Estate', value: 'Real Estate' },
+    { label: 'Manufacturing', value: 'Manufacturing' },
+];
+export default function Add_Matrimonial() {
+
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(null)
+
+    const renderLabel4 = () => {
+        if (value5 || isFocus5) {
+            return (
+                <Text style={[styles.label, isFocus5 && { color: '#198754' }]}>
+                    Select Country
+                </Text>
+            );
+        }
+        return null;
+    };
+
+    const renderLabel2 = () => {
+        if (value3 || isFocus3) {
+            return (
+                <Text style={[styles.label, isFocus3 && { color: '#198754' }]}>
+                    State
+                </Text>
+            );
+        }
+        return null;
+    };
 
 
-export default function Business_info() {
+    const renderLabel3 = () => {
+        if (value4 || isFocus4) {
+            return (
+                <Text style={[styles.label, isFocus4 && { color: '#198754' }]}>
+                    City
+                </Text>
+            );
+        }
+        return null;
+    };
+
+
+    const renderLabel6 = () => {
+        if (value7 || isFocus7) {
+            return (
+                <Text style={[styles.label, isFocus7 && { color: '#198754' }]}>
+                    Select Status
+                </Text>
+            );
+        }
+        return null;
+    };
+
+
+
+    const renderLabel8 = () => {
+        if (value9 || isFocus9) {
+            return (
+                <Text style={[styles.label, isFocus9 && { color: '#198754' }]}>
+                    Number Of Brothers
+                </Text>
+            );
+        }
+        return null;
+    };
+
+    const renderLabel9 = () => {
+        if (value10 || isFocus10) {
+            return (
+                <Text style={[styles.label, isFocus10 && { color: '#198754' }]}>
+                    Business Types
+                </Text>
+            );
+        }
+        return null;
+    };
 
     const [isFocus1, setIsFocus1] = useState(false);
     const [value1, setValue1] = useState(null);
@@ -43,69 +159,111 @@ export default function Business_info() {
 
     const [isFocus4, setIsFocus4] = useState(false);
     const [value4, setValue4] = useState(null);
+
+    const [isFocus5, setIsFocus5] = useState(false);
+    const [value5, setValue5] = useState(null);
+
+
+    const [isFocus6, setIsFocus6] = useState(false);
+    const [value6, setValue6] = useState(null);
+
+    const [isFocus7, setIsFocus7] = useState(false);
+    const [value7, setValue7] = useState(null);
+
+    const [isFocus8, setIsFocus8] = useState(false);
+    const [value8, setValue8] = useState(null);
+
+    const [isFocus9, setIsFocus9] = useState(false);
+    const [value9, setValue9] = useState(null);
+
+    const [isFocus10, setIsFocus10] = useState(false);
+    const [value10, setValue10] = useState(null);
+
+    const [rangeFeet, setRangeFeet] = useState(0)
+    const [rangeInches, setRangeInches] = useState(0)
+
+
     return (
-        <ScrollView  style={{backgroundColor:'#fff'}}>
+        <ScrollView style={{ backgroundColor: '#fff' }}>
 
             <View style={styles.MainContainer}>
                 <View style={styles.Business_info_Container}>
-                    <Text style={styles.Business_info_ContainerTXT}>Business Info</Text>
+                    <Text style={styles.Business_info_ContainerTXT}>Bussiness Info</Text>
                 </View>
 
                 <View style={styles.FormContainr}>
 
-                    <View style={styles.InputBarNameContainer}>
-                        <Text style={styles.InputBarTXT}>Business Name</Text>
-                    </View>
+                    {/* <View style={styles.InputBarNameContainer}>
+                        <Text style={styles.InputBarTXT}>Name</Text>
+                    </View> */}
                     <View style={styles.InputBarContainer}>
                         <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Name' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
 
-                    <View>
-                        <Text style={styles.InputBarTXT_two}>Business Type</Text>
-                    </View>
+                    <View style={styles.containerDropDown5}>
+                        {renderLabel9()}
 
-                    <View style={styles.containerDropDown1}>
+                        {/* call kela */}
+
                         <Dropdown
-                            style={[styles.dropdown, isFocus1 && { borderColor: '#008577' }]}
+                            style={[styles.dropdown, isFocus10 && { borderColor: '#ffc107' }]}
                             placeholderStyle={styles.placeholderStyle}
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
-                            data={City}
-                            search
+                            data={Business_Types}
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus1 ? 'Select Your City' : '...'}
+                            placeholder={!isFocus9 ? 'Select Business Type' : '...'}
                             searchPlaceholder="Search..."
-                            value={City}
-                            onFocus={() => setIsFocus1(true)}
-                            onBlur={() => setIsFocus1(false)}
+                            value={value10}
+                            onFocus={() => setIsFocus10(true)}
+                            onBlur={() => setIsFocus10(false)}
+
+
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue10(null) }} >
+                                    {value10 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus9 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
                             onChange={item => {
-                                setValue1(item.value);
-                                setIsFocus1(false);
+                                setValue10(item.value);
+                                setIsFocus10(false);
                             }}
 
                         />
                     </View>
-
-                    <View>
-                        <View style={styles.InputBarNameContainer_TWO}>
-                            <Text style={styles.InputBarTXT_three}>Street Address</Text>
-                        </View>
-
-                        <View style={styles.InputBarContainer_Street}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Street Address' placeholderTextColor={'#6c757d'} ></TextInput>
-                        </View>
+                    {/* 
+                    <View style={styles.InputBarNameContainer}>
+                        <Text style={styles.InputBarTXT}>Father Name</Text>
+                    </View> */}
+                    <View style={styles.InputBarContainer2}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Street Address' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
 
-                    <View>
-                        <Text style={styles.InputBarTXT_six}>Country</Text>
-                    </View>
+                    <View style={styles.containerDropDown5}>
+                        {renderLabel4()}
 
-                    <View style={styles.containerDropDown2}>
+                        {/* call kela */}
+
                         <Dropdown
-                            style={[styles.dropdown, isFocus2 && { borderColor: '#008577' }]}
+                            style={[styles.dropdown, isFocus5 && { borderColor: '#ffc107' }]}
                             placeholderStyle={styles.placeholderStyle}
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
@@ -115,26 +273,46 @@ export default function Business_info() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus2 ? 'Select Your City' : '...'}
+                            placeholder={!isFocus5 ? 'Select Country' : '...'}
                             searchPlaceholder="Search..."
-                            value={Country}
-                            onFocus={() => setIsFocus2(true)}
-                            onBlur={() => setIsFocus2(false)}
+                            value={value5}
+                            onFocus={() => setIsFocus5(true)}
+                            onBlur={() => setIsFocus5(false)}
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue5(null) }} >
+                                    {value5 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus5 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
                             onChange={item => {
-                                setValue2(item.value);
-                                setIsFocus2(false);
+                                setValue5(item.value);
+                                setIsFocus5(false);
                             }}
 
                         />
                     </View>
 
-                    <View>
-                        <Text style={styles.InputBarTXT_four}>State</Text>
-                    </View>
-
                     <View style={styles.containerDropDown3}>
+                        {renderLabel2()}
+
+                        {/* call kela */}
+
                         <Dropdown
-                            style={[styles.dropdown, isFocus3 && { borderColor: '#008577' }]}
+                            style={[styles.dropdown, isFocus3 && { borderColor: '#ffc107' }]}
                             placeholderStyle={styles.placeholderStyle}
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
@@ -144,11 +322,32 @@ export default function Business_info() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus3 ? 'Select Your City' : '...'}
+                            placeholder={!isFocus3 ? 'Select State' : '...'}
                             searchPlaceholder="Search..."
-                            value={State}
+                            value={value3}
                             onFocus={() => setIsFocus3(true)}
                             onBlur={() => setIsFocus3(false)}
+
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue3(null) }} >
+                                    {value3 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus3 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
                             onChange={item => {
                                 setValue3(item.value);
                                 setIsFocus3(false);
@@ -156,15 +355,16 @@ export default function Business_info() {
 
                         />
                     </View>
+                    {/* ############################################################# */}
 
-
-                    <View>
-                        <Text style={styles.InputBarTXT_five}>City</Text>
-                    </View>
 
                     <View style={styles.containerDropDown4}>
+                        {renderLabel3()}
+
+                        {/* call kela */}
+
                         <Dropdown
-                            style={[styles.dropdown, isFocus4 && { borderColor: '#008577' }]}
+                            style={[styles.dropdown, isFocus4 && { borderColor: '#ffc107' }]}
                             placeholderStyle={styles.placeholderStyle}
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
@@ -174,11 +374,32 @@ export default function Business_info() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus4 ? 'Select Your City' : '...'}
+                            placeholder={!isFocus4 ? 'Select City' : '...'}
                             searchPlaceholder="Search..."
-                            value={City}
+                            value={value4}
                             onFocus={() => setIsFocus4(true)}
                             onBlur={() => setIsFocus4(false)}
+
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue4(null) }} >
+                                    {value4 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus4 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
                             onChange={item => {
                                 setValue4(item.value);
                                 setIsFocus4(false);
@@ -187,140 +408,107 @@ export default function Business_info() {
                         />
                     </View>
 
-                    <View>
-                        <View style={styles.InputBarNameContainer_Four}>
-                            <Text style={styles.InputBarTXT_Contacts}>Contact 1</Text>
-                        </View>
 
-                        <View style={styles.InputBarContainer_Contacts}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 1' placeholderTextColor={'#6c757d'} ></TextInput>
-                        </View>
+                    {/* <View style={styles.InputBarNameContainer}>
+                        <Text style={styles.InputBarTXT}>Mother Name</Text>
+                    </View> */}
+                    <View style={styles.InputBarContainer3}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 1' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
 
-                    <View>
-                        <View style={styles.InputBarNameContainer_Five}>
-                            <Text style={styles.InputBarTXT_Contacts2}>Contact 2</Text>
-                        </View>
 
-                        <View style={styles.InputBarContainer_Contacts2}>
+
+
+
+                    <View>
+                        {/* <View style={styles.InputBarNameContainer_Four}>
+                            <Text style={styles.InputBarTXT_Contacts}>Paternal Gotra</Text>
+                        </View> */}
+                        <View style={styles.InputBarContainer_Contacts}>
                             <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 2' placeholderTextColor={'#6c757d'} ></TextInput>
                         </View>
                     </View>
-
                     <View>
-                        <View style={styles.InputBarNameContainer_Six}>
-                            <Text style={styles.InputBarTXT_Contacts3} >Contact 3</Text>
-                        </View>
 
-                        <View style={styles.InputBarContainer_Contacts3}>
+                        <View style={styles.InputBarContainer_Contacts2}>
                             <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 3' placeholderTextColor={'#6c757d'} ></TextInput>
                         </View>
                     </View>
-
-                    {/* ################################################## PHOTO LAB ############################################# */}
-
-                                <View>
-                               <ChoosePhoto />
-                                </View>
-
-
-                    {/* ############################################################################################### */}
-
-
-
-
-
-
-                    {/* ##################################################### EMAIL ########################################## */}
-
+                </View>
+                <View style={styles.PersonalPHOTOcontainer}>
                     <View>
-                        <View style={styles.InputBarNameContainer_Bussiness_Email}>
-                            <Text style={styles.InputBarTXT_Bussiness_Email} >Business Email</Text>
-                        </View>
-
-                        <View style={styles.InputBarContainer_Email}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Email' placeholderTextColor={'#6c757d'} ></TextInput>
-                        </View>
+                        <ChoosePhoto />
                     </View>
-
-                    {/* ############################################################################################### */}
-
-
-                    {/* ##################################################### STATUS ########################################## */}
-
-
-                    <View>
-                        <Text style={styles.InputBarTXT_SIX}>Status</Text>
+                </View>
+                <View>
+                    {/* <View style={styles.InputBarNameContainer_Bussiness_Email}>
+                            <Text style={styles.InputBarTXT_Bussiness_Email} >Annual Package</Text>
+                        </View> */}
+                    <View style={styles.InputBarContainer_Email}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Email' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
+                </View>
 
-                    <View style={styles.containerDropDown5}>
-                        <Dropdown
-                            style={[styles.dropdown, isFocus4 && { borderColor: '#008577' }]}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={Status}
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder={!isFocus4 ? 'Select Your Status' : '...'}
-                            searchPlaceholder="Search..."
-                            value={Status}
-                            onFocus={() => setIsFocus4(true)}
-                            onBlur={() => setIsFocus4(false)}
-                            onChange={item => {
-                                setValue4(item.value);
-                                setIsFocus4(false);
-                            }}
 
-                        />
+                <View style={styles.containerDropDown5}>
+                    {renderLabel6()}
+
+                    {/* call kela */}
+
+                    <Dropdown
+                        style={[styles.dropdown, isFocus7 && { borderColor: '#ffc107' }]}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={Status}
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder={!isFocus7 ? 'Select Status' : '...'}
+                        searchPlaceholder="Search..."
+                        value={value7}
+                        onFocus={() => setIsFocus7(true)}
+                        onBlur={() => setIsFocus7(false)}
+                        renderRightIcon={() => (
+                            <TouchableOpacity onPress={() => { setValue7(null) }} >
+                                {value7 ?
+                                    <Entypo
+                                        color={isFocus7 ? 'green' : 'black'}
+                                        name="circle-with-cross"
+                                        size={20}
+                                    />
+
+                                    : null
+
+                                }
+
+
+                            </TouchableOpacity>
+
+                        )}
+
+                        onChange={item => {
+                            setValue7(item.value);
+                            setIsFocus7(false);
+                        }}
+
+                    />
+                </View>
+                <View>
+                    <View style={styles.InputBarContainer_Description}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Website Link' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
-
-                    {/* ############################################################################################### */}
-
-                    <View>
-                        <View style={styles.InputBarNameContainer_Business_Website}>
-                            <Text style={styles.InputBarTXT_Business_Website} >Business Website</Text>
-                            <Text>(Please add your business website link if any.)</Text>
-                        </View>
-
-                        <View style={styles.InputBarContainer_Business_Website}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Website Link' placeholderTextColor={'#6c757d'} ></TextInput>
-                        </View>
+                    <View style={styles.InputBarContainer_Description}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business GoogleMap Link' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
-
-
-                    <View>
-                        <View style={styles.InputBarNameContainer_Description}>
-                            <Text style={styles.InputBarTXT_Description} >Description</Text>
-                            <Text>(Please add your business details and links if any.)</Text>
-                        </View>
-
-                        <View style={styles.InputBarContainer_Description}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Website details' placeholderTextColor={'#6c757d'} ></TextInput>
-                        </View>
-                    </View>
-
-
-                    <View>
-                        <View style={styles.InputBarNameContainer_Google_Map}>
-                            <Text style={styles.InputBarTXT_Google_Map} >Set Google Map</Text>
-                            <Text>(Please add your business location link.)</Text>
-                        </View>
-
-                        <View style={styles.InputBarContainer_Google_Map}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Website Location Link' placeholderTextColor={'#6c757d'} ></TextInput>
-                        </View>
-                    </View>
-
+                </View>
+                <View style={styles.PersonalPHOTOcontainer}>
                     <View >
                         <TouchableOpacity style={styles.SubmitButton} onPress={() => { }}>
-                            <Text style={styles.SubmitButtonText}>Update</Text>
+                            <Text style={styles.SubmitButtonText}>Submit</Text>
                         </TouchableOpacity>
                     </View>
-
-
                 </View>
             </View>
         </ScrollView>
@@ -335,8 +523,8 @@ const styles = StyleSheet.create({
     //     margin: 15,
     //     // borderWidth:2,
     //     // marginBottom:100
-      
-       
+
+
     //       shadowOpacity: 0.25,
     //       shadowRadius: 5,
     //       elevation: 1.2,
@@ -345,21 +533,87 @@ const styles = StyleSheet.create({
 
 
     // },
+    PersonalPHOTOcontainer: {
+        paddingVertical: 5
+    },
+    PersonalBiodata_text: {
+        fontSize: 18,
+        // margin: 10,
+        // top:10,
+        color: '#000',
+        marginTop: 15,
+
+    },
+    PersonalPHOTO_text: {
+        fontSize: 18,
+        // margin: 10,
+        // top:10,
+        color: '#000',
+        marginTop: 10,
+
+    },
+    SliderRange: {
+        fontSize: 23,
+        color: 'orange',
+        bottom: 10
+
+    },
+    SlideContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 10
+
+
+    },
+    FeetTXT: {
+        fontSize: 18,
+        // margin: 10,
+        // top:10,
+        color: '#000',
+        marginTop: 10
+
+
+
+    },
+    InchesTXT: {
+        fontSize: 18,
+        // margin: 10,
+        // top:10,
+        color: '#000'
+
+
+    },
+    FeetTXTContainer: {
+
+
+    },
+    SlideFIRST: {
+        height: 50,
+        width: 260,
+        bottom: 10
+
+    },
+    SlideSECOND: {
+        height: 50,
+        width: 260,
+        bottom: 10
+    },
     MainContainer: {
         flex: 1,
         padding: 15,
         margin: 15,
         backgroundColor: '#fff', // Ensure there's a background color, as shadows won't be visible without it
-    
+
         // Common style for both platforms
         borderRadius: 8, // Optional: if you want rounded corners
-    
+
         // Shadow properties for iOS
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 }, // Shadow direction: down
         shadowOpacity: 0.1,
         shadowRadius: 8,
-    
+
         // Shadow property for Android
         elevation: 5, // Increase this value to increase shadow
     },
@@ -382,24 +636,24 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#000',
         marginTop: 18,
-        top:5 // latest closeness to inputbar
+        top: 5 // latest closeness to inputbar
     },
     InputBarTXT_Contacts2: {
         fontSize: 20,
         color: '#000',
-        top:5 // latest closeness to inputbar
+        top: 5 // latest closeness to inputbar
 
     },
     InputBarTXT_Contacts3: {
         fontSize: 20,
         color: '#000',
-        top:5 // latest closeness to inputbar
+        top: 5 // latest closeness to inputbar
 
     },
     InputBarTXT_Bussiness_Email: {
         fontSize: 20,
         color: '#000',
-        top:5 // latest closeness to inputbar
+        top: 5 // latest closeness to inputbar
 
     },
     InputBarTXT_Contacts: {
@@ -411,12 +665,11 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#000',
         // marginTop:10
-        top:5 // latest closeness to inputbar
+        top: 5 // latest closeness to inputbar
 
 
     },
     InputBarPlaceHolder: {
-        fontSize: 15,
         justifyContent: 'center',
         paddingHorizontal: 15,
 
@@ -436,12 +689,44 @@ const styles = StyleSheet.create({
         // marginTop: 18,
 
     },
+    iconAntDesigns: {
+        left: 70,
+
+    },
     InputBarContainer: {
-        borderWidth: 1,
-        height: 45,
-        marginTop: 5,
-        borderWidth: 0.5,
+        // height: 45,
+        // marginTop: 5,
         borderRadius: 8,
+        height: 45,
+        marginBottom: 15,
+        marginTop: 18,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+
+    },
+    InputBarContainer2: {
+        // height: 45,
+        // marginTop: 5,
+        borderRadius: 8,
+        height: 45,
+        marginBottom: 15,
+        // marginTop: 18,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        marginTop: 5,
+
+
+    }, InputBarContainer3: {
+        // height: 45,
+        // marginTop: 5,
+        borderRadius: 8,
+        height: 45,
+        marginBottom: 15,
+        // marginTop: 18,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        marginTop: 5,
+
 
     },
     InputBarContainer_Street: {
@@ -452,14 +737,36 @@ const styles = StyleSheet.create({
 
     },
     InputBarContainer_Contacts: {
-        borderWidth: 1,
-        height: 45,
-        // marginTop: 5,
-        borderWidth: 0.5,
+        // borderWidth: 1,
+        // height: 45,
+        // // marginTop: 5,
+        // borderWidth: 0.5,
         borderRadius: 8,
-        // marginVertical:10
+        // // marginVertical:10
+        // marginBottom: 15,
+        // // marginTop: 5,
+        height: 45,
         marginBottom: 15,
-        // marginTop: 5,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+    },
+    InputBarContainer_Date: {
+        borderRadius: 8,
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        // justifyContent: "space-between",
+        justifyContent: "space-between"
+
+    },
+    CalenderICON: {
+        left: 70,
+        color: 'green'
     },
     dropdown: {
         height: 47,
@@ -468,7 +775,6 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         paddingHorizontal: 15,
         width: 'auto',
-        // left: 5,
     },
     placeholderStyle: {
         fontSize: 15,
@@ -500,7 +806,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#000',
         marginTop: 10,
-        top:1.2 // latest closeness to inputbar
+        top: 1 // latest closeness to inputbar
 
 
 
@@ -509,7 +815,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#000',
         // marginTop:10
-        top:5 // latest closeness to inputbar
+        top: 5 // latest closeness to inputbar
 
     },
     InputBarNameContainer_Six: {
@@ -535,7 +841,7 @@ const styles = StyleSheet.create({
         // marginTop: 15,
         // fontSize: 20,
         // color: '#000',
-        top:1.2 // latest closeness to inputbar
+        top: 1 // latest closeness to inputbar
 
 
 
@@ -544,7 +850,7 @@ const styles = StyleSheet.create({
         // marginTop: 15,
         fontSize: 20,
         color: '#000',
-        top:5 // latest closeness to inputbar
+        top: 5 // latest closeness to inputbar
 
 
     },
@@ -554,7 +860,7 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: '#000',
         marginTop: 10,
-        top:1.2 // latest closeness to inputbar
+        top: 1 // latest closeness to inputbar
 
 
     },
@@ -589,19 +895,23 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     InputBarContainer_Contacts2: {
-        borderWidth: 1,
-        height: 45,
-        // marginTop: 5,
-        borderWidth: 0.5,
+        // borderWidth: 1,
+        // height: 45,
+        // // marginTop: 5,
         borderRadius: 8,
-        // marginVertical:10
+        // // marginVertical:10
+        // marginBottom: 15,
+        // marginTop: 5,
+        height: 45,
         marginBottom: 15,
         marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
     },
     InputBarTXT_SIX: {
         fontSize: 20,
         color: '#000',
-        top:5 // latest closeness to inputbar
+        top: 5 // latest closeness to inputbar
 
     },
     containerDropDown5: {
@@ -627,6 +937,17 @@ const styles = StyleSheet.create({
     },
     InputBarContainer_Description:
     {
+        height: 120,
+        // marginTop: 5,
+        borderRadius: 8,
+        // marginVertical:10
+        marginBottom: 15,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+    },
+    InputBarContainer_DetailsIFany:
+    {
         borderWidth: 1,
         height: 120,
         // marginTop: 5,
@@ -634,17 +955,23 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         // marginVertical:10
         marginBottom: 15,
-        marginTop: 5,
+        marginVertical: 22,
+        borderColor: '#FF9933'
     },
     InputBarContainer_Email: {
-        borderWidth: 1,
-        height: 45,
-        // marginTop: 5,
-        borderWidth: 0.5,
+        // borderWidth: 1,
+        // height: 45,
+        // // marginTop: 5,
+        // borderWidth: 0.5,
         borderRadius: 8,
-        // marginVertical:10
+        // // marginVertical:10
+        // marginBottom: 15,
+        // marginTop: 5,
+        height: 45,
         marginBottom: 15,
         marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
     },
     InputBarTXT_Google_Map: {
         fontSize: 20,
@@ -665,14 +992,15 @@ const styles = StyleSheet.create({
         marginTop: 5,
     },
     InputBarContainer_Business_Website: {
-        borderWidth: 1,
+        // borderWidth: 1,
         height: 120,
         // marginTop: 5,
-        borderWidth: 0.5,
         borderRadius: 8,
         // marginVertical:10
         marginBottom: 15,
         marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
     },
     SubmitButton: {
         borderWidth: 1,
@@ -682,7 +1010,7 @@ const styles = StyleSheet.create({
         bottom: 6,
         width: 90,
         alignSelf: 'center',
-        elevation:3,
+        elevation: 3,
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 2 }, // Shadow direction: down
         shadowOpacity: 0.1,
@@ -697,5 +1025,33 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         alignContent: 'center',
         bottom: 1.1,
+    },
+    containerDrops: {
+        // flexGrow: 1,
+        // backgroundColor: 'red',
+        alignItems: 'center',
+        // justifyContent: 'center',
+        borderWidth: 1,
+        // margin: 10,
+        // width: 300,
+        // marginTop: 30,
+        alignSelf: 'center',
+        // paddingBottom: 80,
+        // shadowColor: '#212529',
+        // elevation: 15,
+        // minHeight: '50%'
+        padding: 8,
+
+    },
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',   /// new changes
+        left: 22,
+        // top: 0.4,
+        top: -10,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+        borderRadius: 10  // new chnges
     },
 })
