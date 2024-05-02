@@ -2,9 +2,9 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import React, { useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DatePicker from "react-native-date-picker";
 import ChoosePhoto from './ChoosePhoto';
-
-
 
 const State = [
     { label: 'Maharashtra', value: '1' },
@@ -24,21 +24,15 @@ const City = [
     { label: 'Indore', value: '6' },
     { label: 'Ayyodhya', value: '7' }
 ];
-
-const Status = [
-    { label: 'Active', value: '1' },
-    { label: 'Inactive', value: '1' },
-]
-const Country = [
-    { label: 'India', value: 'India' },
-];
 const Gender = [
     { label: 'Male', value: 'Male' },
     { label: 'Female', value: 'Female' },
 ]
-const Manglik = [
-    { label: 'Yes', value: 'Yes' },
-    { label: 'No', value: 'No' },
+const MaritialStatus = [
+    { label: 'Married', value: 'Married' },
+    { label: 'UnMarried', value: 'UnMarried' },
+    { label: 'Divorced', value: 'Divorced' },
+
 ]
 const Education = [
     { label: '10th', value: '10th' },
@@ -56,33 +50,21 @@ const Job = [
     { label: 'Marketing', value: 'Marketing' },
 ];
 
-const Brothers = [
-    { label: '0', value: '0' },
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
-    { label: '3', value: '3' },
-    { label: '4', value: '4' },
-];
+export default function Basic_Profile() {
 
-const Business_Types = [
-    { label: 'Sales', value: 'Sales' },
-    { label: 'Marketing', value: 'Marketing' },
-    { label: 'Real Estate', value: 'Real Estate' },
-    { label: 'Manufacturing', value: 'Manufacturing' },
-];
-export default function Add_Matrimonial() {
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(null)
 
-    const renderLabel4 = () => {
-        if (value5 || isFocus5) {
-            return (
-                <Text style={[styles.label, isFocus5 && { color: '#198754' }]}>
-                    Select Country
-                </Text>
-            );
-        }
-        return null;
-    };
+    const handleConfirmDate = (Date) => {
+        const dt = Date
+        const x = dt.toISOString().split('T');
+        const x1 = x[0].split('-');
+        const x2 = x1[2] + '/' + x1[1] + '/' + x1[0];
+        setSelectedDate(x2);
+        console.log(x2)
 
+    }
     const renderLabel2 = () => {
         if (value3 || isFocus3) {
             return (
@@ -106,146 +88,120 @@ export default function Add_Matrimonial() {
         return null;
     };
 
+    const renderLabel1 = () => {
+        if (value1 || isFocus1) {
+            return (
+                <Text style={[styles.label, isFocus1 && { color: '#198754' }]}>
+                    Gender
+                </Text>
+            );
+        }
+        return null;
+    };
+    const renderLabel5 = () => {
+        if (value6 || isFocus6) {
+            return (
+                <Text style={[styles.label, isFocus6 && { color: '#198754' }]}>
+                    Maritial Status
+                </Text>
+            );
+        }
+        return null;
+    };
 
     const renderLabel6 = () => {
         if (value7 || isFocus7) {
             return (
                 <Text style={[styles.label, isFocus7 && { color: '#198754' }]}>
-                    Select Status
+                    Select Education
                 </Text>
             );
         }
         return null;
     };
 
-
-
-    const renderLabel9 = () => {
-        if (value10 || isFocus10) {
+    const renderLabel7 = () => {
+        if (value8 || isFocus8) {
             return (
-                <Text style={[styles.label, isFocus10 && { color: '#198754' }]}>
-                    Business Types
+                <Text style={[styles.label, isFocus8 && { color: '#198754' }]}>
+                    Job
                 </Text>
             );
         }
         return null;
     };
 
- 
+    const [isFocus1, setIsFocus1] = useState(false);
+    const [value1, setValue1] = useState(null);
+
     const [isFocus3, setIsFocus3] = useState(false);
     const [value3, setValue3] = useState(null);
 
     const [isFocus4, setIsFocus4] = useState(false);
     const [value4, setValue4] = useState(null);
 
-    const [isFocus5, setIsFocus5] = useState(false);
-    const [value5, setValue5] = useState(null);
+    const [isFocus6, setIsFocus6] = useState(false);
+    const [value6, setValue6] = useState(null);
 
     const [isFocus7, setIsFocus7] = useState(false);
     const [value7, setValue7] = useState(null);
 
-    const [isFocus9, setIsFocus9] = useState(false);
-    const [value9, setValue9] = useState(null);
+    const [isFocus8, setIsFocus8] = useState(false);
+    const [value8, setValue8] = useState(null);
 
-    const [isFocus10, setIsFocus10] = useState(false);
-    const [value10, setValue10] = useState(null);
+
+
+
+
 
     return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
 
             <View style={styles.MainContainer}>
                 <View style={styles.Business_info_Container}>
-                    <Text style={styles.Business_info_ContainerTXT}>Bussiness Info</Text>
+                    <Text style={styles.Business_info_ContainerTXT}>Basic Profile</Text>
                 </View>
-
                 <View style={styles.FormContainr}>
                     <View style={styles.InputBarContainer}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Name' placeholderTextColor={'#6c757d'} ></TextInput>
-                    </View>
-
-                    <View style={styles.containerDropDown5}>
-                        {renderLabel9()}
-
-                        {/* call kela */}
-
-                        <Dropdown
-                            style={[styles.dropdown, isFocus10 && { borderColor: '#ffc107' }]}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={Business_Types}
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder={!isFocus9 ? 'Select Business Type' : '...'}
-                            searchPlaceholder="Search..."
-                            value={value10}
-                            onFocus={() => setIsFocus10(true)}
-                            onBlur={() => setIsFocus10(false)}
-
-
-                            renderRightIcon={() => (
-
-                                <TouchableOpacity onPress={() => { setValue10(null) }} >
-                                    {value10 ?
-                                        <Entypo
-                                            style={styles.iconAntDesign}
-                                            color={isFocus9 ? 'green' : 'black'}
-                                            name="circle-with-cross"
-                                            size={20}
-                                        />
-
-                                        : null
-
-                                    }
-
-
-                                </TouchableOpacity>
-
-                            )}
-
-                            onChange={item => {
-                                setValue10(item.value);
-                                setIsFocus10(false);
-                            }}
-
-                        />
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Your Name' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
                     <View style={styles.InputBarContainer2}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Street Address' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Email' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
+                    <View style={styles.containerDropDown1}>
 
-                    <View style={styles.containerDropDown5}>
-                        {renderLabel4()}
+                        {renderLabel1(value1, isFocus1)}
 
                         {/* call kela */}
 
                         <Dropdown
-                            style={[styles.dropdown, isFocus5 && { borderColor: '#ffc107' }]}
+                            style={[styles.dropdown, isFocus1 && { borderColor: '#ffc107' }]}
                             placeholderStyle={styles.placeholderStyle}
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
-                            data={Country}
-                            search
+                            data={Gender}
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus5 ? 'Select Country' : '...'}
+
+
+                            placeholder={!isFocus1 ? 'select Gender ' : '...'}
                             searchPlaceholder="Search..."
-                            value={value5}
-                            onFocus={() => setIsFocus5(true)}
-                            onBlur={() => setIsFocus5(false)}
+                            value={value1}
+                            onFocus={() => setIsFocus1(true)}
+                            onBlur={() => setIsFocus1(false)}
+
                             renderRightIcon={() => (
 
-                                <TouchableOpacity onPress={() => { setValue5(null) }} >
-                                    {value5 ?
+                                <TouchableOpacity onPress={() => { setValue1(null) }} >
+                                    {value1 ?
                                         <Entypo
                                             style={styles.iconAntDesign}
-                                            color={isFocus5 ? 'green' : 'black'}
+                                            color={isFocus1 ? 'green' : 'black'}
                                             name="circle-with-cross"
                                             size={20}
+
                                         />
 
                                         : null
@@ -257,12 +213,69 @@ export default function Add_Matrimonial() {
 
                             )}
 
-                            onChange={item => {
-                                setValue5(item.value);
-                                setIsFocus5(false);
-                            }}
+                            onChange={(item) => {
+                                setValue1(item.value),
+                                    setIsFocus1(false);
 
+
+                            }}
                         />
+                    </View>
+                    <View>
+                        <View style={styles.InputBarContainer_Date}>
+                            <DatePicker
+                                mode={"date"}
+                                modal
+                                open={open}
+                                date={date}
+                                onConfirm={(date) => {
+                                    setOpen(false)
+
+                                    handleConfirmDate(date)
+                                }}
+
+                                onCancel={() => {
+                                    setOpen(false)
+                                }}
+                            />
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='DD--MM--YY' placeholderTextColor={'#6c757d'} >
+                                {selectedDate}
+                            </TextInput>
+                            {
+                                selectedDate ?
+
+                                    <TouchableOpacity onPress={() => { setSelectedDate(null) }}>
+
+                                        {/* date jar selected asel tarch disel naitr logo disnar nai */}
+
+                                        {selectedDate ?
+                                            <Entypo
+                                                style={styles.iconAntDesigns}
+                                                color={isFocus1 ? 'green' : 'black'}
+                                                name="circle-with-cross"
+                                                size={20}
+
+                                            />
+
+                                            : null
+
+                                        }
+                                    </TouchableOpacity>
+                                    :
+                                    <TouchableOpacity onPress={() => { [setOpen(true)] }}>
+                                        <Text style={styles.CalenderICON}>
+                                            <FontAwesome name={'calendar'} size={22} />
+                                        </Text>
+                                    </TouchableOpacity>
+
+                            }
+                            <TouchableOpacity onPress={() => { setSelectedDate(null) }}>
+
+                            </TouchableOpacity>
+
+                        </View>
+
+
                     </View>
 
                     <View style={styles.containerDropDown3}>
@@ -363,99 +376,156 @@ export default function Add_Matrimonial() {
 
                         />
                     </View>
-                    {/* <View style={styles.InputBarNameContainer}>
-                        <Text style={styles.InputBarTXT}>Mother Name</Text>
-                    </View> */}
-                    <View style={styles.InputBarContainer3}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 1' placeholderTextColor={'#6c757d'} ></TextInput>
+                    <View style={styles.containerDropDown5}>
+                        {renderLabel6()}
+
+                        {/* call kela */}
+
+                        <Dropdown
+                            style={[styles.dropdown, isFocus7 && { borderColor: '#ffc107' }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={Education}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!isFocus7 ? 'Select Highest Qualification' : '...'}
+                            searchPlaceholder="Search..."
+                            value={value7}
+                            onFocus={() => setIsFocus7(true)}
+                            onBlur={() => setIsFocus7(false)}
+                            renderRightIcon={() => (
+                                <TouchableOpacity onPress={() => { setValue7(null) }} >
+                                    {value7 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus7 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
+                            onChange={item => {
+                                setValue7(item.value);
+                                setIsFocus7(false);
+                            }}
+
+                        />
+                    </View>
+                    <View style={styles.containerDropDown5}>
+                        {renderLabel7()}
+
+                        {/* call kela */}
+
+                        <Dropdown
+                            style={[styles.dropdown, isFocus8 && { borderColor: '#ffc107' }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={Job}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!isFocus8 ? 'Select Job Profile' : '...'}
+                            searchPlaceholder="Search..."
+                            value={value8}
+                            onFocus={() => setIsFocus8(true)}
+                            onBlur={() => setIsFocus8(false)}
+
+
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue8(null) }} >
+                                    {value8 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus8 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
+                            onChange={item => {
+                                setValue8(item.value);
+                                setIsFocus8(false);
+                            }}
+
+                        />
                     </View>
 
-
-
-
-
                     <View>
-                        
                         <View style={styles.InputBarContainer_Contacts}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 2' placeholderTextColor={'#6c757d'} ></TextInput>
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Job Detail' placeholderTextColor={'#6c757d'} ></TextInput>
                         </View>
                     </View>
-                    <View>
 
-                        <View style={styles.InputBarContainer_Contacts2}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 3' placeholderTextColor={'#6c757d'} ></TextInput>
-                        </View>
+                    <View style={styles.containerDropDown5}>
+                        {renderLabel5()}
+
+                        {/* call kela */}
+
+                        <Dropdown
+                            style={[styles.dropdown, isFocus6 && { borderColor: '#ffc107' }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={MaritialStatus}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!isFocus6 ? 'Select Maritial Status' : '...'}
+                            searchPlaceholder="Search..."
+                            value={value6}
+                            onFocus={() => setIsFocus6(true)}
+                            onBlur={() => setIsFocus6(false)}
+
+
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue6(null) }} >
+                                    {value6 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus6 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+                            onChange={item => {
+                                setValue6(item.value);
+                                setIsFocus6(false);
+                            }}
+
+                        />
                     </View>
-                </View>
-                <View style={styles.PersonalPHOTOcontainer}>
-                    <View>
-                        <ChoosePhoto />
-                    </View>
-                </View>
-                <View>
-                    <View style={styles.InputBarContainer_Email}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Email' placeholderTextColor={'#6c757d'} ></TextInput>
-                    </View>
-                </View>
-
-
-                <View style={styles.containerDropDown5}>
-                    {renderLabel6()}
-
-                    {/* call kela */}
-
-                    <Dropdown
-                        style={[styles.dropdown, isFocus7 && { borderColor: '#ffc107' }]}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={Status}
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus7 ? 'Select Status' : '...'}
-                        searchPlaceholder="Search..."
-                        value={value7}
-                        onFocus={() => setIsFocus7(true)}
-                        onBlur={() => setIsFocus7(false)}
-                        renderRightIcon={() => (
-                            <TouchableOpacity onPress={() => { setValue7(null) }} >
-                                {value7 ?
-                                    <Entypo
-                                        color={isFocus7 ? 'green' : 'black'}
-                                        name="circle-with-cross"
-                                        size={20}
-                                    />
-
-                                    : null
-
-                                }
-
-
-                            </TouchableOpacity>
-
-                        )}
-
-                        onChange={item => {
-                            setValue7(item.value);
-                            setIsFocus7(false);
-                        }}
-
-                    />
-                </View>
-                <View>
-                    <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Website Link' placeholderTextColor={'#6c757d'} ></TextInput>
-                    </View>
-                    <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Description' placeholderTextColor={'#6c757d'} ></TextInput>
-                    </View>
-                    <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business GoogleMap Link' placeholderTextColor={'#6c757d'} ></TextInput>
-                    </View>
-                </View>
-                <View style={styles.PersonalPHOTOcontainer}>
                     <View >
                         <TouchableOpacity style={styles.SubmitButton} onPress={() => { }}>
                             <Text style={styles.SubmitButtonText}>Submit</Text>
@@ -464,12 +534,26 @@ export default function Add_Matrimonial() {
                 </View>
             </View>
         </ScrollView>
-
     )
 }
 
 const styles = StyleSheet.create({
-    
+    // MainContainer: {
+    //     flex: 1,
+    //     padding: 15,
+    //     margin: 15,
+    //     // borderWidth:2,
+    //     // marginBottom:100
+
+
+    //       shadowOpacity: 0.25,
+    //       shadowRadius: 5,
+    //       elevation: 1.2,
+
+
+
+
+    // },
     PersonalPHOTOcontainer: {
         paddingVertical: 5
     },
@@ -553,11 +637,11 @@ const styles = StyleSheet.create({
 
         // Shadow property for Android
         elevation: 5, // Increase this value to increase shadow
+    marginBottom:90
     },
     Business_info_Container: {
         // justifyContent:'center',
         // alignItems:"center"
-
     },
     Business_info_ContainerTXT: {
         fontSize: 25,

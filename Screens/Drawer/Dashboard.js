@@ -2,7 +2,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'rea
 import React from 'react';
 import TextTicker from 'react-native-text-ticker';
 
-export default function Dashboard() {
+export default function Dashboard({navigation}) {
   const Cards = [
     {
       id: '1',
@@ -95,7 +95,16 @@ export default function Dashboard() {
 
     },
   ];
-
+const HandleEditPress = (index)=>{
+  if(index === 0)
+  {
+    navigation.navigate('Basic_Profile');
+  }
+  if(index === 4)
+  {
+    navigation.navigate('Create_Events')
+  }
+}
   return (
     <ScrollView style={styles.MainContainer}>
       <View style={styles.MainCardsContainer}>
@@ -112,7 +121,7 @@ export default function Dashboard() {
             "Building Bridges, Creating Bonds: Social Bharat is your gateway to community connections, meaningful relationships, and professional growth. Discover a platform where community thrives, love blossoms, careers take flight, and services unite. Explore Matrimonial Bliss, Career Opportunities, Business Networking, and more. Join us on the journey of empowerment and shared prosperity. Your community, your connection, your Social Bharat. #CommunityConnections #Matrimony #JobSearch #ServiceSearch #SocialBharat 🌐💑👔🛠️"
           </TextTicker>
         </View>
-        {Cards.map(({ TagName, HeadingName, Icon, Details, Edit, id, bgcolor }) => (
+        {Cards.map(({ TagName, HeadingName, Icon, Details, Edit, id, bgcolor },index) => (
           <View style={{ ...styles.Card, backgroundColor: bgcolor }} key={id}>
             <Text style={styles.TagName}>{TagName}</Text>
             <View style={styles.HeadingAndImageContainer}>
@@ -123,7 +132,7 @@ export default function Dashboard() {
               <TouchableOpacity>
                 <Text style={styles.Details}>{Details}</Text>
               </TouchableOpacity>
-              <TouchableOpacity>
+              <TouchableOpacity onPress={()=>{HandleEditPress(index)}}>
                 <Text style={styles.Edit}>{Edit}</Text>
               </TouchableOpacity>
             </View>

@@ -13,6 +13,8 @@ import Splash from './Splash';
 import Messages from '../Drawer/Messages';
 import Business_info from '../Drawer/Business_info';
 import Add_Matrimonial from '../Drawer/Add_Matrimonial';
+import Create_Events from '../Drawer/Create_Events';
+import Basic_Profile from '../Drawer/Basic_profile';
 const Stack = createNativeStackNavigator();
 
 export default function StackApplication() {
@@ -29,6 +31,8 @@ export default function StackApplication() {
             <Stack.Screen name='Messages' component={Messages} options={{headerShown:false}}/>
             <Stack.Screen name='Business_info' component={Business_info}/>
             <Stack.Screen name='Add_Matrimonial' component={Add_Matrimonial}/>
+            <Stack.Screen name='Create_Events' component={Create_Events}/>
+            <Stack.Screen name='Basic_Profile' component={Basic_Profile}/>
 
         </Stack.Navigator>
     </NavigationContainer>

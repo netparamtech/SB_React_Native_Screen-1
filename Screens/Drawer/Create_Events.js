@@ -2,10 +2,10 @@ import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 
 import React, { useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DatePicker from "react-native-date-picker";
 import ChoosePhoto from './ChoosePhoto';
-
-
-
+            
 const State = [
     { label: 'Maharashtra', value: '1' },
     { label: 'Goa', value: '2' },
@@ -24,28 +24,19 @@ const City = [
     { label: 'Indore', value: '6' },
     { label: 'Ayyodhya', value: '7' }
 ];
+const Events = [
+    { label: 'Only For MY Community', value: 'Only For MY Community' },
+    { label: 'General(For All Community)', value: 'General(For All Community)' },
+]
+const MaritialStatus = [
+    { label: 'Married', value: 'Married' },
+    { label: 'UnMarried', value: 'UnMarried' },
+    { label: 'Divorced', value: 'Divorced' },
 
-const Status = [
-    { label: 'Active', value: '1' },
-    { label: 'Inactive', value: '1' },
 ]
 const Country = [
     { label: 'India', value: 'India' },
-];
-const Gender = [
-    { label: 'Male', value: 'Male' },
-    { label: 'Female', value: 'Female' },
-]
-const Manglik = [
-    { label: 'Yes', value: 'Yes' },
-    { label: 'No', value: 'No' },
-]
-const Education = [
-    { label: '10th', value: '10th' },
-    { label: '12th', value: '12th' },
-    { label: 'Graduation', value: 'Graduation' },
-    { label: 'Diploma', value: 'Diploma' },
-    { label: 'Post-Graduation', value: 'Post-Graduation' },
+
 ];
 
 const Job = [
@@ -56,33 +47,38 @@ const Job = [
     { label: 'Marketing', value: 'Marketing' },
 ];
 
-const Brothers = [
-    { label: '0', value: '0' },
-    { label: '1', value: '1' },
-    { label: '2', value: '2' },
-    { label: '3', value: '3' },
-    { label: '4', value: '4' },
-];
+export default function Create_Events() {
 
-const Business_Types = [
-    { label: 'Sales', value: 'Sales' },
-    { label: 'Marketing', value: 'Marketing' },
-    { label: 'Real Estate', value: 'Real Estate' },
-    { label: 'Manufacturing', value: 'Manufacturing' },
-];
-export default function Add_Matrimonial() {
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(null)
 
-    const renderLabel4 = () => {
-        if (value5 || isFocus5) {
-            return (
-                <Text style={[styles.label, isFocus5 && { color: '#198754' }]}>
-                    Select Country
-                </Text>
-            );
-        }
-        return null;
-    };
+    const [selectedDate2, setSelectedDate2] = useState(null)
+    const [date2, setDate2] = useState(new Date())
+    const [open2, setOpen2] = useState(false)
 
+
+
+
+    const handleConfirmDate = (Date) => {
+        const dt = Date
+        const x = dt.toISOString().split('T');
+        const x1 = x[0].split('-');
+        const x2 = x1[2] + '/' + x1[1] + '/' + x1[0];
+        setSelectedDate(x2);
+        console.log(x2)
+
+    }
+
+    const handleConfirmDate2 = (Date2) => {
+        const dt = Date2
+        const y = dt.toISOString().split('T');
+        const y1 = y[0].split('-');
+        const y2 = y1[2] + '/' + y1[1] + '/' + y1[0];
+        setSelectedDate2(y2);
+        console.log(y2)
+
+    }
     const renderLabel2 = () => {
         if (value3 || isFocus3) {
             return (
@@ -106,144 +102,143 @@ export default function Add_Matrimonial() {
         return null;
     };
 
+    const renderLabel1 = () => {
+        if (value1 || isFocus1) {
+            return (
+                <Text style={[styles.label, isFocus1 && { color: '#198754' }]}>
+                    Events
+                </Text>
+            );
+        }
+        return null;
+    };
+    
 
     const renderLabel6 = () => {
         if (value7 || isFocus7) {
             return (
                 <Text style={[styles.label, isFocus7 && { color: '#198754' }]}>
-                    Select Status
+                    Select Country
                 </Text>
             );
         }
         return null;
     };
 
+    
 
+    const [isFocus1, setIsFocus1] = useState(false);
+    const [value1, setValue1] = useState(null);
 
-    const renderLabel9 = () => {
-        if (value10 || isFocus10) {
-            return (
-                <Text style={[styles.label, isFocus10 && { color: '#198754' }]}>
-                    Business Types
-                </Text>
-            );
-        }
-        return null;
-    };
+    const [isFocus2, setIsFocus2] = useState(false);
+    const [value2, setValue2] = useState(null);
 
- 
     const [isFocus3, setIsFocus3] = useState(false);
     const [value3, setValue3] = useState(null);
 
     const [isFocus4, setIsFocus4] = useState(false);
     const [value4, setValue4] = useState(null);
 
-    const [isFocus5, setIsFocus5] = useState(false);
-    const [value5, setValue5] = useState(null);
-
+   
     const [isFocus7, setIsFocus7] = useState(false);
     const [value7, setValue7] = useState(null);
 
-    const [isFocus9, setIsFocus9] = useState(false);
-    const [value9, setValue9] = useState(null);
+   
 
-    const [isFocus10, setIsFocus10] = useState(false);
-    const [value10, setValue10] = useState(null);
+
+
+
 
     return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
 
             <View style={styles.MainContainer}>
                 <View style={styles.Business_info_Container}>
-                    <Text style={styles.Business_info_ContainerTXT}>Bussiness Info</Text>
+                    <Text style={styles.Business_info_ContainerTXT}>Create Event</Text>
                 </View>
+                <View style={styles.containerDropDown1}>
 
+                    {renderLabel1(value1, isFocus1)}
+
+                    {/* call kela */}
+
+                    <Dropdown
+                        style={[styles.dropdown, isFocus1 && { borderColor: '#ffc107' }]}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={Events}
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+
+
+                        placeholder={!isFocus1 ? 'select Event ' : '...'}
+                        searchPlaceholder="Search..."
+                        value={value1}
+                        onFocus={() => setIsFocus1(true)}
+                        onBlur={() => setIsFocus1(false)}
+
+                        renderRightIcon={() => (
+
+                            <TouchableOpacity onPress={() => { setValue1(null) }} >
+                                {value1 ?
+                                    <Entypo
+                                        style={styles.iconAntDesign}
+                                        color={isFocus1 ? 'green' : 'black'}
+                                        name="circle-with-cross"
+                                        size={20}
+
+                                    />
+
+                                    : null
+
+                                }
+
+
+                            </TouchableOpacity>
+
+                        )}
+
+                        onChange={(item) => {
+                            setValue1(item.value),
+                                setIsFocus1(false);
+
+
+                        }}
+                    />
+                </View>
                 <View style={styles.FormContainr}>
                     <View style={styles.InputBarContainer}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Name' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Event Title' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
-
                     <View style={styles.containerDropDown5}>
-                        {renderLabel9()}
+                        {renderLabel6()}
 
                         {/* call kela */}
 
                         <Dropdown
-                            style={[styles.dropdown, isFocus10 && { borderColor: '#ffc107' }]}
-                            placeholderStyle={styles.placeholderStyle}
-                            selectedTextStyle={styles.selectedTextStyle}
-                            inputSearchStyle={styles.inputSearchStyle}
-                            iconStyle={styles.iconStyle}
-                            data={Business_Types}
-                            maxHeight={300}
-                            labelField="label"
-                            valueField="value"
-                            placeholder={!isFocus9 ? 'Select Business Type' : '...'}
-                            searchPlaceholder="Search..."
-                            value={value10}
-                            onFocus={() => setIsFocus10(true)}
-                            onBlur={() => setIsFocus10(false)}
-
-
-                            renderRightIcon={() => (
-
-                                <TouchableOpacity onPress={() => { setValue10(null) }} >
-                                    {value10 ?
-                                        <Entypo
-                                            style={styles.iconAntDesign}
-                                            color={isFocus9 ? 'green' : 'black'}
-                                            name="circle-with-cross"
-                                            size={20}
-                                        />
-
-                                        : null
-
-                                    }
-
-
-                                </TouchableOpacity>
-
-                            )}
-
-                            onChange={item => {
-                                setValue10(item.value);
-                                setIsFocus10(false);
-                            }}
-
-                        />
-                    </View>
-                    <View style={styles.InputBarContainer2}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Street Address' placeholderTextColor={'#6c757d'} ></TextInput>
-                    </View>
-
-                    <View style={styles.containerDropDown5}>
-                        {renderLabel4()}
-
-                        {/* call kela */}
-
-                        <Dropdown
-                            style={[styles.dropdown, isFocus5 && { borderColor: '#ffc107' }]}
+                            style={[styles.dropdown, isFocus7 && { borderColor: '#ffc107' }]}
                             placeholderStyle={styles.placeholderStyle}
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
                             data={Country}
-                            search
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus5 ? 'Select Country' : '...'}
+                            placeholder={!isFocus7 ? 'Select Country' : '...'}
                             searchPlaceholder="Search..."
-                            value={value5}
-                            onFocus={() => setIsFocus5(true)}
-                            onBlur={() => setIsFocus5(false)}
+                            value={value7}
+                            onFocus={() => setIsFocus7(true)}
+                            onBlur={() => setIsFocus7(false)}
                             renderRightIcon={() => (
-
-                                <TouchableOpacity onPress={() => { setValue5(null) }} >
-                                    {value5 ?
+                                <TouchableOpacity onPress={() => { setValue7(null) }} >
+                                    {value7 ?
                                         <Entypo
                                             style={styles.iconAntDesign}
-                                            color={isFocus5 ? 'green' : 'black'}
+                                            color={isFocus7 ? 'green' : 'black'}
                                             name="circle-with-cross"
                                             size={20}
                                         />
@@ -258,13 +253,12 @@ export default function Add_Matrimonial() {
                             )}
 
                             onChange={item => {
-                                setValue5(item.value);
-                                setIsFocus5(false);
+                                setValue7(item.value);
+                                setIsFocus7(false);
                             }}
 
                         />
                     </View>
-
                     <View style={styles.containerDropDown3}>
                         {renderLabel2()}
 
@@ -363,99 +357,156 @@ export default function Add_Matrimonial() {
 
                         />
                     </View>
-                    {/* <View style={styles.InputBarNameContainer}>
-                        <Text style={styles.InputBarTXT}>Mother Name</Text>
-                    </View> */}
-                    <View style={styles.InputBarContainer3}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 1' placeholderTextColor={'#6c757d'} ></TextInput>
-                    </View>
 
+
+
+
+                    {/* ################  Having Errors in This Calender And Also To Add Time With Date  ################################################ */}
 
 
 
 
                     <View>
-                        
-                        <View style={styles.InputBarContainer_Contacts}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 2' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <View style={styles.StartDate}>
+                            <Text style={styles.StartDateTXT}>Start Event Date/Time</Text>
                         </View>
-                    </View>
-                    <View>
+                        <View style={styles.InputBarContainer_Date}>
+                            <DatePicker
+                                mode={"date"}
+                                modal
+                                open={open2}
+                                date={date2}
+                                onConfirm={(date2) => {
+                                    setOpen2(false)
 
-                        <View style={styles.InputBarContainer_Contacts2}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 3' placeholderTextColor={'#6c757d'} ></TextInput>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.PersonalPHOTOcontainer}>
-                    <View>
-                        <ChoosePhoto />
-                    </View>
-                </View>
-                <View>
-                    <View style={styles.InputBarContainer_Email}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Email' placeholderTextColor={'#6c757d'} ></TextInput>
-                    </View>
-                </View>
+                                    handleConfirmDate2(date2)
+                                }}
 
+                                onCancel={() => {
+                                    setOpen2(false)
+                                }}
+                            />
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='DD--MM--YY' placeholderTextColor={'#6c757d'} >
+                                {selectedDate2}
+                            </TextInput>
+                            {
+                                selectedDate2 ?
 
-                <View style={styles.containerDropDown5}>
-                    {renderLabel6()}
+                                    <TouchableOpacity onPress={() => { setSelectedDate2(null) }}>
 
-                    {/* call kela */}
+                                        {/* date jar selected asel tarch disel naitr logo disnar nai */}
 
-                    <Dropdown
-                        style={[styles.dropdown, isFocus7 && { borderColor: '#ffc107' }]}
-                        placeholderStyle={styles.placeholderStyle}
-                        selectedTextStyle={styles.selectedTextStyle}
-                        inputSearchStyle={styles.inputSearchStyle}
-                        iconStyle={styles.iconStyle}
-                        data={Status}
-                        maxHeight={300}
-                        labelField="label"
-                        valueField="value"
-                        placeholder={!isFocus7 ? 'Select Status' : '...'}
-                        searchPlaceholder="Search..."
-                        value={value7}
-                        onFocus={() => setIsFocus7(true)}
-                        onBlur={() => setIsFocus7(false)}
-                        renderRightIcon={() => (
-                            <TouchableOpacity onPress={() => { setValue7(null) }} >
-                                {value7 ?
-                                    <Entypo
-                                        color={isFocus7 ? 'green' : 'black'}
-                                        name="circle-with-cross"
-                                        size={20}
-                                    />
+                                        {selectedDate2 ?
+                                            <Entypo
+                                                style={styles.iconAntDesigns}
+                                                color={isFocus2 ? 'green' : 'black'}
+                                                name="circle-with-cross"
+                                                size={20}
 
-                                    : null
+                                            />
 
-                                }
+                                            : null
 
+                                        }
+                                    </TouchableOpacity>
+                                    :
+                                    <TouchableOpacity onPress={() => { [setOpen2(true)] }}>
+                                        <Text style={styles.CalenderICON}>
+                                            <FontAwesome name={'calendar'} size={22} />
+                                        </Text>
+                                    </TouchableOpacity>
+
+                            }
+                            <TouchableOpacity onPress={() => { setSelectedDate2(null) }}>
 
                             </TouchableOpacity>
 
-                        )}
+                        </View>
 
-                        onChange={item => {
-                            setValue7(item.value);
-                            setIsFocus7(false);
-                        }}
 
-                    />
-                </View>
-                <View>
-                    <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Website Link' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
-                    <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Description' placeholderTextColor={'#6c757d'} ></TextInput>
+
+                    <View>
+                        <View style={styles.EndDate}>
+                            <Text style={styles.EndDateTXT}>End Event Date/Time</Text>
+                        </View>
+                        <View style={styles.InputBarContainer_Date}>
+                            <DatePicker
+                                mode={"date"}
+                                modal
+                                open={open}
+                                date={date}
+                                onConfirm={(date) => {
+                                    setOpen(false)
+
+                                    handleConfirmDate(date)
+                                }}
+
+                                onCancel={() => {
+                                    setOpen(false)
+                                }}
+                            />
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='DD--MM--YY' placeholderTextColor={'#6c757d'} >
+                                {selectedDate}
+                            </TextInput>
+                            {
+                                selectedDate ?
+
+                                    <TouchableOpacity onPress={() => { setSelectedDate(null) }}>
+
+                                        {/* date jar selected asel tarch disel naitr logo disnar nai */}
+
+                                        {selectedDate ?
+                                            <Entypo
+                                                style={styles.iconAntDesigns}
+                                                color={isFocus1 ? 'green' : 'black'}
+                                                name="circle-with-cross"
+                                                size={20}
+
+                                            />
+
+                                            : null
+
+                                        }
+                                    </TouchableOpacity>
+                                    :
+                                    <TouchableOpacity onPress={() => { [setOpen(true)] }}>
+                                        <Text style={styles.CalenderICON}>
+                                            <FontAwesome name={'calendar'} size={22} />
+                                        </Text>
+                                    </TouchableOpacity>
+
+                            }
+                            <TouchableOpacity onPress={() => { setSelectedDate(null) }}>
+
+                            </TouchableOpacity>
+
+                        </View>
+
+
                     </View>
-                    <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business GoogleMap Link' placeholderTextColor={'#6c757d'} ></TextInput>
+
+                    <View style={styles.InputBarContainer}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Event Venue' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
-                </View>
-                <View style={styles.PersonalPHOTOcontainer}>
+
+                    <View>
+                        <ChoosePhoto />
+                    </View>
+
+
+                    <View>
+                        <ChoosePhoto />
+                    </View>
+
+
+
+
+                    <View>
+                        <View style={styles.InputBarContainer_DetailsIFany}>
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Other Details if Any' placeholderTextColor={'#6c757d'} ></TextInput>
+                        </View>
+                    </View>
                     <View >
                         <TouchableOpacity style={styles.SubmitButton} onPress={() => { }}>
                             <Text style={styles.SubmitButtonText}>Submit</Text>
@@ -464,12 +515,26 @@ export default function Add_Matrimonial() {
                 </View>
             </View>
         </ScrollView>
-
     )
 }
 
 const styles = StyleSheet.create({
-    
+    // MainContainer: {
+    //     flex: 1,
+    //     padding: 15,
+    //     margin: 15,
+    //     // borderWidth:2,
+    //     // marginBottom:100
+
+
+    //       shadowOpacity: 0.25,
+    //       shadowRadius: 5,
+    //       elevation: 1.2,
+
+
+
+
+    // },
     PersonalPHOTOcontainer: {
         paddingVertical: 5
     },
@@ -553,11 +618,11 @@ const styles = StyleSheet.create({
 
         // Shadow property for Android
         elevation: 5, // Increase this value to increase shadow
+        // marginBottom: 90
     },
     Business_info_Container: {
         // justifyContent:'center',
         // alignItems:"center"
-
     },
     Business_info_ContainerTXT: {
         fontSize: 25,
@@ -733,8 +798,8 @@ const styles = StyleSheet.create({
     containerDropDown1: {
 
         height: 45,
-        marginBottom: 15,
-        marginTop: 5,
+        marginBottom: 5,
+        marginTop: 15,
     },
     InputBarTXT_two: {
         // fontSize: 20,
@@ -991,4 +1056,22 @@ const styles = StyleSheet.create({
         fontSize: 14,
         borderRadius: 10  // new chnges
     },
+    StartDate:{
+        paddingHorizontal:9
+    },
+    StartDateTXT:{
+        fontSize:16,
+        color:'#000'
+    },
+    EndDate:{
+        paddingHorizontal:9
+
+
+    },
+    EndDateTXT:{
+        fontSize:16,
+        color:'#000'
+
+
+    }
 })
