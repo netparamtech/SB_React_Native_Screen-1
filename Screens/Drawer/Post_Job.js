@@ -1,0 +1,1178 @@
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import React, { useState } from 'react'
+import { Dropdown } from 'react-native-element-dropdown';
+import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import DatePicker from "react-native-date-picker";
+import ChoosePhoto from './ChoosePhoto';
+import { RadioButton } from 'react-native-paper';
+import Octicons from 'react-native-vector-icons/Octicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+
+
+
+
+const State = [
+    { label: 'Maharashtra', value: '1' },
+    { label: 'Goa', value: '2' },
+    { label: 'Rajasthan', value: '3' },
+    { label: 'Bihar', value: '4' },
+    { label: 'Gujrat', value: '5' },
+    { label: 'MP', value: '6' },
+    { label: 'Up', value: '7' },
+];
+
+const City = [
+    { label: 'Jaipur', value: '3' },
+    { label: 'Mumbai', value: '1' },
+    { label: 'Raipur', value: '4' },
+    { label: 'Surat', value: '5' },
+    { label: 'Indore', value: '6' },
+    { label: 'Ayyodhya', value: '7' }
+];
+const Job_Type = [
+    { label: 'Full Time', value: 'Full Time' },
+    {
+        label: 'Part Time', value: 'Part Time'
+    },
+    {
+        label: 'Freelancer', value: 'Freelancer'
+    },
+]
+
+const Job_Selector = [
+    { label: 'Government Job', value: 'Government Job' },
+    { label: 'Private Job', value: 'Private Job' },
+    { label: 'Others', value: 'Others' },
+
+
+];
+
+const Job = [
+    { label: 'Government', value: 'Government' },
+    { label: 'Private', value: 'Private' },
+    { label: 'Engineer', value: 'Engineer' },
+    { label: 'Sales', value: 'Sales' },
+    { label: 'Marketing', value: 'Marketing' },
+];
+
+export default function Post_Job() {
+
+    const [date, setDate] = useState(new Date())
+    const [open, setOpen] = useState(false)
+    const [selectedDate, setSelectedDate] = useState(null)
+
+    const [selectedDate2, setSelectedDate2] = useState(null)
+    const [date2, setDate2] = useState(new Date())
+    const [open2, setOpen2] = useState(false)
+    const [checked, setChecked] = React.useState('first');
+
+
+
+
+
+    const handleConfirmDate = (Date) => {
+        const dt = Date
+        const x = dt.toISOString().split('T');
+        const x1 = x[0].split('-');
+        const x2 = x1[2] + '/' + x1[1] + '/' + x1[0];
+        setSelectedDate(x2);
+        console.log(x2)
+
+    }
+
+    const handleConfirmDate2 = (Date2) => {
+        const dt = Date2
+        const y = dt.toISOString().split('T');
+        const y1 = y[0].split('-');
+        const y2 = y1[2] + '/' + y1[1] + '/' + y1[0];
+        setSelectedDate2(y2);
+        console.log(y2)
+
+    }
+    const renderLabel2 = () => {
+        if (value3 || isFocus3) {
+            return (
+                <Text style={[styles.label, isFocus3 && { color: '#198754' }]}>
+                    State
+                </Text>
+            );
+        }
+        return null;
+    };
+
+
+    const renderLabel3 = () => {
+        if (value4 || isFocus4) {
+            return (
+                <Text style={[styles.label, isFocus4 && { color: '#198754' }]}>
+                    City
+                </Text>
+            );
+        }
+        return null;
+    };
+
+    const renderLabel1 = () => {
+        if (value1 || isFocus1) {
+            return (
+                <Text style={[styles.label, isFocus1 && { color: '#198754' }]}>
+                    Job Type
+                </Text>
+            );
+        }
+        return null;
+    };
+
+
+    const renderLabel6 = () => {
+        if (value7 || isFocus7) {
+            return (
+                <Text style={[styles.label, isFocus7 && { color: '#198754' }]}>
+                    JOB Selector
+                </Text>
+            );
+        }
+        return null;
+    };
+
+
+    const [isFocus1, setIsFocus1] = useState(false);
+    const [value1, setValue1] = useState(null);
+
+    const [isFocus2, setIsFocus2] = useState(false);
+    const [value2, setValue2] = useState(null);
+
+    const [isFocus3, setIsFocus3] = useState(false);
+    const [value3, setValue3] = useState(null);
+
+    const [isFocus4, setIsFocus4] = useState(false);
+    const [value4, setValue4] = useState(null);
+
+
+    const [isFocus7, setIsFocus7] = useState(false);
+    const [value7, setValue7] = useState(null);
+
+
+
+    return (
+        <ScrollView style={{ backgroundColor: '#fff' }}>
+
+            <View style={styles.MainContainer}>
+                <View style={styles.Business_info_Container}>
+                    <Text style={styles.Business_info_ContainerTXT}>Create JOB</Text>
+                </View>
+                <View style={styles.FormContainr}>
+                    <View style={styles.InputBarContainer}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter JOB Title' placeholderTextColor={'#6c757d'} ></TextInput>
+                    </View>
+                    <View style={styles.containerDropDown5}>
+                        {renderLabel6()}
+
+                        {/* call kela */}
+
+                        <Dropdown
+                            style={[styles.dropdown, isFocus7 && { borderColor: '#ffc107' }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={Job_Selector}
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!isFocus7 ? 'Select JOB Sector' : '...'}
+                            searchPlaceholder="Search..."
+                            value={value7}
+                            onFocus={() => setIsFocus7(true)}
+                            onBlur={() => setIsFocus7(false)}
+                            renderRightIcon={() => (
+                                <TouchableOpacity onPress={() => { setValue7(null) }} >
+                                    {value7 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus7 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
+                            onChange={item => {
+                                setValue7(item.value);
+                                setIsFocus7(false);
+                            }}
+
+                        />
+                    </View>
+
+                    <View style={styles.containerDropDown3}>
+                        {renderLabel1()}
+
+                        {/* call kela */}
+
+                        <Dropdown
+                            style={[styles.dropdown, isFocus1 && { borderColor: '#ffc107' }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={Job_Type}
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!isFocus1 ? 'Select Job Type' : '...'}
+                            searchPlaceholder="Search..."
+                            value={value1}
+                            onFocus={() => setIsFocus1(true)}
+                            onBlur={() => setIsFocus1(false)}
+
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue1(null) }} >
+                                    {value1 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus1 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
+                            onChange={item => {
+                                setValue1(item.value);
+                                setIsFocus1(false);
+                            }}
+
+                        />
+                    </View>
+
+                    <View style={styles.InputBarContainer}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Other Subheading (Company Name)' placeholderTextColor={'#6c757d'} ></TextInput>
+                    </View>
+
+                    <View style={styles.containerDropDown3}>
+                        {renderLabel2()}
+
+                        {/* call kela */}
+                        <Dropdown
+                            style={[styles.dropdown, isFocus3 && { borderColor: '#ffc107' }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={State}
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!isFocus3 ? 'Select State' : '...'}
+                            searchPlaceholder="Search..."
+                            value={value3}
+                            onFocus={() => setIsFocus3(true)}
+                            onBlur={() => setIsFocus3(false)}
+
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue3(null) }} >
+                                    {value3 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus3 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
+                            onChange={item => {
+                                setValue3(item.value);
+                                setIsFocus3(false);
+                            }}
+
+                        />
+                    </View>
+                    <View style={styles.containerDropDown4}>
+                        {renderLabel3()}
+
+                        {/* call kela */}
+
+                        <Dropdown
+                            style={[styles.dropdown, isFocus4 && { borderColor: '#ffc107' }]}
+                            placeholderStyle={styles.placeholderStyle}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            inputSearchStyle={styles.inputSearchStyle}
+                            iconStyle={styles.iconStyle}
+                            data={City}
+                            search
+                            maxHeight={300}
+                            labelField="label"
+                            valueField="value"
+                            placeholder={!isFocus4 ? 'Select City' : '...'}
+                            searchPlaceholder="Search..."
+                            value={value4}
+                            onFocus={() => setIsFocus4(true)}
+                            onBlur={() => setIsFocus4(false)}
+
+                            renderRightIcon={() => (
+
+                                <TouchableOpacity onPress={() => { setValue4(null) }} >
+                                    {value4 ?
+                                        <Entypo
+                                            style={styles.iconAntDesign}
+                                            color={isFocus4 ? 'green' : 'black'}
+                                            name="circle-with-cross"
+                                            size={20}
+                                        />
+
+                                        : null
+
+                                    }
+
+
+                                </TouchableOpacity>
+
+                            )}
+
+                            onChange={item => {
+                                setValue4(item.value);
+                                setIsFocus4(false);
+                            }}
+
+                        />
+                    </View>
+                    <View style={styles.InputBarContainer}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Organization Address' placeholderTextColor={'#6c757d'} ></TextInput>
+                    </View>
+                    <View style={styles.InputBarContainerApplicationFEE}>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter About Application Fee Details' placeholderTextColor={'#6c757d'} ></TextInput>
+                    </View>
+
+                    {/* ################  Having Errors in This Calender And Also To Add Time With Date  ################################################ */}
+
+                    <View>
+                        <View style={styles.StartDate}>
+                            <Text style={styles.StartDateTXT}>Application Start Date</Text>
+                        </View>
+                        <View style={styles.InputBarContainer_Date}>
+                            <DatePicker
+                                mode={"date"}
+                                modal
+                                open={open2}
+                                date={date2}
+                                onConfirm={(date2) => {
+                                    setOpen2(false)
+
+                                    handleConfirmDate2(date2)
+                                }}
+
+                                onCancel={() => {
+                                    setOpen2(false)
+                                }}
+                            />
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='DD--MM--YY' placeholderTextColor={'#6c757d'} >
+                                {selectedDate2}
+                            </TextInput>
+                            {
+                                selectedDate2 ?
+
+                                    <TouchableOpacity onPress={() => { setSelectedDate2(null) }}>
+
+                                        {/* date jar selected asel tarch disel naitr logo disnar nai */}
+
+                                        {selectedDate2 ?
+                                            <Entypo
+                                                style={styles.iconAntDesigns}
+                                                color={isFocus2 ? 'green' : 'black'}
+                                                name="circle-with-cross"
+                                                size={20}
+
+                                            />
+
+                                            : null
+
+                                        }
+                                    </TouchableOpacity>
+                                    :
+                                    <TouchableOpacity onPress={() => { [setOpen2(true)] }}>
+                                        <Text style={styles.CalenderICON}>
+                                            <FontAwesome name={'calendar'} size={22} />
+                                        </Text>
+                                    </TouchableOpacity>
+
+                            }
+                            <TouchableOpacity onPress={() => { setSelectedDate2(null) }}>
+
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                    <View>
+                        <View style={styles.EndDate}>
+                            <Text style={styles.EndDateTXT}>Application End Date</Text>
+                        </View>
+                        <View style={styles.InputBarContainer_Date}>
+                            <DatePicker
+                                mode={"date"}
+                                modal
+                                open={open}
+                                date={date}
+                                onConfirm={(date) => {
+                                    setOpen(false)
+
+                                    handleConfirmDate(date)
+                                }}
+
+                                onCancel={() => {
+                                    setOpen(false)
+                                }}
+                            />
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='DD--MM--YY' placeholderTextColor={'#6c757d'} >
+                                {selectedDate}
+                            </TextInput>
+                            {
+                                selectedDate ?
+
+                                    <TouchableOpacity onPress={() => { setSelectedDate(null) }}>
+
+                                        {/* date jar selected asel tarch disel naitr logo disnar nai */}
+
+                                        {selectedDate ?
+                                            <Entypo
+                                                style={styles.iconAntDesigns}
+                                                color={isFocus1 ? 'green' : 'black'}
+                                                name="circle-with-cross"
+                                                size={20}
+
+                                            />
+
+                                            : null
+
+                                        }
+                                    </TouchableOpacity>
+                                    :
+                                    <TouchableOpacity onPress={() => { [setOpen(true)] }}>
+                                        <Text style={styles.CalenderICON}>
+                                            <FontAwesome name={'calendar'} size={22} />
+                                        </Text>
+                                    </TouchableOpacity>
+
+                            }
+                            <TouchableOpacity onPress={() => { setSelectedDate(null) }}>
+
+                            </TouchableOpacity>
+
+                        </View>
+                    </View>
+                    <View>
+                        <ChoosePhoto />
+                    </View>
+                    <View>
+                        <ChoosePhoto />
+                    </View>
+                    <View>
+                        <View style={styles.InputBarContainer_DetailsIFany}>
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Apply Link...' placeholderTextColor={'#6c757d'} ></TextInput>
+                        </View>
+                    </View>
+                    
+                    <View style={styles.RadioButtonContiner}>
+                        <View >
+                            <Text style={styles.RadioButtonTXT}>Apply From URL ?</Text>
+                        </View>
+                        <View style={styles.radioButtonFromatting}>
+                            <RadioButton
+                                uncheckedColor='green'
+                                width={36}
+                                color='orange'
+                                value="first"
+                                status={checked === 'first' ? 'checked' : 'unchecked'}
+                                onPress={() => setChecked('first')}
+                            />
+                            <Text style={styles.RadioLABEL}>Yes</Text>
+                        </View>
+                        <View style={styles.radioButtonFromatting}>
+                            <RadioButton
+                                uncheckedColor='green'
+                                color='orange'
+                                width={36}
+                                value="second"
+                                status={checked === 'second' ? 'checked' : 'unchecked'}
+                                onPress={() => setChecked('second')}
+                            />
+                            <Text style={styles.RadioLABEL}>No</Text>
+                        </View>
+                    </View>
+                    <View style={styles.TXTmainCoontainer}>
+                        <View style={styles.SamajikBharatContainer}>
+                            <View style={styles.SamajikBharatHeading} >
+                                <FontAwesome6 name={"hands-holding-child"} size={25} color={'#008374'} />
+                                <Text style={styles.SamajikBharatHeadingTXT}>सामाजिक भारत</Text>
+                                <FontAwesome6 name={"hands-holding-child"} size={25} color={'#008374'} />
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SamajikBharatContainerTXT}> एक ही समुदाय के लोगों को आपस में जोड़कर उन्हें सामाजिक रूप से जोड़ता है, जिससे समृद्धि और समर्थन में वृद्धि होती है।</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SamajikBharatContainerTXT}> समुदाय के लोगों को समृद्धि के साथ ही अपने समुदाय से ही जीवनसाथी ढूंढने की सुविधा प्रदान करता है।</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SamajikBharatContainerTXT}> सदस्यों को रोजगार और व्यापार की खोज के लिए एक सामाजिक मंच प्रदान करने से उन्हें अधिक अवसर मिलते हैं।</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SamajikBharatContainerTXT}> समुदाय के सदस्यों के बीच सामूहिक समर्थन बढ़ता है, जिससे आपसी सहारा मिलता है और समस्याओं का समाधान होता है।</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SamajikBharatContainerTXT}> समुदाय के सदस्यों को जागरूकता और शिक्षा के साधन के रूप में जोड़कर, उन्हें सामाजिक मुद्दों के प्रति जागरूक बनाए रखता है।</Text>
+                            </View>
+                        </View>
+                        <View style={styles.SocialBharatContainer}>
+                            <View style={styles.SamajikBharatHeading} >
+                                <FontAwesome6 name={"handshake"} size={30} color={'#008374'} />
+                                <Text style={styles.SamajikBharatHeadingTXT}>Social Bharat</Text>
+                                <FontAwesome6 name={"handshake"} size={30} color={'#008374'} />
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SocialBharatContainerTXT}> Brings together people of the same community, fostering social connectivity, leading to growth and support.</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SocialBharatContainerTXT}> Provides the community members with the convenience of finding life partners within their community, along with prosperity.</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SocialBharatContainerTXT}> By offering a social platform for job and business search, it provides community members with more opportunities.</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SocialBharatContainerTXT}> Enhances mutual support among community members, providing a collective solution to problems.</Text>
+                            </View>
+                            <View style={{ flexDirection: 'row', }}>
+                                <View>
+                                    <Octicons name={"dot-fill"} size={20} />
+                                </View>
+                                <Text style={styles.SocialBharatContainerTXT}> By connecting community members through awareness and education, it keeps them informed about social issues.</Text>
+                            </View>
+                        </View>
+                    </View>
+                    <View >
+                        <TouchableOpacity style={styles.SubmitButton} onPress={() => { }}>
+                            <Text style={styles.SubmitButtonText}>Submit</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </ScrollView>
+    )
+}
+
+const styles = StyleSheet.create({
+    // MainContainer: {
+    //     flex: 1,
+    //     padding: 15,
+    //     margin: 15,
+    //     // borderWidth:2,
+    //     // marginBottom:100
+    //       shadowOpacity: 0.25,
+    //       shadowRadius: 5,
+    //       elevation: 1.2,
+
+    // },
+    PersonalPHOTOcontainer: {
+        paddingVertical: 5
+    },
+    PersonalBiodata_text: {
+        fontSize: 18,
+        // margin: 10,
+        // top:10,
+        color: '#000',
+        marginTop: 15,
+    },
+    PersonalPHOTO_text: {
+        fontSize: 18,
+        // margin: 10,
+        // top:10,
+        color: '#000',
+        marginTop: 10,
+    },
+    SliderRange: {
+        fontSize: 23,
+        color: 'orange',
+        bottom: 10
+    },
+    SlideContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 10
+    },
+    FeetTXT: {
+        fontSize: 18,
+        // margin: 10,
+        // top:10,
+        color: '#000',
+        marginTop: 10
+    },
+    InchesTXT: {
+        fontSize: 18,
+        // margin: 10,
+        // top:10,
+        color: '#000'
+    },
+    FeetTXTContainer: {
+
+    },
+    SlideFIRST: {
+        height: 50,
+        width: 260,
+        bottom: 10
+    },
+    SlideSECOND: {
+        height: 50,
+        width: 260,
+        bottom: 10
+    },
+    MainContainer: {
+        flex: 1,
+        padding: 15,
+        margin: 15,
+        backgroundColor: '#fff', // Ensure there's a background color, as shadows won't be visible without it
+
+        // Common style for both platforms
+        borderRadius: 8, // Optional: if you want rounded corners
+
+        // Shadow properties for iOS
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 }, // Shadow direction: down
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        // Shadow property for Android
+        elevation: 5, // Increase this value to increase shadow
+        // marginBottom: 90
+    },
+    Business_info_Container: {
+        // justifyContent:'center',
+        // alignItems:"center"
+    },
+    Business_info_ContainerTXT: {
+        fontSize: 25,
+        marginTop: 10,
+        backgroundColor: '#e9ecef',
+        padding: 5,
+        // color: '#fff',
+        // paddingHorizontal:15
+        textAlign: 'center'
+    },
+    InputBarTXT: {
+        fontSize: 20,
+        color: '#000',
+        marginTop: 18,
+        top: 5 // latest closeness to inputbar
+    },
+    InputBarTXT_Contacts2: {
+        fontSize: 20,
+        color: '#000',
+        top: 5 // latest closeness to inputbar
+    },
+    InputBarTXT_Contacts3: {
+        fontSize: 20,
+        color: '#000',
+        top: 5 // latest closeness to inputbar
+    },
+    InputBarTXT_Bussiness_Email: {
+        fontSize: 20,
+        color: '#000',
+        top: 5 // latest closeness to inputbar
+    },
+    InputBarTXT_Contacts: {
+        // fontSize: 20,
+        // color: '#000',
+        // marginBottom:40,
+        // marginTop: 15,
+        fontSize: 20,
+        color: '#000',
+        // marginTop:10
+        top: 5 // latest closeness to inputbar
+    },
+    InputBarPlaceHolder: {
+        justifyContent: 'center',
+        paddingHorizontal: 15,
+    },
+    InputBarNameContainer_TWO: {
+        marginBottom: 8,
+        // marginBottom: 15,
+    },
+    InputBarNameContainer_Three: {
+        marginTop: 5
+    },
+    InputBarNameContainer: {
+        // marginTop: 18,
+    },
+    iconAntDesigns: {
+        left: 70,
+    },
+    InputBarContainerApplicationFEE: {
+        borderRadius: 8,
+        height: 75,
+        marginBottom: 15,
+        marginTop: 18,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+    },
+    InputBarContainer: {
+        // height: 45,
+        // marginTop: 5,
+        borderRadius: 8,
+        height: 45,
+        marginBottom: 15,
+        marginTop: 18,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+
+    },
+    InputBarContainer2: {
+        // height: 45,
+        // marginTop: 5,
+        borderRadius: 8,
+        height: 45,
+        marginBottom: 15,
+        // marginTop: 18,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        marginTop: 5,
+    }, InputBarContainer3: {
+        // height: 45,
+        // marginTop: 5,
+        borderRadius: 8,
+        height: 45,
+        marginBottom: 15,
+        // marginTop: 18,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        marginTop: 5,
+    },
+    InputBarContainer_Street: {
+        borderWidth: 1,
+        height: 45,
+        borderWidth: 0.5,
+        borderRadius: 8,
+    },
+    InputBarContainer_Contacts: {
+        // borderWidth: 1,
+        // height: 45,
+        // // marginTop: 5,
+        // borderWidth: 0.5,
+        borderRadius: 8,
+        // // marginVertical:10
+        // marginBottom: 15,
+        // // marginTop: 5,
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+    },
+    InputBarContainer_Date: {
+        borderRadius: 8,
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        flexDirection: 'row',
+        alignItems: 'center',
+        // justifyContent: "space-between",
+        justifyContent: "space-between"
+    },
+    CalenderICON: {
+        left: 70,
+        color: 'green'
+    },
+    dropdown: {
+        height: 47,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+        borderRadius: 8,
+        paddingHorizontal: 15,
+        width: 'auto',
+    },
+    placeholderStyle: {
+        fontSize: 15,
+        color: '#6c757d'
+    },
+    selectedTextStyle: {
+        fontSize: 16,
+        paddingHorizontal: 9,
+        color: '#0F0F0F'
+    },
+    inputSearchStyle: {
+        height: 40,
+        fontSize: 16,
+    },
+    iconStyle: {
+        width: 20,
+        height: 20,
+    },
+    containerDropDown1: {
+
+        height: 45,
+        marginBottom: 5,
+        marginTop: 15,
+    },
+    InputBarTXT_two: {
+        // fontSize: 20,
+        // color: '#000',
+        // marginTop: 10,
+        fontSize: 20,
+        color: '#000',
+        marginTop: 10,
+        top: 1 // latest closeness to inputbar
+    },
+    InputBarTXT_three: {
+        fontSize: 20,
+        color: '#000',
+        // marginTop:10
+        top: 5 // latest closeness to inputbar
+
+    },
+    InputBarNameContainer_Six: {
+        marginTop: 5,
+
+    },
+    InputBarNameContainer_Bussiness_Email: {
+        marginTop: 5,
+
+    },
+    InputBarNameContainer_Five: {
+        marginTop: 5,
+
+    },
+    InputBarNameContainer_Four: {
+        marginBottom: 5
+    },
+    InputBarTXT_five: {
+        // marginTop: 15,
+        fontSize: 20,
+        color: '#000',
+        // marginTop: 15,
+        // marginTop: 15,
+        // fontSize: 20,
+        // color: '#000',
+        top: 1 // latest closeness to inputbar
+    },
+    InputBarTXT_four: {
+        // marginTop: 15,
+        fontSize: 20,
+        color: '#000',
+        top: 5 // latest closeness to inputbar
+    },
+    InputBarTXT_six: {
+        //  marginBottom: 15,
+        marginTop: 15,
+        fontSize: 20,
+        color: '#000',
+        marginTop: 10,
+        top: 1 // latest closeness to inputbar
+    },
+    containerDropDown2: {
+
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+    },
+    containerDropDown3: {
+
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+    },
+    containerDropDown4: {
+
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+    },
+    InputBarContainer_Contacts3: {
+        borderWidth: 1,
+        height: 45,
+        // marginTop: 5,
+        borderWidth: 0.5,
+        borderRadius: 8,
+        // marginVertical:10
+        marginBottom: 15,
+        marginTop: 5,
+    },
+    InputBarContainer_Contacts2: {
+        // borderWidth: 1,
+        // height: 45,
+        // // marginTop: 5,
+        borderRadius: 8,
+        // // marginVertical:10
+        // marginBottom: 15,
+        // marginTop: 5,
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+    },
+    InputBarTXT_SIX: {
+        fontSize: 20,
+        color: '#000',
+        top: 5 // latest closeness to inputbar
+
+    },
+    containerDropDown5: {
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+    },
+    InputBarTXT_Business_Website: {
+        fontSize: 20,
+        color: '#000',
+    },
+    InputBarNameContainer_Business_Website: {
+        marginTop: 5,
+
+    },
+    InputBarNameContainer_Description: {
+        marginTop: 5,
+
+    },
+    InputBarTXT_Description: {
+        fontSize: 20,
+        color: '#000',
+    },
+    InputBarContainer_Description:
+    {
+        height: 120,
+        // marginTop: 5,
+        borderRadius: 8,
+        // marginVertical:10
+        marginBottom: 15,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+    },
+    InputBarContainer_DetailsIFany:
+    {
+        borderWidth: 1,
+        height: 120,
+        // marginTop: 5,
+        borderWidth: 0.5,
+        borderRadius: 8,
+        // marginVertical:10
+        marginBottom: 15,
+        marginVertical: 22,
+        borderColor: '#FF9933'
+    },
+    InputBarContainer_Email: {
+        // borderWidth: 1,
+        // height: 45,
+        // // marginTop: 5,
+        // borderWidth: 0.5,
+        borderRadius: 8,
+        // // marginVertical:10
+        // marginBottom: 15,
+        // marginTop: 5,
+        height: 45,
+        marginBottom: 15,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+    },
+    InputBarTXT_Google_Map: {
+        fontSize: 20,
+        color: '#000',
+    },
+    InputBarNameContainer_Google_Map: {
+        marginTop: 5,
+
+    },
+    InputBarContainer_Google_Map:
+    {
+        borderWidth: 1,
+        height: 120,
+        borderWidth: 0.5,
+        borderRadius: 8,
+        // marginVertical:10
+        marginBottom: 15,
+        marginTop: 5,
+    },
+    InputBarContainer_Business_Website: {
+        // borderWidth: 1,
+        height: 120,
+        // marginTop: 5,
+        borderRadius: 8,
+        // marginVertical:10
+        marginBottom: 15,
+        marginTop: 5,
+        borderColor: 'gray',
+        borderWidth: 0.5,
+    },
+    SubmitButton: {
+        borderWidth: 1,
+        margin: 5,
+        borderRadius: 16,
+        backgroundColor: '#008577',
+        bottom: 6,
+        width: 90,
+        alignSelf: 'center',
+        elevation: 3,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 }, // Shadow direction: down
+        shadowOpacity: 0.1,
+        shadowRadius: 8,
+        marginTop:50
+    },
+    SubmitButtonText:
+    {
+        fontSize: 15,
+        padding: 10,
+        color: '#fff',
+        textAlign: 'center',
+        alignContent: 'center',
+        bottom: 1.1,
+    },
+    containerDrops: {
+        // flexGrow: 1,
+        // backgroundColor: 'red',
+        alignItems: 'center',
+        // justifyContent: 'center',
+        borderWidth: 1,
+        // margin: 10,
+        // width: 300,
+        // marginTop: 30,
+        alignSelf: 'center',
+        // paddingBottom: 80,
+        // shadowColor: '#212529',
+        // elevation: 15,
+        // minHeight: '50%'
+        padding: 8,
+    },
+    label: {
+        position: 'absolute',
+        backgroundColor: 'white',   /// new changes
+        left: 22,
+        // top: 0.4,
+        top: -10,
+        zIndex: 999,
+        paddingHorizontal: 8,
+        fontSize: 14,
+        borderRadius: 10  // new chnges
+    },
+    StartDate: {
+        paddingHorizontal: 9
+    },
+    StartDateTXT: {
+        fontSize: 16,
+        color: '#000'
+    },
+    EndDate: {
+        paddingHorizontal: 9
+    },
+    EndDateTXT: {
+        fontSize: 16,
+        color: '#000'
+    },
+    RadioButtonTXT: {
+        fontSize: 17,
+        color: '#000',
+        padding: 10,
+        marginTop: 10
+    },
+    radioButtonFromatting: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    RadioLABEL: {
+        fontSize: 17,
+        color: '#000',
+        padding: 10
+    },
+    SamajikBharatContainerTXT: {
+        fontSize: 17,
+        bottom: 5,
+        color: '#564A4A',
+
+
+
+    },
+
+    SamajikBharatContainer: {
+    },
+    TXTmainCoontainer: {
+    },
+    SamajikBharatHeadingTXT: {
+        fontSize: 22,
+        color: '#ffc107',
+        fontWeight: 'bold'
+
+
+    },
+    SamajikBharatHeading: {
+        alignItems: 'center',
+        padding: 10,
+        marginBottom: 15,
+        flexDirection: 'row',
+        // alignSelf:'center'
+        justifyContent: 'center',
+        gap: 20,
+        marginTop: 22,
+        borderTopWidth: 0.3,
+
+    },
+    SocialBharatContainerTXT: {
+        fontSize: 17,
+        bottom: 5,
+        color: '#564A4A',
+
+    }
+})

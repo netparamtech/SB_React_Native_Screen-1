@@ -104,6 +104,10 @@ const HandleEditPress = (index)=>{
   {
     navigation.navigate('Create_Events')
   }
+  if(index === 7)
+  {
+    navigation.navigate('Post_Job')
+  }
 }
   return (
     <ScrollView style={styles.MainContainer}>
