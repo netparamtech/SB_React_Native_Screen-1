@@ -16,7 +16,7 @@ export default function Dashboard({navigation}) {
     {
       id: '2',
       TagName: 'Become Social',
-      HeadingName: 'Manage Profile',
+      HeadingName: 'Search Members',
       Icon: require('../Assets/searchPeople.png'),
       Details: 'Search',
       Edit: 'EDIT',
@@ -25,7 +25,7 @@ export default function Dashboard({navigation}) {
     {
       id: '3',
       TagName: 'Matrimonial',
-      HeadingName: 'Manage Profile',
+      HeadingName: 'Matrimonial',
       Icon: require('../Assets/wedding.png'),
       Details: 'Search',
       Edit: 'EDIT',
@@ -35,7 +35,7 @@ export default function Dashboard({navigation}) {
     {
       id: '4',
       TagName: 'Bussiness',
-      HeadingName: 'Manage Profile',
+      HeadingName: 'Business Promotion',
       Icon: require('../Assets/financial-profit.png'),
       Details: 'Search',
       Edit: 'Post Your Ad',
@@ -109,6 +109,12 @@ const HandleEditPress = (index)=>{
     navigation.navigate('Post_Job')
   }
 }
+const HandleViewPress = (index)=>{
+  if(index === 0)
+    {
+      navigation.navigate('Profile');
+    }
+}
   return (
     <ScrollView style={styles.MainContainer}>
       <View style={styles.MainCardsContainer}>
@@ -133,7 +139,7 @@ const HandleEditPress = (index)=>{
               <Image source={Icon} style={styles.Icon} />
             </View>
             <View style={styles.CardFooter}>
-              <TouchableOpacity>
+              <TouchableOpacity  onPress={()=>{HandleViewPress(index)}}>
                 <Text style={styles.Details}>{Details}</Text>
               </TouchableOpacity>
               <TouchableOpacity onPress={()=>{HandleEditPress(index)}}>
@@ -150,9 +156,14 @@ const HandleEditPress = (index)=>{
 const styles = StyleSheet.create({
   MainContainer: {
     flex: 1,
+    backgroundColor:'#fff',
+    width:'100%',
+
   },
   MainCardsContainer: {
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
+    width:'100%'
+
   },
   Card: {
     borderWidth: 1,
@@ -209,11 +220,12 @@ const styles = StyleSheet.create({
     color: '#fff',
     backgroundColor: '#800000',
     paddingBottom: 5,
-    borderRadius: 10,
+    // borderRadius: 10,
     textAlign: 'center',
     
   },
   MarqueeContainer: {
     margin: 10,
+
   },
 });

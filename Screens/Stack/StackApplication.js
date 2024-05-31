@@ -16,6 +16,11 @@ import Add_Matrimonial from '../Drawer/Add_Matrimonial';
 import Create_Events from '../Drawer/Create_Events';
 import Basic_Profile from '../Drawer/Basic_profile';
 import Post_Job from '../Drawer/Post_Job';
+import Sub_Service from '../Drawer/Sub_Service';
+import ManageProfileView from '../Drawer/DashBoard/ManageProfileView';
+import Matrimonial_info from '../Drawer/DashBoard/Matrimonial_info';
+import Education_info from '../Drawer/DashBoard/Education-info/Education_info';
+import Address_info from '../Drawer/DashBoard/Address_info/Address_info';
 const Stack = createNativeStackNavigator();
 
 export default function StackApplication() {
@@ -35,6 +40,16 @@ export default function StackApplication() {
             <Stack.Screen name='Create_Events' component={Create_Events}/>
             <Stack.Screen name='Basic_Profile' component={Basic_Profile}/>
             <Stack.Screen name='Post_Job' component={Post_Job}/>
+            {/* //------------------------------------ */}
+            <Stack.Screen name='Sub_Service' component={Sub_Service} />
+            {/* <Stack.Screen name='Business_info' component={Business_info}/> */}
+            <Stack.Screen name='Basic_profile' component={Basic_Profile}/>
+            {/* <Stack.Screen name='Create_Events' component={Create_Events}/> */}
+            <Stack.Screen name= 'Profile' component={ManageProfileView}/>
+            <Stack.Screen name='Matrimonial_info' component={Matrimonial_info}/>
+            <Stack.Screen name='Education_info' component={Education_info}/>
+            <Stack.Screen name='Address_info' component={Address_info}/>
+
 
         </Stack.Navigator>
     </NavigationContainer>

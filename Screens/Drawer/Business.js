@@ -1,168 +1,215 @@
-import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, Image, ActivityIndicator, Linking } from 'react-native';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-element-dropdown';
-
-const BussinessInfo = [
-  {
-    "id": 1,
-    "business_name": "Ambition Classes",
-    "business_category": "Cloths",
-    "street_address": "123",
-    "country": "India",
-    "state": "Rajasthan",
-    "city": "Kota",
-    "contact1": "7877649916",
-    "contact2": "7877649915",
-    "contact3": "1212121212",
-    "business_email": 'HGh@gmail.com',
-    "business_website": "jcjsncjnsjncsnmdklmcklsdmvjdnvkdnvkdnknkesmckidemcdkicmn",
-    "business_photos": require('../Assets/service4.png'),
-    "user_id": 1,
-    "status": 'Active',
-    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the",
-    "google_map_link":"jcjsncjnsjncsnmdklmcklsdmvjdnvkdnvkdnknkesmckidemcdkicmn",
-    "name": " Yash Salave"
-  },
-  {
-    "id": 2,
-    "business_name": "Infotrix classes",
-    "business_category": "IT",
-    "street_address": "123",
-    "country": "India",
-    "state": "Maharashtra",
-    "city": "Dhule",
-    "contact1": "7877649916",
-    "contact2": "7877649915",
-    "contact3": "1212121212",
-    "business_email": 'jhdj@gmail.com',
-    "business_website": "jcjsncjnsjncsnmdklmcklsdmvjdnvkdnvkdnknkesmckidemcdkicmn",
-    "business_photos": require('../Assets/04.jpg'),
-    "user_id": 2,
-    "status": 'Active',
-    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the",
-    "google_map_link": "jcjsncjnsjncsnmdklmcklsdmvjdnvkdnvkdnknkesmckidemcdkicmn",
-    "name": "Rahul Borse"
-  },
-  {
-    "id": 3,
-    "business_name": "Netparam Technology",
-    "business_category": "IT-Sales",
-    "street_address": "4994",
-    "country": "India",
-    "state": "Rajasthan",
-    "city": "Jaipur",
-    "contact1": "7877649916",
-    "contact2": "7877649915",
-    "contact3": "1212121212",
-    "business_email": 'Kell@gmail.com',
-    "business_website": 'www.ndcj.com',
-    "business_photos": require('../Assets/04.jpg'),
-    "user_id": 3,
-    "status": 'Active',
-    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the",
-    "google_map_link": "jcjsncjnsjncsnmdklmcklsdmvjdnvkdnvkdnknkesmckidemcdkicmn",
-    "name": "Pavan Patil"
-  },
-  {
-    "id": 4,
-    "business_name": "Software Solutions",
-    "business_category": "IT-Sales",
-    "street_address": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the",
-    "country": "India",
-    "state": "Rajasthan",
-    "city": "Jodhpur",
-    "contact1": "7877649916",
-    "contact2": "7877649915",
-    "contact3": "1212121212",
-    "business_email": 'SOl@gmail.com',
-    "business_website": 'www.ndcj.com',
-    "business_photos": require('../Assets/04.jpg'),
-    "user_id": 4,
-    "status": 'Active',
-    "description": null,
-    "google_map_link": "jcjsncjnsjncsnmdklmcklsdmvjdnvkdnvkdnknkesmckidemcdkicmn",
-    "name": "Jitendra Sing"
-  },
-  {
-    "id": 5,
-    "business_name": "Dubey Company",
-    "business_category": "IT",
-    "street_address": "123",
-    "country": "India",
-    "state": "Rajasthan",
-    "city": "Jaipur",
-    "contact1": "7877649916",
-    "contact2": "7877649915",
-    "contact3": "1212121212",
-    "business_email": 'molOl@gmail.com',
-    "business_website": 'www.ndcj.com',
-    "business_photos": require('../Assets/04.jpg'),
-    "user_id": 5,
-    "status": 'Active',
-    "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the",
-    "google_map_link":"https://www.google.com/maps/place/Netparam+Technologies+Pvt.+Ltd./@26.8854726,75.7427703,17z/data=!4m6!3m5!1s0x396dc9787b6e8159:0x7162ee3f35dc8f5a!8m2!3d26.8854726!4d75.7427703!16s%2Fg%2F11n0vbwx38?entry=ttu",
-    "name": "Keadr Patil"
-  }
-
-]
+import axios from 'axios';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 
-
-const State = [
-  { label: 'Maharashtra', value: '1' },
-  { label: 'Goa', value: '2' },
-  { label: 'Rajasthan', value: '3' },
-  { label: 'Bihar', value: '4' },
-  { label: 'Gujrat', value: '5' },
-  { label: 'MP', value: '6' },
-  { label: 'Up', value: '7' },
-];
-
-const City = [
-  { label: 'Jaipur', value: '3' },
-  { label: 'Mumbai', value: '1' },
-  { label: 'Raipur', value: '4' },
-  { label: 'Surat', value: '5' },
-  { label: 'Indore', value: '6' },
-  { label: 'Ayyodhya', value: '7' }
-];
+export default function Business({ navigation }) {
 
 
+  const [allDataFetched, setAllDataFetched] = useState(false);
 
-export default function Business({navigation}) {
+
+  const [users, setUsers] = useState([]);
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false); // Add loading state
 
 
-  const [value2, setValue2] = useState(null);
+  // for State
+
+  const [stateData, setStateData] = useState([]);
+  const [selectedStateValue, setSelectedStateValue] = useState('');
+  const [selectedStateName, setSelectedStateName] = useState('');
   const [isFocus2, setIsFocus2] = useState(false);
 
-  const [value3, setValue3] = useState(null);
-  const [isFocus3, setIsFocus3] = useState(false);
+  // for City
 
+  const [cityData, SetCityData] = useState([]);
+  const [isFocus3, setIsFocus3] = useState(false);
+  const [selectedCityValue, setSelectedCityValue] = useState('');
+  const [selectedCityName, setSelectedCityName] = useState('');
+
+  // for SearchBar
+
+  const [query, setQuery] = useState('');
+  const [data, setData] = useState([]);
+  const [oldData, setOldData] = useState([]);
+
+
+
+
+  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3MDU5OTg3LCJleHAiOjE3MTc5MjM5ODd9.a5Cy2cYNZEiB0dwoLHoPkFezigikLWj1dFyqdhiufAE"
+
+
+  const fetchUsers = () => {
+
+    setIsLoading(true); // Set loading to true when fetching data
+
+    axios.get(`https://uat-api.socialbharat.org/api/business/search?searchText=&page=${page}&size=10&state=&city=`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+      .then(response => {
+        if (response.data.data.result.length === 0) {
+          setAllDataFetched(true); // Set allDataFetched to true when no more data is available
+        } else {
+          setUsers(prevUsers => [...prevUsers, ...response.data.data.result]);
+          setOldData(response.data.data.result);
+          setPage(prevPage => prevPage + 1);
+        }
+        setIsLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setIsLoading(false);
+      });
+  };
+
+  // For State
+
+  useEffect(() => {
+    axios.get('https://uat-api.socialbharat.org/api/states/101', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(response => {
+      console.log(response.data.data);
+      setStateData(response.data.data);
+    }).catch((error) => { console.log(error) });
+  }, [])
+
+  const StateDrop = stateData ? stateData.map(states => ({
+    label: states.name,
+    value: states.id.toString(),
+  })) : [];
+
+
+
+  // For City
+
+  const GetCities = (stateID) => {
+
+    axios.get(`https://uat-api.socialbharat.org/api/cities/${stateID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then(response => { SetCityData(response.data.data) })
+      .catch(error => { console.log(error) })
+  }
+
+  const CityDrop = cityData ? cityData.map((cities) => ({
+    label: cities.name,
+    value: cities.id.toString(),
+  })) : [];
+
+  useEffect(() => {
+    GetCities();
+
+  }, [])
+
+  const handleScroll = (event) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    // Calculate the current scroll position as a percentage
+    const scrollPosition = contentOffset.y + layoutMeasurement.height; // How much of the content is currently scrolled including visible part
+    const totalHeight = contentSize.height;
+    const scrolledPercentage = (scrollPosition / totalHeight) * 100;
+
+    // Calculate if the scroll position is close to the bottom
+    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
+
+    // Check if the scrolled percentage is greater than or equal to 50% and is close to the bottom
+    if (scrolledPercentage >= 100 && isCloseToBottom) {
+      if (!isLoading) { // Prevent multiple fetches
+        setIsLoading(true); // Start loading when scroll reaches halfway and is close to the bottom
+        fetchUsers(); // Optionally: you can have your fetch logic here or any other action
+      }
+    }
+  };
+
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  // for Provide Link
+
+  const LinkingGOOGLEmap = (loc) => {
+    Linking.openURL(loc)
+  }
+
+  // for Search Functionality
+
+  const handleSearch = (query) => {
+    setQuery(query);
+    if (query === '') {
+      setData(oldData);
+    } else {
+      const filteredData = oldData.filter(item =>
+        item.name.toLowerCase().includes(query.toLowerCase()) ||
+        item.business_email.toLowerCase().includes(query.toLowerCase()) ||
+        item.country.toLowerCase().includes(query.toLowerCase())
+      );
+      setData(filteredData);
+    }
+  }
+  const handleClear = () => {
+    setQuery('');
+    setData(oldData); // Reset data to original when clearing
+  }
+  // if (error) {
+  //   return (
+  //     <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
+  //       <Text>Error Fetching Data..... Check Internet Connection</Text>
+  //     </View>
+  //   );
+  // }
 
   return (
-    <ScrollView style={styles.MainContainer}>
+    <ScrollView style={styles.MainContainer} onScroll={handleScroll}>
+
       <View style={styles.ButtonConatiner}>
-        {/* <View> */}
         <TouchableOpacity style={styles.FirstButtonConatiner}>
           <FontAwesome5 name={'filter'} size={15} style={styles.Icons} />
           <Text style={styles.FirstButtonName}>Filter</Text>
         </TouchableOpacity>
-        {/* </View> */}
-
-        <TouchableOpacity style={styles.SecondButtonConatiner} onPress={()=>{navigation.navigate('Business_info')}}>
+        <TouchableOpacity style={styles.SecondButtonConatiner}
+          onPress={() => { navigation.navigate('Business_info') }}
+        >
           <MaterialIcons name={'add-business'} size={23} style={styles.Icons} />
-          <Text style={styles.SecondButtonName}>Promote Your Bussiness</Text>
+          <Text style={styles.SecondButtonName}>Promote Your Business</Text>
         </TouchableOpacity>
       </View>
-
       <View style={styles.MainSearchContainers}>
-        <View style={styles.SearchContainer}>
-          <FontAwesome name={'search'} size={18} />
-          <TextInput placeholder='Search Bussiness ...' style={{ fontSize: 15 }}></TextInput>
-        </View>
+      <View style={styles.SearchContainer}>
+            <FontAwesome name={'search'} size={18} />
+            <TextInput placeholder='Search ...' style={styles.searchInput} 
+      
+            />
+          </View>
+          {/* <FontAwesome name={'search'} size={18} /> */}
+
+          {/* <TextInput placeholder='Search Business ...'
+            style={{ fontSize: 15 }}
+            onChangeText={handleSearch}
+            clearButtonMode='never'
+            autoCapitalize='none'
+            value={query}
+
+          >
+
+
+          </TextInput>
+          <TouchableOpacity>
+            <Entypo name="circle-with-cross" size={24} color="black" />
+
+          </TouchableOpacity> */}
+          
+          
 
         <View style={styles.containerDropDown2}>
           <Dropdown
@@ -171,25 +218,25 @@ export default function Business({navigation}) {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={State}
+            data={StateDrop}
             search
             maxHeight={300}
             labelField="label"
             valueField="value"
             placeholder={!isFocus2 ? 'Select Your State' : '...'}
             searchPlaceholder="Search..."
-            value={value2}
+            value={selectedStateValue}
             onFocus={() => setIsFocus2(true)}
             onBlur={() => setIsFocus2(false)}
             onChange={item => {
-              setValue2(item.value);
               setIsFocus2(false);
-            }}
+              setSelectedStateName(item.label);
+              setSelectedStateValue(item.value);
+              GetCities(item.value);
 
+            }}
           />
         </View>
-
-
         <View style={styles.containerDropDown3}>
           <Dropdown
             style={[styles.dropdown, isFocus3 && { borderColor: '#008577' }]}
@@ -197,104 +244,119 @@ export default function Business({navigation}) {
             selectedTextStyle={styles.selectedTextStyle}
             inputSearchStyle={styles.inputSearchStyle}
             iconStyle={styles.iconStyle}
-            data={City}
+            data={CityDrop}
             search
             maxHeight={300}
             labelField="label"
             valueField="value"
             placeholder={!isFocus3 ? 'Select Your City' : '...'}
             searchPlaceholder="Search..."
-            value={City}
+            value={selectedCityValue}
             onFocus={() => setIsFocus3(true)}
             onBlur={() => setIsFocus3(false)}
             onChange={item => {
-              setValue3(item.value);
               setIsFocus3(false);
+              setSelectedCityName(item.label);
+              setSelectedCityValue(item.value);
             }}
-
           />
         </View>
-
       </View>
-
       <View style={styles.MainCardsContainer}>
-        {BussinessInfo.map(({ business_photos, business_name, business_category, name, street_address, city, contact1, description, id, contact3, contact2, state,google_map_link }) => (
-          <View style={styles.CardsContainer} key={id}>
-            <Image source={business_photos} style={styles.imeges} />
+        {users.map((itm, index) => (
+          <View style={styles.CardsContainer} key={index}>
+            {/* {
+              itm.business_photos ?
+                <Image source={{ uri: itm.business_photos[0] }} style={styles.imeges} />
+                : <Image source={require('../Assets/04.jpg')} style={styles.imeges} />
+
+            } */}
+            {/* <Image source={itm.business_photos ? { uri: itm.business_photos[0] } : require('../Assets/04.jpg')}  style={styles.imeges} /> */}
+
+            <Image source={itm.business_photos ? { uri: itm.business_photos[0] } :
+              require('../Assets/04.jpg')} style={styles.imeges} />
+
+
             <View style={styles.businessNameContainer}>
               <View style={{ flex: 1 }}>
-                <Text style={styles.business_name}>{business_name}</Text>
+                <Text style={styles.business_name}>{itm.business_name}</Text>
               </View>
-              <TouchableOpacity onPress={()=>{}}>
-              <FontAwesome5 name={'map-marked-alt'} size={22} color={'#ffc107'} />
-              </TouchableOpacity>
+              {
+                // for use of  Provide link and navigate
+                itm.google_map_link ?
+                  <TouchableOpacity onPress={() => {
+                    LinkingGOOGLEmap(itm.google_map_link)
+                  }}>
+                    <FontAwesome5 name={'map-marked-alt'} size={22} color={'#ffc107'} />
+                  </TouchableOpacity>
+                  : <></>
+              }
             </View>
-            <Text style={styles.Category}> Category: {business_category}</Text>
-            <Text style={styles.PostedBy}>Posted By: {name}</Text>
-            <Text style={styles.Street}>Street: {street_address}</Text>
-            <Text style={styles.city}>{city} ({state})</Text>
-            <Text style={styles.contactNumbers}>Contact Numbers: {contact1}, {contact2}, {contact3}</Text>
-            <Text style={styles.description}>{description}</Text>
+            <Text style={styles.Category}> Category: {itm.business_category}</Text>
+            <Text style={styles.PostedBy}>Posted By: {itm.name}</Text>
+            <Text style={styles.Street}>Street: {itm.street_address}</Text>
+            <Text style={styles.city}>{itm.city} ({itm.state})</Text>
+            <Text style={styles.contactNumbers}>Contact Numbers: {itm.contact1}, {itm.contact2}, {itm.contact3}</Text>
+            <Text style={styles.description}>{itm.description}</Text>
           </View>
         ))}
       </View>
+      {/* Loading indicator */}
+      {isLoading && <ActivityIndicator size="large" color="#008577" style={styles.loadingIndicator} />}
+      {!allDataFetched && <Text style={styles.LOADINGOfListMessage}>LOADING ...</Text>}
+
+      {allDataFetched && <Text style={styles.endOfListMessage}>🛑 ------- End of list ------- 🛑</Text>}
 
     </ScrollView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
-
   MainContainer: {
     flex: 1,
     backgroundColor: '#fff',
-
   },
   ButtonConatiner: {
     flexDirection: "row",
     justifyContent: 'flex-end',
-    // justifyContent:'center',
     gap: 10,
-    right: 10,
     margin: 10,
-    // alignContent:'center',
-  },
-  FirstButtonConatiner: {
-
-    flexDirection: 'row',
-    borderWidth: 1,
-    padding: 10,
-    width: 90,
-    alignItems: 'center',
-    borderRadius: 10,
-    gap: 10,
-    // borderColor: '#008577',
     alignContent: "center",
-    alignSelf: 'center',
-    backgroundColor:"#008577",
-    borderColor: '#ffc107',
-
-    shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 }, // Shadow direction: down
-        shadowOpacity: 0.1,
-        shadowRadius: 8,
-    
-        // Shadow property for Android
-        elevation: 5, // Increase this value to increase shadow
-
+    alignSelf: 'center'
   },
+   FirstButtonConatiner: {
+
+        flexDirection: 'row',
+        borderWidth: 1,
+        padding: 10,
+        width: 90,
+        alignItems: 'center',
+        borderRadius: 10,
+        gap: 10,
+        // borderColor: '#008577',
+        alignContent: "center",
+        alignSelf: 'center',
+        backgroundColor:"#008577",
+        borderColor: '#ffc107',
+    
+        shadowColor: "#000",
+            shadowOffset: { width: 0, height: 2 }, // Shadow direction: down
+            shadowOpacity: 0.1,
+            shadowRadius: 8,
+        
+            // Shadow property for Android
+            elevation: 5, // Increase this value to increase shadow
+    
+      },
   FirstButtonName: {
     fontSize: 17,
-    // color: '#008577',
-    color:'#fff'
+    color: '#fff',
   },
   SecondButtonName: {
-    fontSize: 18,
-    // color: '#008577',
-    color:'#fff'
-
-  },
-  SecondButtonConatiner: {
+        fontSize: 18,
+        color: '#fff',
+      },
+    SecondButtonConatiner: {
     borderWidth: 1,
     width: 220.5,
     flexDirection: 'row',
@@ -322,22 +384,24 @@ const styles = StyleSheet.create({
   },
   MainSearchContainers: {
     alignItems: 'center'
-
   },
   SearchContainer: {
-    borderWidth: 0.5,
-    width: 320,
-    margin: 10,
+    // borderWidth: 1,
+    width: 289.8,
+    // margin: 10,
     borderRadius: 10,
     flexDirection: 'row',
     alignContent: 'center',
     alignItems: 'center',
+    // paddingHorizontal: 10,
+    // gap: 9,
+    // justifyContent:'space-between',
+    borderWidth: 1,
     paddingHorizontal: 10,
-    gap: 9,
     borderColor: '#008577',
-    marginBottom: 15
-  }
-  ,
+    height: 47,
+
+  },
   containerDropDown: {
     backgroundColor: 'white',
     padding: 16,
@@ -345,12 +409,11 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     height: 47,
-    borderColor: '#008577',
+    borderColor: 'gray',
     borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
     width: 289.8,
-    // left: 5,
   },
   label: {
     position: 'absolute',
@@ -379,15 +442,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   containerDropDown2: {
-
     margin: 10,
-
   },
   MainCardsContainer: {
-
   },
   CardsContainer: {
-    // borderWidth: 2,
     padding: 10,
     margin: 10,
     backgroundColor: '#fff',
@@ -397,40 +456,29 @@ const styles = StyleSheet.create({
     shadowRadius: 10,
     elevation: 5,
     borderRadius: 10,
-
-
   },
   imeges: {
     height: 200,
     width: 300,
     alignSelf: 'center',
     borderRadius: 10,
-
-
-
-  }
-  ,
+  },
   business_name: {
     fontSize: 19,
     color: '#0F0F0F',
     padding: 6,
     margin: 8
-
-
   },
   Category: {
     fontSize: 15,
     color: '#0F0F0F',
     margin: 8,
     padding: 3,
-
-
   },
   containerDropDown3: {
     padding: 16,
     bottom: 15,
     justifyContent: "center"
-    // borderRadius: 8,
   },
   PostedBy: {
     fontSize: 15,
@@ -438,21 +486,15 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     margin: 10,
     padding: 3,
-
-
   },
   Street: {
     fontSize: 15,
     color: '#0F0F0F',
-    // borderWidth:1,
     padding: 3,
     backgroundColor: '#E7EFEF',
     margin: 10,
     borderRadius: 9,
     paddingHorizontal: 5
-
-
-
   },
   city: {
     fontSize: 15,
@@ -462,7 +504,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 9,
     paddingHorizontal: 5
-
   },
   contactNumbers: {
     fontSize: 15,
@@ -472,7 +513,6 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 9,
     paddingHorizontal: 5
-
   },
   description: {
     fontSize: 15,
@@ -480,13 +520,32 @@ const styles = StyleSheet.create({
     margin: 10,
     borderTopWidth: 1,
     borderTopColor: '#adb5bd',
-
-
   },
   businessNameContainer: {
     flexDirection: 'row',
     alignItems: 'center',
   },
+  loadingIndicator: {
+    marginTop: 20, // Adjust as needed
+  },
+  endOfListMessage: {
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    fontSize: 20,
+    bottom: 8,
+    color: '#ff6347'
 
 
-})
+  },
+  LOADINGOfListMessage: {
+    justifyContent: 'center',
+    alignContent: 'center',
+    alignItems: 'center',
+    alignSelf: 'center',
+    fontSize: 20,
+    bottom: 2,
+    color: '#04AA6D'
+  }
+});

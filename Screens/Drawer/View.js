@@ -25,12 +25,8 @@ export default function Views() {
           <Text style={styles.UserProfileName}>User Profile</Text>
         </View>
         <View style={styles.ImageContainer}>
-          {/* <Image source={{ uri: 'https://akm-img-a-in.tosshub.com/indiatoday/images/story/202301/shah_rukh_khan_pathaan_fee-one_one.jpg?VersionId=7z5pUufQFZIdbqfpKR3sJ76mb32vhr4f' }} style={styles.ProfileImage} /> */}
-          <Image source={require('../Assets/04.jpg')} style={styles.ProfileImage} />
-
-          {/* <Image source={{ uri: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQlgjOnCJ3clAUwmN1SY8TeZPBcSJ2lXZf45xSiKyH7FWhe16rR' }} style={styles.ProfileImage} /> */}
-          <Image source={require('../Assets/rajput.png')} style={styles.ProfileImage}resizeMode="contain"  />
-
+          <Image source={{ uri: 'https://akm-img-a-in.tosshub.com/indiatoday/images/story/202301/shah_rukh_khan_pathaan_fee-one_one.jpg?VersionId=7z5pUufQFZIdbqfpKR3sJ76mb32vhr4f' }} style={styles.ProfileImage} />
+          <Image source={{ uri: 'https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcQlgjOnCJ3clAUwmN1SY8TeZPBcSJ2lXZf45xSiKyH7FWhe16rR' }} style={styles.ProfileImage} />
         </View>
         <View style={styles.UserNameContainer}>
           <Text style={styles.UserName}>Yash Salave</Text>
@@ -216,8 +212,8 @@ const styles = StyleSheet.create({
 
   },
   ProfileImage: {
-    height: 120,
-    width: 120,
+    height: 130,
+    width: 130
   },
   UserNameContainer: {
     padding: 10
@@ -262,7 +258,7 @@ const styles = StyleSheet.create({
     color: '#212529',
   },
   InformationContainerHeading: {
-    backgroundColor: 'green',
+    backgroundColor: '#008577',
     padding: 9,
 
   },
