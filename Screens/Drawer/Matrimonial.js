@@ -542,7 +542,7 @@
 //                     setValue5(item.value);
 //                     setIsFocus5(false);
 //                   }}
-          
+
 //                 />
 //               </View>
 
@@ -600,7 +600,7 @@
 //                         <Text style={{ fontSize: 15.5, color: "#008577" }}>VIEW</Text>
 //                       </TouchableOpacity>
 //                     </View>
-                    
+
 
 //                     <View >
 //                       <TouchableOpacity style={styles.BiodataButtonContainer}>
@@ -870,7 +870,7 @@
 //     paddingHorizontal: 8,
 //     backgroundColor: '#fff',
 //   },
- 
+
 //   label: {
 //     position: 'absolute',
 //     backgroundColor: 'white',   /// new changes
@@ -922,6 +922,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from "axios";
+import { ActivityIndicator } from "react-native-paper";
 
 const Gender = [
   { label: 'Male', value: 'Male' },
@@ -973,31 +974,77 @@ const Matrimonial = ({ navigation }) => {
   const [subcastSelectedValue, setSubcastSelectedValue] = useState('');
   const [subcastSelectedName, setsubcastSelectedName] = useState('');
 
+  // for Loader , pagination 
+  const [isLoading, setIsLoading] = useState(false)
+  const [page, setPage] = useState(1);
+  const [isDataFetched, setIsDataFetched] = useState(false)
+
   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3MDU5OTg3LCJleHAiOjE3MTc5MjM5ODd9.a5Cy2cYNZEiB0dwoLHoPkFezigikLWj1dFyqdhiufAE"
 
+  // const FetchUsers = () => {
+
+  //   try {
+  //     if (isLoading || isDataFetched) return;
+
+  //     setIsLoading(true)
+
+  //     axios.get(`https://uat-api.socialbharat.org/api/partner/search?q=&page=${page}&size=20&community_id=11&state=&city=&gender=&occupation=&cast=&subcastId=`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     }).then(response => {
+  //       // console.log(response.data.data.users);
+  //       // setUsers(response.data.data.users)
+
+  //       // if (response.length === 0) {
+  //       //   setIsDataFetched(true)
+  //       // }
+  //       // else {
+  //       //   setIsLoading(false);
+  //       //   setPage(prevPage = prevPage + 1)
+  //       // }
+       
+  //     })
+
+  //   } catch (error) {
+  //     console.log("Error is -", error);
+  //     setIsLoading(false);
+
+  //   }
+  // }
   const FetchUsers = () => {
-    try {
+    if (isLoading || isDataFetched) return;
 
-      axios.get('https://uat-api.socialbharat.org/api/partner/search?q=&page=1&size=20&community_id=11&state=&city=&gender=&occupation=&cast=&subcastId=', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      }).then(response => {
-        // console.log(response.data.data.users);
-        setUsers(response.data.data.users)
+    setIsLoading(true);
 
-      })
+    axios.get(`https://uat-api.socialbharat.org/api/partner/search?q=&page=${page}&size=20&community_id=11&state=&city=&gender=&occupation=&cast=&subcastId=`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    .then(response => {
+      const newUsers = response.data.data.users;
 
-    } catch (error) {
+      if (newUsers.length > 0) {
+        setUsers(prevUsers => [...prevUsers, ...newUsers]);
+        setPage(prevPage => prevPage + 1);
+      } else {
+        setIsDataFetched(true);
+      }
+
+      setIsLoading(false);
+    })
+    .catch(error => {
       console.log("Error is -", error);
+      setIsLoading(false);
+    });
+  };
 
-    }
-  }
 
   useEffect(() => {
     FetchUsers();
 
-  })
+  },[page])
 
   const [value, setValue] = useState(null);
   const [value2, setValue2] = useState(null);
@@ -1590,7 +1637,7 @@ const Matrimonial = ({ navigation }) => {
 
 
                     <View style={styles.Icons}>
-                      <TouchableOpacity onPress={() => {navigation.navigate('Messages')}} >
+                      <TouchableOpacity onPress={() => { navigation.navigate('Messages') }} >
                         <Image source={require('../Assets/image.png')} style={styles.chatIcon} />
                       </TouchableOpacity>
 
@@ -1610,7 +1657,19 @@ const Matrimonial = ({ navigation }) => {
             </View>
           </View>
         )}
+        keyExtractor={(item, index) => index.toString()}
+        onEndReached={FetchUsers}
+        onEndReachedThreshold={0.5}
+        ListFooterComponent={
+          isLoading ? (
+            <ActivityIndicator size="large" color="#198754" />
+          ) : isDataFetched ? (
+            <Text style={styles.endOfListText}>--- End of the list ---</Text>
+          ) : null
+        }
       />
+      
+
     </View>
   );
 }
@@ -1632,6 +1691,9 @@ const styles = StyleSheet.create({
     // minHeight: '50%'
 
   },
+  Indicator: {
+    marginTop: 20
+  },
 
 
   modalText: {
@@ -1645,7 +1707,8 @@ const styles = StyleSheet.create({
   ParentContainer: {
     backgroundColor: '#fff',
     alignContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 1
   },
   // content: {
   //     borderWidth: 0.5,
@@ -1915,7 +1978,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     // fontWeight:'600',
     color: '#fff',
-  }
+  },
+
+  endOfListText: {
+    textAlign: 'center',
+    marginVertical: 10,
+    color: '#FF0000',
+  },
 
 });
 

@@ -12,8 +12,6 @@ export default function Business({ navigation }) {
 
 
   const [allDataFetched, setAllDataFetched] = useState(false);
-
-
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false); // Add loading state

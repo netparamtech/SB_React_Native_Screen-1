@@ -1,8 +1,11 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { Button, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View, ToastAndroid, Image } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
 import ChoosePhoto from './ChoosePhoto';
+import axios from 'axios';
+import { launchImageLibrary } from 'react-native-image-picker';
+
 
 
 
@@ -71,6 +74,60 @@ const Business_Types = [
     { label: 'Manufacturing', value: 'Manufacturing' },
 ];
 export default function Add_Matrimonial() {
+    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3MzkyNzExLCJleHAiOjE3MTgyNTY3MTF9.3XNIz7jzZvQNCxzFtmMnIsMzuTSVcgHTmcY7tMkLWNg";
+
+    // for Toast
+    const showToast = () => {
+        ToastAndroid.show('Photo Selected... !', ToastAndroid.SHORT);
+    };
+
+    //for Photo
+    const [selectedImageName, setSelectedImageName] = useState();
+    const [BusinessPhotos, setBusinessPhotos] = useState();
+
+
+    // for Photo Picker
+
+    const handleLaunchImageLibrary = () => {
+        launchImageLibrary({ mediaType: 'photo', multiple: true }, response => {
+            if (!response.didCancel) {
+                const selectedImage = response.assets[0];
+                setSelectedImageName(selectedImage.uri); // for Image URL we use states
+                const formData = new FormData();
+                formData.append('images', {
+                    uri: response.assets[0].uri,
+                    type: response.assets[0].type,
+                    name: response.assets[0].fileName,
+                });
+                // Post the FormData to the API
+                postPhoto(formData);
+            }
+        });
+    };
+
+    const postPhoto = (formData) => {
+        axios.post('https://uat-api.socialbharat.org/api/upload-multiple-images', formData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(response => {
+                // console.log(response)
+                if (response.status === 200) {
+                    setBusinessPhotos(response.data.data.files);
+                    console.log(response.data.data.files)
+                    showToast();
+                    //Alert.alert('Photo posted successfully!');
+                } else {
+                    throw new Error('Error posting photo');
+                }
+            })
+            .catch(error => {
+                console.error('Error posting photo:', error);
+                Alert.alert('Error posting photo!');
+            });
+    };
 
     const renderLabel4 = () => {
         if (value5 || isFocus5) {
@@ -84,7 +141,7 @@ export default function Add_Matrimonial() {
     };
 
     const renderLabel2 = () => {
-        if (value3 || isFocus3) {
+        if (stateSelectedValue || isFocus3) {
             return (
                 <Text style={[styles.label, isFocus3 && { color: '#198754' }]}>
                     State
@@ -96,7 +153,7 @@ export default function Add_Matrimonial() {
 
 
     const renderLabel3 = () => {
-        if (value4 || isFocus4) {
+        if (citySelectedValue || isFocus4) {
             return (
                 <Text style={[styles.label, isFocus4 && { color: '#198754' }]}>
                     City
@@ -108,7 +165,7 @@ export default function Add_Matrimonial() {
 
 
     const renderLabel6 = () => {
-        if (value7 || isFocus7) {
+        if (statusSelectedValue || isFocus7) {
             return (
                 <Text style={[styles.label, isFocus7 && { color: '#198754' }]}>
                     Select Status
@@ -121,7 +178,7 @@ export default function Add_Matrimonial() {
 
 
     const renderLabel9 = () => {
-        if (value10 || isFocus10) {
+        if (businessType || isFocus10) {
             return (
                 <Text style={[styles.label, isFocus10 && { color: '#198754' }]}>
                     Business Types
@@ -131,8 +188,23 @@ export default function Add_Matrimonial() {
         return null;
     };
 
- 
+    // for State
+    const [stateData, setStateData] = useState([]);
+    const [stateSelectedValue, setStateSelectedValue] = useState('');
+
+    //for City
+    const [cityData, setCityData] = useState([])
+    const [citySelectedLabel, setCitySelectedLabel] = useState('');
+    const [citySelectedValue, setCitySelectedValue] = useState('');
+
+    // for Status 
+    const [statusSelectedValue, setStatusSelectedValue] = useState('');
+
+
+
     const [isFocus3, setIsFocus3] = useState(false);
+
+
     const [value3, setValue3] = useState(null);
 
     const [isFocus4, setIsFocus4] = useState(false);
@@ -150,6 +222,115 @@ export default function Add_Matrimonial() {
     const [isFocus10, setIsFocus10] = useState(false);
     const [value10, setValue10] = useState(null);
 
+
+    // for State 
+    const FetchState = () => {
+        axios.get('https://uat-api.socialbharat.org/api/states/101', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((response) => {
+            console.log('responce is ====', response.data.data),
+                setStateData(response.data.data)
+        })
+            .catch((error) => { console.log("Error is  === ", error) })
+    }
+
+    useEffect(() => {
+        FetchState(),
+            FetchCityData()
+    }, [])
+
+
+    const StateDrop = stateData ? stateData.map(states => ({
+        label: states.name,
+        value: states.id.toString(),
+    })) : [];
+
+
+    // for City 
+    const FetchCityData = (StateID) => {
+        axios.get(`https://uat-api.socialbharat.org/api/cities/${StateID}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((responce) => {
+            console.log(responce.data.data),
+                setCityData(responce.data.data)
+        })
+            .catch((error) => { console.log("ERROR IS  = ", error) })
+    }
+
+    const CityDrop = cityData ? cityData.map((cities) => ({
+        label: cities.name,
+        value: cities.id.toString(),
+    }))
+        :
+        [];
+
+    //for Posting Data using POST API
+
+    const [businesName, setBusinesName] = useState()
+    const [businessType, setbusinessType] = useState()
+    const [streetAddress, setStreetAddress] = useState()
+    const [conuntry, setConuntry] = useState()
+    const [states, setStates] = useState()
+    const [cityy, setCityy] = useState()
+    const [contact1, setContact1] = useState()
+    const [contact2, setContact2] = useState()
+    const [contact3, setContact3] = useState()
+    const [emails, setEmails] = useState()
+    const [status, setStatus] = useState()
+    const [googleMap, setGoogleMap] = useState()
+    const [webSiteLink, setWebSiteLink] = useState()
+    const [webSiteDescription, setWebSiteDescription] = useState();
+
+
+
+    const PostData = () => {
+
+        const data = {
+            business_email: emails,
+            business_name: businesName,
+            business_photos: BusinessPhotos,
+            business_website: webSiteLink,
+            contact1: contact1,
+            contact2: contact2,
+            contact3: contact3,
+            country: conuntry,
+            description: webSiteDescription,
+            google_map_link: googleMap,
+            status: status,
+            street_address: streetAddress,
+            state: states,
+            business_category: businessType,
+            city : cityy
+        };
+    axios.post('https://uat-api.socialbharat.org/api/profile/create-business-details', data,{
+        headers:{
+         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+}
+    })
+  .then(response => {
+    console.log('Data posted successfully:', response.data);
+  })
+  .catch(error => {
+    if (error.response) {
+      // Server responded with a status other than 2xx
+      console.error('Error response data:', error.response.data); // This line prints the response body
+      console.error('Error response status:', error.response.status);
+      console.error('Error response headers:', error.response.headers);
+    } else if (error.request) {
+      // Request was made but no response was received
+      console.error('Error request data:', error.request);
+    } else {
+      // Something happened in setting up the request
+      console.error('Error message:', error.message);
+    }});
+    };
+
+
     return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
 
@@ -160,7 +341,9 @@ export default function Add_Matrimonial() {
 
                 <View style={styles.FormContainr}>
                     <View style={styles.InputBarContainer}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Name' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Name*' placeholderTextColor={'#6c757d'} onChangeText={(text) => { setBusinesName(text) }
+
+                        } value={businesName} ></TextInput>
                     </View>
 
                     <View style={styles.containerDropDown5}>
@@ -178,17 +361,17 @@ export default function Add_Matrimonial() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus9 ? 'Select Business Type' : '...'}
+                            placeholder={!isFocus9 ? 'Select Business Type*' : '...'}
                             searchPlaceholder="Search..."
-                            value={value10}
+                            value={businessType}
                             onFocus={() => setIsFocus10(true)}
                             onBlur={() => setIsFocus10(false)}
 
 
                             renderRightIcon={() => (
 
-                                <TouchableOpacity onPress={() => { setValue10(null) }} >
-                                    {value10 ?
+                                <TouchableOpacity onPress={() => { setbusinessType(null) }} >
+                                    {businessType ?
                                         <Entypo
                                             style={styles.iconAntDesign}
                                             color={isFocus9 ? 'green' : 'black'}
@@ -208,12 +391,13 @@ export default function Add_Matrimonial() {
                             onChange={item => {
                                 setValue10(item.value);
                                 setIsFocus10(false);
+                                setbusinessType(item.label)
                             }}
 
                         />
                     </View>
                     <View style={styles.InputBarContainer2}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Street Address' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Street Address*' placeholderTextColor={'#6c757d'} onChangeText={(text) => setStreetAddress(text)} value={streetAddress} ></TextInput>
                     </View>
 
                     <View style={styles.containerDropDown5}>
@@ -232,15 +416,15 @@ export default function Add_Matrimonial() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus5 ? 'Select Country' : '...'}
+                            placeholder={!isFocus5 ? 'Select Country*' : '...'}
                             searchPlaceholder="Search..."
-                            value={value5}
+                            value={conuntry}
                             onFocus={() => setIsFocus5(true)}
                             onBlur={() => setIsFocus5(false)}
                             renderRightIcon={() => (
 
-                                <TouchableOpacity onPress={() => { setValue5(null) }} >
-                                    {value5 ?
+                                <TouchableOpacity onPress={() => { conuntry(null) }} >
+                                    {conuntry ?
                                         <Entypo
                                             style={styles.iconAntDesign}
                                             color={isFocus5 ? 'green' : 'black'}
@@ -260,6 +444,7 @@ export default function Add_Matrimonial() {
                             onChange={item => {
                                 setValue5(item.value);
                                 setIsFocus5(false);
+                                setConuntry(item.label)
                             }}
 
                         />
@@ -276,21 +461,21 @@ export default function Add_Matrimonial() {
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
-                            data={State}
+                            data={StateDrop}
                             search
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus3 ? 'Select State' : '...'}
+                            placeholder={!isFocus3 ? 'Select State*' : '...'}
                             searchPlaceholder="Search..."
-                            value={value3}
+                            value={stateSelectedValue}
                             onFocus={() => setIsFocus3(true)}
                             onBlur={() => setIsFocus3(false)}
 
                             renderRightIcon={() => (
 
-                                <TouchableOpacity onPress={() => { setValue3(null) }} >
-                                    {value3 ?
+                                <TouchableOpacity onPress={() => { setStateSelectedValue(null) }} >
+                                    {stateSelectedValue ?
                                         <Entypo
                                             style={styles.iconAntDesign}
                                             color={isFocus3 ? 'green' : 'black'}
@@ -310,6 +495,9 @@ export default function Add_Matrimonial() {
                             onChange={item => {
                                 setValue3(item.value);
                                 setIsFocus3(false);
+                                FetchCityData(item.value)
+                                setStates(item.label)
+                                setStateSelectedValue(item.value)
                             }}
 
                         />
@@ -325,21 +513,21 @@ export default function Add_Matrimonial() {
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
-                            data={City}
+                            data={CityDrop}
                             search
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus4 ? 'Select City' : '...'}
+                            placeholder={!isFocus4 ? 'Select City*' : '...'}
                             searchPlaceholder="Search..."
-                            value={value4}
+                            value={citySelectedValue}
                             onFocus={() => setIsFocus4(true)}
                             onBlur={() => setIsFocus4(false)}
 
                             renderRightIcon={() => (
 
-                                <TouchableOpacity onPress={() => { setValue4(null) }} >
-                                    {value4 ?
+                                <TouchableOpacity onPress={() => { setCitySelectedValue(null) }} >
+                                    {citySelectedValue ?
                                         <Entypo
                                             style={styles.iconAntDesign}
                                             color={isFocus4 ? 'green' : 'black'}
@@ -350,15 +538,14 @@ export default function Add_Matrimonial() {
                                         : null
 
                                     }
-
-
                                 </TouchableOpacity>
-
                             )}
 
                             onChange={item => {
                                 setValue4(item.value);
                                 setIsFocus4(false);
+                                setCityy(item.label)
+                                setCitySelectedValue(item.value)
                             }}
 
                         />
@@ -366,35 +553,36 @@ export default function Add_Matrimonial() {
                     {/* <View style={styles.InputBarNameContainer}>
                         <Text style={styles.InputBarTXT}>Mother Name</Text>
                     </View> */}
+
                     <View style={styles.InputBarContainer3}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 1' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 1*' placeholderTextColor={'#6c757d'} onChangeText={(text) => setContact1(text)} value={contact1}></TextInput>
                     </View>
-
-
-
-
-
                     <View>
-                        
                         <View style={styles.InputBarContainer_Contacts}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 2' placeholderTextColor={'#6c757d'} ></TextInput>
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 2' placeholderTextColor={'#6c757d'} onChangeText={(text) => { setContact2(text) }} value={contact2} ></TextInput>
                         </View>
                     </View>
                     <View>
-
                         <View style={styles.InputBarContainer_Contacts2}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 3' placeholderTextColor={'#6c757d'} ></TextInput>
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Contact 3' placeholderTextColor={'#6c757d'} onChangeText={(text) => setContact3(text)} value={contact3} ></TextInput>
                         </View>
                     </View>
                 </View>
                 <View style={styles.PersonalPHOTOcontainer}>
                     <View>
-                        <ChoosePhoto />
+                        {/* <ChoosePhoto /> */}
+                        <View style={styles.inputContainer}>
+                            <View style={styles.ChoosePhototContainer}>
+                                <Button title="Choose File" onPress={handleLaunchImageLibrary} color="" />
+                                <Image source={{ uri: selectedImageName }} style={styles.SelectedIMG} />
+                                <Text style={{ flex: 1, marginLeft: 10, color: 'black', fontSize: 15 }}>{selectedImageName === null && 'No file choosen'}</Text>
+                            </View>
+                        </View>
                     </View>
                 </View>
                 <View>
                     <View style={styles.InputBarContainer_Email}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Email' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Email*' placeholderTextColor={'#6c757d'} onChangeText={(text) => setEmails(text)} value={emails}></TextInput>
                     </View>
                 </View>
 
@@ -414,14 +602,14 @@ export default function Add_Matrimonial() {
                         maxHeight={300}
                         labelField="label"
                         valueField="value"
-                        placeholder={!isFocus7 ? 'Select Status' : '...'}
+                        placeholder={!isFocus7 ? 'Select Status*' : '...'}
                         searchPlaceholder="Search..."
-                        value={value7}
+                        value={statusSelectedValue}
                         onFocus={() => setIsFocus7(true)}
                         onBlur={() => setIsFocus7(false)}
                         renderRightIcon={() => (
-                            <TouchableOpacity onPress={() => { setValue7(null) }} >
-                                {value7 ?
+                            <TouchableOpacity onPress={() => { setStatusSelectedValue(null) }} >
+                                {statusSelectedValue ?
                                     <Entypo
                                         color={isFocus7 ? 'green' : 'black'}
                                         name="circle-with-cross"
@@ -431,33 +619,30 @@ export default function Add_Matrimonial() {
                                     : null
 
                                 }
-
-
                             </TouchableOpacity>
-
                         )}
-
                         onChange={item => {
                             setValue7(item.value);
                             setIsFocus7(false);
+                            setStatus(item.label)
+                            setStatusSelectedValue(item.value)
                         }}
-
                     />
                 </View>
                 <View>
                     <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Website Link' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Website Link' placeholderTextColor={'#6c757d'} onChangeText={(text) => setWebSiteLink(text)} value={webSiteLink} ></TextInput>
                     </View>
                     <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Description' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business Description' placeholderTextColor={'#6c757d'} onChangeText={(text) => setWebSiteDescription(text)} value={webSiteDescription}></TextInput>
                     </View>
                     <View style={styles.InputBarContainer_Description}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business GoogleMap Link' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Business GoogleMap Link' placeholderTextColor={'#6c757d'} onChangeText={(text) => setGoogleMap(text)} value={googleMap}></TextInput>
                     </View>
                 </View>
                 <View style={styles.PersonalPHOTOcontainer}>
                     <View >
-                        <TouchableOpacity style={styles.SubmitButton} onPress={() => { }}>
+                        <TouchableOpacity style={styles.SubmitButton} onPress={() => { PostData() }}>
                             <Text style={styles.SubmitButtonText}>Submit</Text>
                         </TouchableOpacity>
                     </View>
@@ -469,7 +654,7 @@ export default function Add_Matrimonial() {
 }
 
 const styles = StyleSheet.create({
-    
+
     PersonalPHOTOcontainer: {
         paddingVertical: 5
     },
@@ -990,5 +1175,20 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
         fontSize: 14,
         borderRadius: 10  // new chnges
+    },
+    SelectedIMG: {
+        height: 50,
+        width: 50,
+        borderRadius: 7
+
+    },
+    ChoosePhototContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: 'white',
+        borderColor: '#1255',
+        borderRadius: 10,
+        gap: 7
     },
 })
