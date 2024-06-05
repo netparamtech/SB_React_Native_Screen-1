@@ -1,13 +1,16 @@
-import { ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import { Button, Image, ScrollView, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Slider from '@react-native-community/slider';
 import DatePicker from 'react-native-date-picker'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import ChoosePhoto from './ChoosePhoto';
-
-
+import axios from 'axios';
+import { log } from 'react-native-reanimated';
+import { launchImageLibrary } from 'react-native-image-picker';
+import DocumentPicker from 'react-native-document-picker';
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3MzkyNzExLCJleHAiOjE3MTgyNTY3MTF9.3XNIz7jzZvQNCxzFtmMnIsMzuTSVcgHTmcY7tMkLWNg"
 
 const State = [
     { label: 'Maharashtra', value: '1' },
@@ -74,6 +77,13 @@ const Sisters = [
     { label: '2', value: '2' },
     { label: '3', value: '3' },
     { label: '4', value: '4' },
+];
+const ProfileCreator = [
+    { label: 'Self', value: 'Self' },
+    { label: 'Brother', value: 'Brother' },
+    { label: 'Sister', value: 'Sister' },
+    { label: 'Son', value: 'Son' },
+    { label: 'Daughter', value: 'Daughter' },
 ];
 export default function Add_Matrimonial() {
 
@@ -189,6 +199,16 @@ export default function Add_Matrimonial() {
         }
         return null;
     };
+    const renderLabel10 = () => {
+        if (value2 || isFocus2) {
+            return (
+                <Text style={[styles.label, isFocus10 && { color: '#198754' }]}>
+                    Creator Of Profile
+                </Text>
+            );
+        }
+        return null;
+    };
 
     const [isFocus1, setIsFocus1] = useState(false);
     const [value1, setValue1] = useState(null);
@@ -204,6 +224,33 @@ export default function Add_Matrimonial() {
 
     const [isFocus5, setIsFocus5] = useState(false);
     const [value5, setValue5] = useState(null);
+
+    // for Image Picker
+    const [selectedImage, setSelectedImage] = useState(null);
+
+
+    // for State
+    const [stateData, setStateData] = useState([])
+
+    // for City
+    const [cityData, setCityData] = useState([])
+
+    // for Subcast
+    const [subCastData, setsubCastData] = useState([])
+
+
+    // for Toast
+    const showToast = () => {
+        ToastAndroid.show('Photo Selected... !', ToastAndroid.SHORT);
+    };
+
+    //for Photo
+    const [selectedImageName, setSelectedImageName] = useState();
+    const [BusinessPhotos, setBusinessPhotos] = useState();
+
+    // for Documen Picker
+
+    const [DocSelectName, setDocSelectName] = useState()
 
 
     const [isFocus6, setIsFocus6] = useState(false);
@@ -224,6 +271,173 @@ export default function Add_Matrimonial() {
     const [rangeFeet, setRangeFeet] = useState(0)
     const [rangeInches, setRangeInches] = useState(0)
 
+    // for State 
+
+    const FetchStates = () => {
+        axios.get('https://uat-api.socialbharat.org/api/states/101',
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        ).then((responce) => { console.log(responce.data.data), setStateData(responce.data.data) })
+            .catch((error) => { console.error('ERROR is ==', error) })
+    }
+
+    useEffect(() => {
+        FetchStates()
+        FetchSubcast()
+    }, [])
+
+    const StateDrops = stateData ? stateData.map((states) => ({
+        label: states.name,
+        value: states.id.toString()
+    }))
+        :
+        []
+
+    // for City
+
+    const FetchCities = (stateID) => {
+        axios.get(`https://uat-api.socialbharat.org/api/cities/${stateID}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((responce) => { console.log(responce.data.data), setCityData(responce.data.data) })
+            .catch((error) => { console.log('Error is', error) })
+    }
+
+    const cityDrop = cityData ? cityData.map((citites) => ({
+        label: citites.name,
+        value: citites.id.toString()
+    }))
+        :
+        []
+
+    // for Subcast
+
+    const FetchSubcast = () => {
+        axios.get('https://uat-api.socialbharat.org/api/fetch/11/subcasts', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }).then((responce) => { setsubCastData(responce.data.data), console.log(responce.data.data) }
+        ).catch((error) => { console.error("Error is ==", error) })
+    }
+
+    const SubcastDrop = subCastData ? subCastData.map((Scast) => ({
+        label: Scast.subcast,
+        value: Scast.subcast_id.toString()
+    }))
+        :
+        []
+
+    // for Photo Picker
+
+    const handleLaunchImageLibrary = () => {
+        launchImageLibrary({ mediaType: 'photo', multiple: true }, response => {
+            if (!response.didCancel) {
+                const selectedImage = response.assets[0];
+                setSelectedImageName(selectedImage.uri); // for Image URL we use states
+                const formData = new FormData();
+                formData.append('images', {
+                    uri: response.assets[0].uri,
+                    type: response.assets[0].type,
+                    name: response.assets[0].fileName,
+                });
+                // Post the FormData to the API
+                postPhoto(formData);
+            }
+        });
+    };
+    const postPhoto = (formData) => {
+        axios.post('https://uat-api.socialbharat.org/api/upload-multiple-images', formData, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+            .then(response => {
+                // console.log(response)
+                if (response.status === 200) {
+                    setBusinessPhotos(response.data.data.files);
+                    console.log(response.data.data.files)
+                    showToast();
+                    //Alert.alert('Photo posted successfully!');
+                } else {
+                    throw new Error('Error posting photo');
+                }
+            })
+            .catch(error => {
+                console.error('Error posting photo:', error);
+                Alert.alert('Error posting photo!');
+            });
+    };
+
+    // for Document Picker
+
+    // const Document = async () => {
+    //     try {
+    //         const Doc = await DocumentPicker.pick({
+    //             type: [DocumentPicker.types.pdf],
+
+    //         });
+    //         console.log(Doc.uri)
+    //         console.log(Doc.type)
+    //         console.log(Doc.name)
+    //         console.log(Doc.size)
+
+    //         console.log(Doc)
+    //         const formData = new FormData();
+    //         formData.append('file',{
+    //             uri:Doc.uri,
+    //             type:Doc.type,
+    //             name:Doc.name
+    //         }) 
+
+    //     } catch (error) {
+    //         if(DocumentPicker.isCancel)
+    //             {
+    //                 console.log("Document is Cancelled Selected..")
+    //             }
+    //             else{
+    //                 console.log(error)
+    //             }
+
+    //     }
+
+    // }
+    const Document = async () => {
+        try {
+            const Doc = await DocumentPicker.pick({
+                type: [DocumentPicker.types.pdf],
+            });
+
+            console.log(Doc.uri);
+            console.log(Doc.type);
+            console.log(Doc.name);
+            console.log(Doc.size);
+            console.log(Doc);
+
+            setDocSelectName(Doc.name);
+
+            const formData = new FormData();
+            formData.append('file', {
+                uri: Doc.uri,
+                type: Doc.type,
+                name: Doc.name,
+            });
+        } catch (error) {
+            if (DocumentPicker.isCancel(error)) {
+                console.log("Document is Cancelled Selected..");
+            } else {
+                console.log(error);
+            }
+        }
+    };
+
+
+
 
     return (
         <ScrollView style={{ backgroundColor: '#fff' }}>
@@ -238,22 +452,66 @@ export default function Add_Matrimonial() {
                     {/* <View style={styles.InputBarNameContainer}>
                         <Text style={styles.InputBarTXT}>Name</Text>
                     </View> */}
+                    {renderLabel10()}
+                    <Dropdown
+                        style={[styles.dropdown, isFocus2 && { borderColor: '#ffc107' }]}
+                        placeholderStyle={styles.placeholderStyle}
+                        selectedTextStyle={styles.selectedTextStyle}
+                        inputSearchStyle={styles.inputSearchStyle}
+                        iconStyle={styles.iconStyle}
+                        data={ProfileCreator}
+                        maxHeight={300}
+                        labelField="label"
+                        valueField="value"
+                        placeholder={!isFocus2 ? '---For Whom, You Creating a File*---' : '...'}
+                        searchPlaceholder="Search..."
+                        value={value2}
+                        onFocus={() => setIsFocus2(true)}
+                        onBlur={() => setIsFocus2(false)}
+
+
+                        renderRightIcon={() => (
+
+                            <TouchableOpacity onPress={() => { setValue2(null) }} >
+                                {value2 ?
+                                    <Entypo
+                                        style={styles.iconAntDesign}
+                                        color={isFocus2 ? 'green' : 'black'}
+                                        name="circle-with-cross"
+                                        size={20}
+                                    />
+
+                                    : null
+
+                                }
+
+
+                            </TouchableOpacity>
+
+                        )}
+
+                        onChange={item => {
+                            setValue2(item.value);
+                            setIsFocus2(false);
+                        }}
+
+                    />
                     <View style={styles.InputBarContainer}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Your Name' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Your Name*' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
                     {/* 
                     <View style={styles.InputBarNameContainer}>
                         <Text style={styles.InputBarTXT}>Father Name</Text>
                     </View> */}
                     <View style={styles.InputBarContainer2}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Father Name' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Father Name*' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
 
                     {/* <View style={styles.InputBarNameContainer}>
                         <Text style={styles.InputBarTXT}>Mother Name</Text>
                     </View> */}
                     <View style={styles.InputBarContainer3}>
-                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Mother Name' placeholderTextColor={'#6c757d'} ></TextInput>
+                        <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Mother Name*' placeholderTextColor={'#6c757d'} ></TextInput>
                     </View>
 
                     <View style={styles.containerDropDown1}>
@@ -274,7 +532,7 @@ export default function Add_Matrimonial() {
                             valueField="value"
 
 
-                            placeholder={!isFocus1 ? 'select Gender ' : '...'}
+                            placeholder={!isFocus1 ? '---select Gender--- ' : '...'}
                             searchPlaceholder="Search..."
                             value={value1}
                             onFocus={() => setIsFocus1(true)}
@@ -350,7 +608,7 @@ export default function Add_Matrimonial() {
                                     setOpen(false)
                                 }}
                             />
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='DD--MM--YY' placeholderTextColor={'#6c757d'} >
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='DD--MM--YY*' placeholderTextColor={'#6c757d'} >
                                 {selectedDate}
                             </TextInput>
                             {
@@ -432,12 +690,12 @@ export default function Add_Matrimonial() {
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
-                            data={State}
+                            data={StateDrops}
                             search
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus3 ? 'Select State' : '...'}
+                            placeholder={!isFocus3 ? '---Select State---' : '...'}
                             searchPlaceholder="Search..."
                             value={value3}
                             onFocus={() => setIsFocus3(true)}
@@ -457,15 +715,13 @@ export default function Add_Matrimonial() {
                                         : null
 
                                     }
-
-
                                 </TouchableOpacity>
-
                             )}
 
                             onChange={item => {
                                 setValue3(item.value);
                                 setIsFocus3(false);
+                                FetchCities(item.value)
                             }}
 
                         />
@@ -484,12 +740,12 @@ export default function Add_Matrimonial() {
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
-                            data={City}
+                            data={cityDrop}
                             search
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus4 ? 'Select City' : '...'}
+                            placeholder={!isFocus4 ? '---Select City---' : '...'}
                             searchPlaceholder="Search..."
                             value={value4}
                             onFocus={() => setIsFocus4(true)}
@@ -536,12 +792,12 @@ export default function Add_Matrimonial() {
                             selectedTextStyle={styles.selectedTextStyle}
                             inputSearchStyle={styles.inputSearchStyle}
                             iconStyle={styles.iconStyle}
-                            data={Subcast}
+                            data={SubcastDrop}
                             search
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus5 ? 'Select Subcast' : '...'}
+                            placeholder={!isFocus5 ? '---Select Subcast---' : '...'}
                             searchPlaceholder="Search..."
                             value={value5}
                             onFocus={() => setIsFocus5(true)}
@@ -605,7 +861,7 @@ export default function Add_Matrimonial() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus6 ? 'Select Manglik' : '...'}
+                            placeholder={!isFocus6 ? '---Select Manglik---' : '...'}
                             searchPlaceholder="Search..."
                             value={value6}
                             onFocus={() => setIsFocus6(true)}
@@ -653,7 +909,7 @@ export default function Add_Matrimonial() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus7 ? 'Select Education' : '...'}
+                            placeholder={!isFocus7 ? '---Select Education---' : '...'}
                             searchPlaceholder="Search..."
                             value={value7}
                             onFocus={() => setIsFocus7(true)}
@@ -672,16 +928,13 @@ export default function Add_Matrimonial() {
 
                                     }
 
-
                                 </TouchableOpacity>
-
                             )}
 
                             onChange={item => {
                                 setValue7(item.value);
                                 setIsFocus7(false);
                             }}
-
                         />
                     </View>
                     <View style={styles.containerDropDown5}>
@@ -699,7 +952,7 @@ export default function Add_Matrimonial() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus8 ? 'Select Job Profile' : '...'}
+                            placeholder={!isFocus8 ? '---Select Job Profile---' : '...'}
                             searchPlaceholder="Search..."
                             value={value8}
                             onFocus={() => setIsFocus8(true)}
@@ -748,7 +1001,7 @@ export default function Add_Matrimonial() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus9 ? 'Select Number Of Brothers' : '...'}
+                            placeholder={!isFocus9 ? 'Select Number Of Brothers...' : '...'}
                             searchPlaceholder="Search..."
                             value={value9}
                             onFocus={() => setIsFocus9(true)}
@@ -797,7 +1050,7 @@ export default function Add_Matrimonial() {
                             maxHeight={300}
                             labelField="label"
                             valueField="value"
-                            placeholder={!isFocus9 ? 'Select Number Of Sisters' : '...'}
+                            placeholder={!isFocus9 ? 'Select Number Of Sisters...' : '...'}
                             searchPlaceholder="Search..."
                             value={value10}
                             onFocus={() => setIsFocus10(true)}
@@ -841,6 +1094,9 @@ export default function Add_Matrimonial() {
                             <Text style={styles.InputBarTXT_Bussiness_Email} >Annual Package</Text>
                         </View> */}
                         <View style={styles.InputBarContainer_Email}>
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Your Contact Number' placeholderTextColor={'#6c757d'} ></TextInput>
+                        </View>
+                        <View style={styles.InputBarContainer_Email}>
                             <TextInput style={styles.InputBarPlaceHolder} placeholder='Annual Package' placeholderTextColor={'#6c757d'} ></TextInput>
                         </View>
                     </View>
@@ -849,18 +1105,18 @@ export default function Add_Matrimonial() {
                     {/* ############################################################################################### */}
                     <View>
                         <View style={styles.InputBarNameContainer_Business_Website}>
-                            <Text style={styles.InputBarTXT_Business_Website} >Brothers Details</Text>
+                            <Text style={styles.InputBarTXT_Business_Website} >Educational Details</Text>
                         </View>
                         <View style={styles.InputBarContainer_Business_Website}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Your Brothers Details' placeholderTextColor={'#6c757d'} ></TextInput>
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Your Educational Details' placeholderTextColor={'#6c757d'} ></TextInput>
                         </View>
                     </View>
                     <View>
                         <View style={styles.InputBarNameContainer_Description}>
-                            <Text style={styles.InputBarTXT_Description} >Sisters Details</Text>
+                            <Text style={styles.InputBarTXT_Description} >Job Description</Text>
                         </View>
                         <View style={styles.InputBarContainer_Description}>
-                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Your Sisters Details' placeholderTextColor={'#6c757d'} ></TextInput>
+                            <TextInput style={styles.InputBarPlaceHolder} placeholder='Enter Your Job Details' placeholderTextColor={'#6c757d'} ></TextInput>
                         </View>
                     </View>
                     <View style={styles.FeetTXTContainer}>
@@ -900,8 +1156,12 @@ export default function Add_Matrimonial() {
                             <Text style={styles.PersonalPHOTO_text}>Proposal Photo</Text>
                             <Text>Add atleast 2 and maximum 5 photos(should be in png, jpg, jpeg format)</Text>
                         </View>
-                        <View>
-                            <ChoosePhoto />
+                        <View style={styles.inputContainer}>
+                            <View style={styles.ChoosePhototContainer}>
+                                <Button title="Choose File" onPress={handleLaunchImageLibrary} color="" />
+                                <Image source={{ uri: selectedImageName }} style={styles.SelectedIMG} />
+                                <Text style={{ flex: 1, marginLeft: 10, color: 'black', fontSize: 15 }}>{selectedImageName === null && 'No file choosen'}</Text>
+                            </View>
                         </View>
                     </View>
                     <View style={styles.PersonalPHOTOcontainer}>
@@ -909,8 +1169,13 @@ export default function Add_Matrimonial() {
                             <Text style={styles.PersonalBiodata_text}>Biodata</Text>
                             <Text>(upload biodata in pdf format only)</Text>
                         </View>
-                        <View>
-                            <ChoosePhoto />
+                        {/* <View style={styles.ChoosePhototContainer}>
+                                <Button title="Choose File" onPress={Document} color="" />
+                                <Text style={{ flex: 1, marginLeft: 10, color: 'black', fontSize: 15 }}>{DocSelectName}</Text>
+                            </View> */}
+                        <View style={styles.ChoosePhototContainer}>
+                            <Button title="Choose File" onPress={Document} color="" />
+                            <Text style={{ flex: 1, marginLeft: 10, color: 'black', fontSize: 15 }}>{docSelectName}</Text>
                         </View>
                     </View>
 
@@ -1033,8 +1298,8 @@ const styles = StyleSheet.create({
         elevation: 5, // Increase this value to increase shadow
     },
     Business_info_Container: {
-        // justifyContent:'center',
-        // alignItems:"center"
+        justifyContent: 'center',
+        paddingBottom: 16
 
     },
     Business_info_ContainerTXT: {
@@ -1468,5 +1733,20 @@ const styles = StyleSheet.create({
         paddingHorizontal: 8,
         fontSize: 14,
         borderRadius: 10  // new chnges
+    },
+    ChoosePhototContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 10,
+        backgroundColor: 'white',
+        borderColor: '#1255',
+        borderRadius: 10,
+        gap: 7
+    },
+    SelectedIMG: {
+        height: 50,
+        width: 50,
+        borderRadius: 7
+
     },
 })

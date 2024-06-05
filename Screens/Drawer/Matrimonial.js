@@ -1574,7 +1574,7 @@ const Matrimonial = ({ navigation }) => {
                         <Entypo
                           style={styles.iconAntDesign}
                           color={isFocus5 ? 'green' : 'black'}
-                          name="circle-with-cross"
+                          name="circle-with-cross" 
                           size={20}
                         />
 

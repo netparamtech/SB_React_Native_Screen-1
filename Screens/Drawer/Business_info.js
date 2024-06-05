@@ -194,7 +194,6 @@ export default function Add_Matrimonial() {
 
     //for City
     const [cityData, setCityData] = useState([])
-    const [citySelectedLabel, setCitySelectedLabel] = useState('');
     const [citySelectedValue, setCitySelectedValue] = useState('');
 
     // for Status 
@@ -217,7 +216,6 @@ export default function Add_Matrimonial() {
     const [value7, setValue7] = useState(null);
 
     const [isFocus9, setIsFocus9] = useState(false);
-    const [value9, setValue9] = useState(null);
 
     const [isFocus10, setIsFocus10] = useState(false);
     const [value10, setValue10] = useState(null);
@@ -685,8 +683,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         gap: 10
-
-
     },
     FeetTXT: {
         fontSize: 18,
@@ -694,16 +690,12 @@ const styles = StyleSheet.create({
         // top:10,
         color: '#000',
         marginTop: 10
-
-
-
     },
     InchesTXT: {
         fontSize: 18,
         // margin: 10,
         // top:10,
         color: '#000'
-
 
     },
     FeetTXTContainer: {
