@@ -27,8 +27,7 @@ const Matrimonial = ({ navigation }) => {
   const [citySelectedName, setCitySelectedName] = useState();
   const [citySelectedValue, setCitySelectedValue] = useState();
 
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3MDU5OTg3LCJleHAiOjE3MTc5MjM5ODd9.a5Cy2cYNZEiB0dwoLHoPkFezigikLWj1dFyqdhiufAE"
-
+  token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3ODM3NTc5LCJleHAiOjE3MTg3MDE1Nzl9.Cg1Kl8KhDDa0glSe3rGGzMSDmmlbB_a6M7xkStgimwY"
   const fetchData = async () => {
     if (allDataFetched || loading) return;
 
@@ -78,7 +77,7 @@ const Matrimonial = ({ navigation }) => {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log(response.data.data);
+      // console.log(response.data.data);
       setStateData(response.data.data);
     } catch (error) {
       console.log(error);
@@ -96,7 +95,7 @@ const Matrimonial = ({ navigation }) => {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log(response.data.data);
+      // console.log(response.data.data);
       setCityData(response.data.data);
     } catch (error) {
       console.log(error);

@@ -50,7 +50,6 @@ export default function StackApplication() {
             <Stack.Screen name='Education_info' component={Education_info}/>
             <Stack.Screen name='Address_info' component={Address_info}/>
 
-
         </Stack.Navigator>
     </NavigationContainer>
   )

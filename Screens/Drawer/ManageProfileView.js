@@ -8,8 +8,7 @@ import { useNavigation } from '@react-navigation/native';
 export default function ManageProfileView() {
     const [user, setUser] = useState([]);
     const navigation = useNavigation();
-
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE2NjEzNTY4LCJleHAiOjE3MTc0Nzc1Njh9.X8jRLEi1N3-ve-Io_69B5DPQW-WSjV-rCigO_JH_egM'
+    token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3ODM3NTc5LCJleHAiOjE3MTg3MDE1Nzl9.Cg1Kl8KhDDa0glSe3rGGzMSDmmlbB_a6M7xkStgimwY"
 
     const FetchUser = async () => {
         try {

@@ -36,11 +36,8 @@ export default function Business({ navigation }) {
   const [query, setQuery] = useState('');
   const [data, setData] = useState([]);
   const [oldData, setOldData] = useState([]);
-
-
-
-
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3MDU5OTg3LCJleHAiOjE3MTc5MjM5ODd9.a5Cy2cYNZEiB0dwoLHoPkFezigikLWj1dFyqdhiufAE"
+  
+  token= "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3ODM3NTc5LCJleHAiOjE3MTg3MDE1Nzl9.Cg1Kl8KhDDa0glSe3rGGzMSDmmlbB_a6M7xkStgimwY"
 
 
   const fetchUsers = () => {

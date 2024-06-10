@@ -99,6 +99,7 @@ const HandleEditPress = (index)=>{
   if(index === 0)
   {
     navigation.navigate('Basic_Profile');
+
   }
   if(index === 4)
   {

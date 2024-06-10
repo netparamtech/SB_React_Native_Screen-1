@@ -5,6 +5,9 @@ import StackApplication from './Screens/Stack/StackApplication';
 export default function App() {
   return (
    <StackApplication/>
+   
+  
+  
   )
 }
 
