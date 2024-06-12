@@ -4,7 +4,6 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import DatePicker from "react-native-date-picker";
-import ChoosePhoto from './ChoosePhoto';
 
 const State = [
     { label: 'Maharashtra', value: '1' },

@@ -592,15 +592,11 @@ const styles = StyleSheet.create({
   Indicator: {
     marginTop: 20
   },
-
-
   modalText: {
     fontSize: 20,
     backgroundColor: '#e9ecef',
     alignSelf: 'center',
     padding: 10,
-
-
   },
   ParentContainer: {
     backgroundColor: '#fff',
@@ -653,9 +649,6 @@ const styles = StyleSheet.create({
     // alignContent:'center',
 
   },
-
-
-
   icon: {
     height: 20,
     width: 20,
