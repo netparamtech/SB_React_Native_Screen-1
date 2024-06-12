@@ -1,12 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo'
+import axios from 'axios';
+import { log } from 'react-native-reanimated';
 
 
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3ODM3NTc5LCJleHAiOjE3MTg3MDE1Nzl9.Cg1Kl8KhDDa0glSe3rGGzMSDmmlbB_a6M7xkStgimwY"
 
-
+// for State
 const State = [
   { label: 'Maharashtra', value: '1' },
   { label: 'Goa', value: '2' },
@@ -142,6 +145,16 @@ const TableItems =
   ];
 
 export default function Jobs() {
+  // for State
+  const [stateData, setStateData] = useState([]);
+
+  // for City
+  const [cityData, setCityData] = useState([])
+
+  // for Job Data
+  const [jobData,setJobData]= useState([]);
+
+
   const [value3, setValue3] = useState(null);
   const [isFocus3, setIsFocus3] = useState(false);
   const [value2, setValue2] = useState(null);
@@ -170,6 +183,59 @@ export default function Jobs() {
 
   }
 
+  // for State
+  const FetchState = () => {
+    axios.get('https://uat-api.socialbharat.org/api/states/101', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((response) => { setStateData(response.data.data) }
+    ).catch((error) => { console, log("Error is ", error) })
+  }
+  useEffect(() => {
+    FetchState()
+    FetchCity()
+    FetchJobCardDetais()
+  }, [])
+
+  const StateDrop = stateData ? stateData.map((states) => ({
+    label: states.name,
+    value: states.id.toString()
+  })) : []
+
+
+  // for City
+
+  const FetchCity = (StateID) => {
+    axios.get(`https://uat-api.socialbharat.org/api/cities/${StateID}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((responce) => { console.log("JOB Cards Data is ==",responce.data.data), setCityData(responce.data.data) }
+    ).catch((error) => { console.log("Erros is ", error) })
+  }
+
+  const CityDrop = cityData ? cityData.map((cities) => ({
+    label: cities.name,
+    value: cities.id.toString()
+  })) : []
+
+  // JOB Cards
+  const FetchJobCardDetais = ()=>{
+    axios.get('https://uat-api.socialbharat.org/api/user/search/jobs?page=1&size=10&state=&city=&search=&jobType=',{
+      headers :{
+        Authorization : `Bearer ${token}`
+      }
+    }).then((responce)=>{console.log(responce.data.data.jobs),setJobData(responce.data.data.jobs)})
+    .catch((error)=>{console.log(error)})
+  }
+  const handleConfirmDate = (date) => {
+    const dt = new Date(date);  // Ensure the input is a Date object
+    const x = dt.toISOString().split('T');
+    const x1 = x[0].split('-');
+    const x2 = x1[0] + '/' + x1[1] + '/' + x1[2];
+    return x2;
+  }
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }} >
       <View style={styles.dropdownContainer}>
@@ -179,7 +245,7 @@ export default function Jobs() {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={State}
+          data={StateDrop}
           search
           maxHeight={300}
           labelField="label"
@@ -192,6 +258,7 @@ export default function Jobs() {
           onChange={item => {
             setValue2(item.value);
             setIsFocus2(false);
+            FetchCity(item.value)
           }}
         />
       </View>
@@ -203,7 +270,7 @@ export default function Jobs() {
           selectedTextStyle={styles.selectedTextStyle}
           inputSearchStyle={styles.inputSearchStyle}
           iconStyle={styles.iconStyle}
-          data={City}
+          data={CityDrop}
           search
           maxHeight={300}
           labelField="label"
@@ -254,49 +321,49 @@ export default function Jobs() {
 
         (!isFocus1 && serviceLable === 'CURRENT OPENING') && (
           <View>
-        {
-          isCut ?
-            <View>
-              <View style={{ flexDirection: 'row-reverse' }}>
-                <TouchableOpacity onPress={() => { setIsCut(false) }}>
-                  <Entypo name='circle-with-cross' size={24} />
-                </TouchableOpacity>
-              </View>
+            {
+              isCut ?
+                <View>
+                  <View style={{ flexDirection: 'row-reverse' }}>
+                    <TouchableOpacity onPress={() => { setIsCut(false) }}>
+                      <Entypo name='circle-with-cross' size={24} />
+                    </TouchableOpacity>
+                  </View>
 
-              <View style={{ width: 340, height: 400 }}>
-                <View style={styles.headerContainer}>
-                  <Text style={styles.headerText}>Current Opening</Text>
+                  <View style={{ width: 340, height: 400 }}>
+                    <View style={styles.headerContainer}>
+                      <Text style={styles.headerText}>Current Opening</Text>
+                    </View>
+
+                    <ScrollView style={styles.ScrollViews} nestedScrollEnabled={true}>
+                      <View style={styles.header}>
+                        <Text style={styles.heading}>Sr.No</Text>
+                        <Text style={styles.heading}>JOB ROLE</Text>
+                        <Text style={styles.heading}>COMPANY NAME</Text>
+                        <Text style={styles.heading}>APPLY URL LINK</Text>
+                      </View>
+
+                      <View style={{ flexDirection: 'row' }}>
+                        <FlatList
+                          data={TableItems}
+                          keyExtractor={(item, index) => index.toString()}
+                          renderItem={({ item }) => (
+                            <View style={styles.TableDataContainer}>
+                              <Text style={styles.TableData}>{item.srNo}</Text>
+                              <Text style={styles.TableData}>{item.JobRole}</Text>
+                              <Text style={styles.TableData}>{item.CompanyName}</Text>
+                              <Text style={styles.TableData}>{item.ApplyLink}</Text>
+                            </View>
+                          )}
+                          nestedScrollEnabled={true}
+                        />
+                      </View>
+                    </ScrollView>
+                  </View>
                 </View>
-
-                <ScrollView style={styles.ScrollViews} nestedScrollEnabled={true}>
-                  <View style={styles.header}>
-                    <Text style={styles.heading}>Sr.No</Text>
-                    <Text style={styles.heading}>JOB ROLE</Text>
-                    <Text style={styles.heading}>COMPANY NAME</Text>
-                    <Text style={styles.heading}>APPLY URL LINK</Text>
-                  </View>
-
-                  <View style={{ flexDirection: 'row' }}>
-                    <FlatList
-                      data={TableItems}
-                      keyExtractor={(item, index) => index.toString()}
-                      renderItem={({ item }) => (
-                        <View style={styles.TableDataContainer}>
-                          <Text style={styles.TableData}>{item.srNo}</Text>
-                          <Text style={styles.TableData}>{item.JobRole}</Text>
-                          <Text style={styles.TableData}>{item.CompanyName}</Text>
-                          <Text style={styles.TableData}>{item.ApplyLink}</Text>
-                        </View>
-                      )}
-                      nestedScrollEnabled={true}
-                    />
-                  </View>
-                </ScrollView>
-              </View>
-            </View>
-            : null
-        }
-      </View>
+                : null
+            }
+          </View>
         )
 
 
@@ -304,50 +371,55 @@ export default function Jobs() {
 
       <ScrollView style={styles.MainApplicationCardContainer}>
         {
-          JobApplication.map(({ id, Date, Job_Title, Company_Name, Expire_Date, Application_Start, Sector, Job_Type, Company_Address, Location }) => (
-            <View key={id} style={styles.ApplicationCard}>
+          jobData.map((item , index ) => (
+            <View key={index} style={styles.ApplicationCard}>
               <View style={styles.DateOnApplication}>
-                <Text style={styles.DateTEXT}>{Date}</Text>
+                <Text style={styles.DateTEXT} >{item.created_at ? handleConfirmDate(item.created_at):"---"}</Text>
               </View>
 
               <View style={styles.Labels}>
                 <Text style={styles.Job_Title}> Job Title : </Text>
-                <Text style={styles.Job_TitleTEXT}>{Job_Title}</Text>
+                <Text style={styles.Job_TitleTEXT}>{item.job_title}</Text>
               </View>
 
               <View style={styles.Labels}>
                 <Text style={styles.Company_Name}>Company Name : </Text>
-                <Text style={styles.Company_NameTEXT}> {Company_Name}</Text>
+                <Text style={styles.Company_NameTEXT}> {item.job_subheading}</Text>
               </View>
 
               <View style={styles.Labels}>
                 <Text style={styles.Application_Start}>Application Start : </Text>
-                <Text style={styles.Application_StartTEXT}>{Application_Start}</Text>
+                <Text style={styles.Application_StartTEXT}>{item.job_start_date ? handleConfirmDate(item.job_start_date):"---"}</Text>
               </View>
 
               <View style={styles.Labels}>
                 <Text style={styles.Expire_Date}>Expire : </Text>
-                <Text style={styles.Expire_DateTEXT}>{Expire_Date}</Text>
+                <Text style={styles.Expire_DateTEXT}>{item.job_end_date ? handleConfirmDate(item.job_end_date):"---"}</Text>
               </View>
 
               <View style={styles.Labels}>
                 <Text style={styles.Sector}>Sector : </Text>
-                <Text style={styles.SectorTEXT}>{Sector}</Text>
+                <Text style={styles.SectorTEXT}>{item.job_sector}</Text>
               </View>
 
               <View style={styles.Labels}>
                 <Text style={styles.Job_Type}>Job Type : </Text>
-                <Text style={styles.Job_TypeTEXT}>{Job_Type}</Text>
+                <Text style={styles.Job_TypeTEXT}>{item.job_type}</Text>
               </View>
 
               <View style={styles.Labels}>
-                <Text style={styles.Company_Address}  >Company Address : </Text>
-                <Text style={styles.Company_AddressTEXT} numberOfLines={null}>{Company_Address}</Text>
+                <Text style={styles.Company_Address}  >Attachment : </Text>
+                <Text style={styles.Company_AddressTEXT} numberOfLines={null}>{item.attachment}</Text>
+              </View>
+
+              <View style={styles.Labels}>
+                <Text style={styles.Location}>Description : </Text>
+                <Text style={styles.LocationTEXT}>{item.description.replace(/<[^>]+>/g,'')}</Text>
               </View>
 
               <View style={styles.Labels}>
                 <Text style={styles.Location}>Location : </Text>
-                <Text style={styles.LocationTEXT}> {Location}</Text>
+                <Text style={styles.LocationTEXT}>{item.Location}</Text>
               </View>
 
               <View>
