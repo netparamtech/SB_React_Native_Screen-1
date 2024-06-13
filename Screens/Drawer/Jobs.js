@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import { Dropdown } from 'react-native-element-dropdown';
@@ -9,25 +9,6 @@ import { log } from 'react-native-reanimated';
 
 const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3ODM3NTc5LCJleHAiOjE3MTg3MDE1Nzl9.Cg1Kl8KhDDa0glSe3rGGzMSDmmlbB_a6M7xkStgimwY"
 
-// for State
-const State = [
-  { label: 'Maharashtra', value: '1' },
-  { label: 'Goa', value: '2' },
-  { label: 'Rajasthan', value: '3' },
-  { label: 'Bihar', value: '4' },
-  { label: 'Gujrat', value: '5' },
-  { label: 'MP', value: '6' },
-  { label: 'Up', value: '7' },
-];
-
-const City = [
-  { label: 'Jaipur', value: '3' },
-  { label: 'Mumbai', value: '1' },
-  { label: 'Raipur', value: '4' },
-  { label: 'Surat', value: '5' },
-  { label: 'Indore', value: '6' },
-  { label: 'Ayyodhya', value: '7' }
-];
 
 const Services = [
   { label: 'All', value: 'All' },
@@ -42,67 +23,6 @@ const Services = [
   { label: 'CURRENT OPENING', value: 'CURRENT OPENING' },
   { label: 'CONTACT US', value: 'CONTACT US' },
 ];
-
-const JobApplication = [
-  {
-    'id': '1',
-    'Job_Title': 'SOFTWARE DEVELOPER ',
-    'Company_Name': 'Infotrix',
-    'Application_Start': 'Sep 08 ,2023',
-    'Expire_Date': 'May 08,2024',
-    'Sector': 'Private Job',
-    'Job_Type': 'Full Time',
-    'Company_Address': 'Chaksu,Rajasthan ',
-    'Location ': 'Jaipur,Rajasthan',
-    'Date': 'Jan 24 2024'
-  },
-  {
-    'id': '2',
-    'Job_Title': 'SOFTWARE DEVELOPER',
-    'Company_Name ': 'Infotrix',
-    'Application_Start': 'Sep 08 ,2023',
-    'Expire_Date': 'May 08,2024',
-    'Sector': 'Private Job',
-    'Job_Type': 'Full Time',
-    'Company_Address': 'Chaksu,Rajasthan Jaipur,RajasthanJaipur,Rajasthan',
-    'Location ': 'Jaipur,Rajasthan',
-    'Date': 'Jan 24 2024'
-  }, {
-    'id': '3',
-    'Job_Title': 'SOFTWARE DEVELOPER',
-    'Company_Name ': 'Infotrix',
-    'Application_Start': 'Sep 08 ,2023',
-    'Expire_Date': 'May 08,2024',
-    'Sector': 'Private Job',
-    'Job_Type': 'Full Time',
-    'Company_Address': 'Chaksu,Rajasthan Jaipur,RajasthanJaipur,RajasthanJaipur,Rajasthan',
-    'Location ': 'Jaipur,Rajasthan',
-    'Date': 'Jan 24 2024'
-  }, {
-    'id': '4',
-    'Job_Title': 'SOFTWARE DEVELOPER',
-    'Company_Name ': 'Infotrix',
-    'Application_Start': 'Sep 08 ,2023',
-    'Expire_Date': 'May 08,2024',
-    'Sector': 'Private Job',
-    'Job_Type': 'Full Time',
-    'Company_Address': 'Chaksu,Rajasthan Jaipur,RajasthanJaipur,RajasthanJaipur,RajasthanJaipur,Rajasthan',
-    'Location ': 'Jaipur,Rajasthan Jaipur,',
-    'Date': 'Jan 24 2024'
-  }, {
-    'id': '5',
-    'Job_Title': 'SOFTWARE DEVELOPER',
-    'Company_Name ': 'Infotrix',
-    'Application_Start': 'Sep 08 ,2023',
-    'Expire_Date': 'May 08,2024',
-    'Sector': 'Private Job',
-    'Job_Type': 'Full Time',
-    'Company_Address': 'Chaksu,Rajasthan',
-    'Location ': 'Jaipur,Rajasthan Jaipur,RajasthanJaipur,RajasthanJaipur,RajasthanJaipur,RajasthanJaipur,Rajasthan',
-    'Date': 'Jan 24 2024'
-
-  },
-]
 
 const TableItems =
   [
@@ -154,6 +74,10 @@ export default function Jobs() {
   // for Job Data
   const [jobData,setJobData]= useState([]);
 
+  // for pagination
+  const [page,setPage] = useState(1);
+  const[isLoading,setIsLoading] = useState(false)
+
 
   const [value3, setValue3] = useState(null);
   const [isFocus3, setIsFocus3] = useState(false);
@@ -175,14 +99,8 @@ export default function Jobs() {
 
     if (item.value === 'CURRENT OPENING') {
       setIsCut(true)
-
-
     }
-
-
-
   }
-
   // for State
   const FetchState = () => {
     axios.get('https://uat-api.socialbharat.org/api/states/101', {
@@ -222,20 +140,54 @@ export default function Jobs() {
 
   // JOB Cards
   const FetchJobCardDetais = ()=>{
-    axios.get('https://uat-api.socialbharat.org/api/user/search/jobs?page=1&size=10&state=&city=&search=&jobType=',{
+    setIsLoading(true)
+    axios.get(`https://uat-api.socialbharat.org/api/user/search/jobs?page=${page}&size=10&state=&city=&search=&jobType=`,{
       headers :{
         Authorization : `Bearer ${token}`
       }
-    }).then((responce)=>{console.log(responce.data.data.jobs),setJobData(responce.data.data.jobs)})
-    .catch((error)=>{console.log(error)})
+    }).then((responce)=>{
+      console.log(responce.data.data.jobs),
+      setJobData(  prevUsers => [...prevUsers, ...responce.data.data.jobs]  )
+      setIsLoading(false)
+      setPage(prevPage => prevPage + 1  )
+
+    })
+    .catch((error)=>{console.log(error),
+      setIsLoading(false)
+    })
   }
   const handleConfirmDate = (date) => {
     const dt = new Date(date);  // Ensure the input is a Date object
     const x = dt.toISOString().split('T');
     const x1 = x[0].split('-');
-    const x2 = x1[0] + '/' + x1[1] + '/' + x1[2];
+    const x2 = x1[2] + '/' + x1[1] + '/' + x1[0];
     return x2;
+
+    
   }
+
+  const handleScroll = (event) => {
+    const { layoutMeasurement, contentOffset, contentSize } = event.nativeEvent;
+    // Calculate the current scroll position as a percentage
+    const scrollPosition = contentOffset.y + layoutMeasurement.height; // How much of the content is currently scrolled including visible part
+    const totalHeight = contentSize.height;
+    const scrolledPercentage = (scrollPosition / totalHeight) * 100;
+
+    // Calculate if the scroll position is close to the bottom
+    const isCloseToBottom = layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
+
+    // Check if the scrolled percentage is greater than or equal to 50% and is close to the bottom
+    if (scrolledPercentage >= 100 && isCloseToBottom) {
+      if (!isLoading) { // Prevent multiple fetches
+        setIsLoading(true); // Start loading when scroll reaches halfway and is close to the bottom
+        FetchJobCardDetais(); // Optionally: you can have your fetch logic here or any other action
+      }
+    }
+  };
+  const ApplyLink = (link)=>{
+ Linking.openURL(link)
+  }
+
   return (
     <ScrollView style={styles.container} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }} >
       <View style={styles.dropdownContainer}>
@@ -286,9 +238,6 @@ export default function Jobs() {
           }}
         />
       </View>
-
-
-
       <View style={styles.dropdownContainer}>
         <Dropdown
           style={[styles.dropdown, isFocus1 && { borderColor: '#008577' }]}
@@ -314,9 +263,6 @@ export default function Jobs() {
           }}
         />
       </View>
-
-
-
       {
 
         (!isFocus1 && serviceLable === 'CURRENT OPENING') && (
@@ -365,11 +311,9 @@ export default function Jobs() {
             }
           </View>
         )
-
-
       }
 
-      <ScrollView style={styles.MainApplicationCardContainer}>
+      <ScrollView style={styles.MainApplicationCardContainer} onScroll={handleScroll}>
         {
           jobData.map((item , index ) => (
             <View key={index} style={styles.ApplicationCard}>
@@ -423,7 +367,7 @@ export default function Jobs() {
               </View>
 
               <View>
-                <TouchableOpacity style={styles.ApplyButton}>
+                <TouchableOpacity style={styles.ApplyButton} onPress={()=>{ApplyLink(item.apply_link)}}>
                   <Text style={styles.ApplyButtonTEXT}>Apply</Text>
                 </TouchableOpacity>
               </View>
@@ -432,11 +376,8 @@ export default function Jobs() {
             </View>
           ))
         }
-
+        {isLoading && <ActivityIndicator size="large" color="#008577" style={styles.loadingIndicator} />}
       </ScrollView>
-
-
-
     </ScrollView>
   )
 }
@@ -521,16 +462,13 @@ const styles = StyleSheet.create({
     padding: 10,
     color: '#fff',
     paddingHorizontal: 13
-
-
+  },
+  loadingIndicator: {
+    marginTop: 20, // Adjust as needed
   },
   tableContainer: {
     borderWidth: 1,
     // paddingHorizontal: 20
-
-
-
-
   },
   TableDataContainer: {
     flexDirection: 'row',
@@ -556,15 +494,11 @@ const styles = StyleSheet.create({
   TableData: {
     fontSize: 17,
     paddingHorizontal: 20
-
   },
   ScrollViews: {
     // borderWidth: 2,
     // height: 300,
     // margin:10,
-
-
-
   },
   Location: {
     fontSize: 17,
@@ -576,10 +510,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: '#0F0F0F',
     maxWidth: 330,
-    flexWrap: 'wrap',
-
-
-  },
+    flexWrap: 'wrap',},
   Job_Type: {
     fontSize: 17,
     color: '#0F0F0F',
