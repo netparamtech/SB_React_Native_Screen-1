@@ -21,6 +21,7 @@ import ManageProfileView from '../Drawer/DashBoard/ManageProfileView';
 import Matrimonial_info from '../Drawer/DashBoard/Matrimonial_info';
 import Education_info from '../Drawer/DashBoard/Education-info/Education_info';
 import Address_info from '../Drawer/DashBoard/Address_info/Address_info';
+import CurrentOpening from '../Drawer/CurrentOpening';
 const Stack = createNativeStackNavigator();
 
 export default function StackApplication() {
@@ -49,6 +50,7 @@ export default function StackApplication() {
             <Stack.Screen name='Matrimonial_info' component={Matrimonial_info}/>
             <Stack.Screen name='Education_info' component={Education_info}/>
             <Stack.Screen name='Address_info' component={Address_info}/>
+            <Stack.Screen name='CurrentOpening' component={CurrentOpening}/>
 
         </Stack.Navigator>
     </NavigationContainer>

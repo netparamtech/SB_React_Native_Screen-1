@@ -5,9 +5,9 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo'
 import axios from 'axios';
 import { log } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
-
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTUwLCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjEsInBlcm1pc3Npb25JZCI6MSwiaWF0IjoxNzE3ODM3NTc5LCJleHAiOjE3MTg3MDE1Nzl9.Cg1Kl8KhDDa0glSe3rGGzMSDmmlbB_a6M7xkStgimwY"
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzY5LCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjAsInBlcm1pc3Npb25JZCI6MTksImlhdCI6MTcyMTIwNzQ4NCwiZXhwIjoxNzIyMDcxNDg0fQ.hTp6Z3i0gqYT1z7kkgOjrkJPx5xk7xdQLW8uBwpGSIU"
 
 
 const Services = [
@@ -65,6 +65,7 @@ const TableItems =
   ];
 
 export default function Jobs() {
+  const navigation = useNavigation()
   // for State
   const [stateData, setStateData] = useState([]);
 
@@ -72,11 +73,14 @@ export default function Jobs() {
   const [cityData, setCityData] = useState([])
 
   // for Job Data
-  const [jobData,setJobData]= useState([]);
+  const [jobData, setJobData] = useState([]);
 
   // for pagination
-  const [page,setPage] = useState(1);
-  const[isLoading,setIsLoading] = useState(false)
+  const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false)
+
+  // for CurrentOpening
+  const [currentOpening, setCurrentOpening] = useState([])
 
 
   const [value3, setValue3] = useState(null);
@@ -114,14 +118,12 @@ export default function Jobs() {
     FetchState()
     FetchCity()
     FetchJobCardDetais()
+    FetchCurrentOpening()
   }, [])
-
   const StateDrop = stateData ? stateData.map((states) => ({
     label: states.name,
     value: states.id.toString()
   })) : []
-
-
   // for City
 
   const FetchCity = (StateID) => {
@@ -129,7 +131,7 @@ export default function Jobs() {
       headers: {
         Authorization: `Bearer ${token}`
       }
-    }).then((responce) => { console.log("JOB Cards Data is ==",responce.data.data), setCityData(responce.data.data) }
+    }).then((responce) => { console.log("JOB Cards Data is ==", responce.data.data), setCityData(responce.data.data) }
     ).catch((error) => { console.log("Erros is ", error) })
   }
 
@@ -139,22 +141,23 @@ export default function Jobs() {
   })) : []
 
   // JOB Cards
-  const FetchJobCardDetais = ()=>{
+  const FetchJobCardDetais = () => {
     setIsLoading(true)
-    axios.get(`https://uat-api.socialbharat.org/api/user/search/jobs?page=${page}&size=10&state=&city=&search=&jobType=`,{
-      headers :{
-        Authorization : `Bearer ${token}`
+    axios.get(`https://uat-api.socialbharat.org/api/user/search/jobs?page=${page}&size=10&state=&city=&search=&jobType=`, {
+      headers: {
+        Authorization: `Bearer ${token}`
       }
-    }).then((responce)=>{
+    }).then((responce) => {
       console.log(responce.data.data.jobs),
-      setJobData(  prevUsers => [...prevUsers, ...responce.data.data.jobs]  )
+        setJobData(prevUsers => [...prevUsers, ...responce.data.data.jobs])
       setIsLoading(false)
-      setPage(prevPage => prevPage + 1  )
+      setPage(prevPage => prevPage + 1)
 
     })
-    .catch((error)=>{console.log(error),
-      setIsLoading(false)
-    })
+      .catch((error) => {
+        console.log(error),
+          setIsLoading(false)
+      })
   }
   const handleConfirmDate = (date) => {
     const dt = new Date(date);  // Ensure the input is a Date object
@@ -162,8 +165,19 @@ export default function Jobs() {
     const x1 = x[0].split('-');
     const x2 = x1[2] + '/' + x1[1] + '/' + x1[0];
     return x2;
+  }
+  // for CurrentOpening
+  const FetchCurrentOpening = () => {
+    axios.get('https://uat-api.socialbharat.org/api/user/current-jobs?page=1&size=5&state=&city=&searchText=', {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((responce) => {
+      console.log("Response is ===", responce.data.data.jobs),
+        setCurrentOpening(responce.data.data.jobs)
 
-    
+
+    }).catch((error) => { console.log("Error is ==", error) })
   }
 
   const handleScroll = (event) => {
@@ -184,12 +198,17 @@ export default function Jobs() {
       }
     }
   };
-  const ApplyLink = (link)=>{
- Linking.openURL(link)
+  const ApplyLink = (link) => {
+    Linking.openURL(link)
+  }
+
+  // CurrentOpeningAPPly
+  const CurrentOpeningApply = (link) => {
+    Linking.openURL(link)
   }
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{ justifyContent: 'center', alignItems: 'center' }} >
+    <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center' }} >
       <View style={styles.dropdownContainer}>
         <Dropdown
           style={[styles.dropdown, isFocus2 && { borderColor: '#008577' }]}
@@ -291,14 +310,16 @@ export default function Jobs() {
 
                       <View style={{ flexDirection: 'row' }}>
                         <FlatList
-                          data={TableItems}
+                          data={currentOpening}
                           keyExtractor={(item, index) => index.toString()}
                           renderItem={({ item }) => (
                             <View style={styles.TableDataContainer}>
-                              <Text style={styles.TableData}>{item.srNo}</Text>
-                              <Text style={styles.TableData}>{item.JobRole}</Text>
-                              <Text style={styles.TableData}>{item.CompanyName}</Text>
-                              <Text style={styles.TableData}>{item.ApplyLink}</Text>
+                              <Text style={styles.TableData}>{item.index}</Text>
+                              <Text style={styles.TableData}>{item.role}</Text>
+                              <Text style={styles.TableData}>{item.company}</Text>
+                              <TouchableOpacity onPress={() => { CurrentOpeningApply(item.apply_url) }}>
+                                <Text style={styles.TableData}>{item.apply_url}</Text>
+                              </TouchableOpacity>
                             </View>
                           )}
                           nestedScrollEnabled={true}
@@ -315,10 +336,10 @@ export default function Jobs() {
 
       <ScrollView style={styles.MainApplicationCardContainer} onScroll={handleScroll}>
         {
-          jobData.map((item , index ) => (
+          jobData.map((item, index) => (
             <View key={index} style={styles.ApplicationCard}>
               <View style={styles.DateOnApplication}>
-                <Text style={styles.DateTEXT} >{item.created_at ? handleConfirmDate(item.created_at):"---"}</Text>
+                <Text style={styles.DateTEXT} >{item.created_at ? handleConfirmDate(item.created_at) : "---"}</Text>
               </View>
 
               <View style={styles.Labels}>
@@ -333,12 +354,12 @@ export default function Jobs() {
 
               <View style={styles.Labels}>
                 <Text style={styles.Application_Start}>Application Start : </Text>
-                <Text style={styles.Application_StartTEXT}>{item.job_start_date ? handleConfirmDate(item.job_start_date):"---"}</Text>
+                <Text style={styles.Application_StartTEXT}>{item.job_start_date ? handleConfirmDate(item.job_start_date) : "---"}</Text>
               </View>
 
               <View style={styles.Labels}>
                 <Text style={styles.Expire_Date}>Expire : </Text>
-                <Text style={styles.Expire_DateTEXT}>{item.job_end_date ? handleConfirmDate(item.job_end_date):"---"}</Text>
+                <Text style={styles.Expire_DateTEXT}>{item.job_end_date ? handleConfirmDate(item.job_end_date) : "---"}</Text>
               </View>
 
               <View style={styles.Labels}>
@@ -358,7 +379,7 @@ export default function Jobs() {
 
               <View style={styles.Labels}>
                 <Text style={styles.Location}>Description : </Text>
-                <Text style={styles.LocationTEXT}>{item.description.replace(/<[^>]+>/g,'')}</Text>
+                <Text style={styles.LocationTEXT}>{item.description.replace(/<[^>]+>/g, '')}</Text>
               </View>
 
               <View style={styles.Labels}>
@@ -367,12 +388,10 @@ export default function Jobs() {
               </View>
 
               <View>
-                <TouchableOpacity style={styles.ApplyButton} onPress={()=>{ApplyLink(item.apply_link)}}>
+                <TouchableOpacity style={styles.ApplyButton} onPress={() => { ApplyLink(item.apply_link) }}>
                   <Text style={styles.ApplyButtonTEXT}>Apply</Text>
                 </TouchableOpacity>
               </View>
-
-
             </View>
           ))
         }
@@ -387,7 +406,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     flex: 1,
     // borderWidth: 2,
-
   },
   dropdownContainer: {
     marginVertical: 10,
@@ -446,7 +464,6 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 16,
     color: '#fff'
-
   },
   header: {
     flexDirection: 'row',
@@ -455,7 +472,6 @@ const styles = StyleSheet.create({
     width: 'auto',
     gap: 15,
     backgroundColor: '#008577'
-
   },
   heading: {
     fontSize: 16,
@@ -488,12 +504,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 5,
     shadowColor: '#000',
-    // paddingHorizontal: 20
+    flex: 1
 
+    // paddingHorizontal: 20
   },
   TableData: {
     fontSize: 17,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   ScrollViews: {
     // borderWidth: 2,
@@ -510,7 +527,8 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: '#0F0F0F',
     maxWidth: 330,
-    flexWrap: 'wrap',},
+    flexWrap: 'wrap',
+  },
   Job_Type: {
     fontSize: 17,
     color: '#0F0F0F',
@@ -541,24 +559,18 @@ const styles = StyleSheet.create({
     color: '#0F0F0F',
     // padding: 1,
     // margin: 5
-
-
   },
   Job_Title: {
     fontSize: 17,
     color: '#0F0F0F',
     // padding: 1,
     // margin: 5,
-
-
   },
   DateOnApplication: {
     flexDirection: 'row-reverse',
     padding: 8,
     marginBottom: 5,
     bottom: 15,
-
-
   },
   DateTEXT: {
     fontSize: 15,
@@ -590,8 +602,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     maxWidth: 330,
     width: 330,
-
-
   },
   MainApplicationCardContainer: {
     //  padding: 10,
@@ -620,16 +630,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     padding: 1,
     flex: 1
-
-
   },
   Company_NameTEXT: {
     fontSize: 15,
     padding: 1,
     flex: 1
-
-
-
   },
   Application_StartTEXT: {
     fontSize: 15,
@@ -643,28 +648,19 @@ const styles = StyleSheet.create({
   SectorTEXT: {
     fontSize: 15,
     padding: 1,
-
-
   },
   Job_TypeTEXT: {
     fontSize: 15,
     padding: 1,
-
-
-
   },
   Company_AddressTEXT: {
     fontSize: 17,
     // color: '#0F0F0F',
     // maxWidth: 330,
     flex: 1
-
-
   },
   LocationTEXT: {
     fontSize: 15,
-
-
   },
   Labels: {
     flexDirection: 'row',
@@ -683,16 +679,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#008577',
     elevation: 5,
     top: 10
-
   },
   ApplyButtonTEXT: {
     fontSize: 20,
     // fontWeight:'600',
     color: '#fff',
-
-
-
-
-
   }
 });
