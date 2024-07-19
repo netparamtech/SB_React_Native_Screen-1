@@ -109,12 +109,17 @@ const HandleEditPress = (index)=>{
   {
     navigation.navigate('Post_Job')
   }
+ 
 }
 const HandleViewPress = (index)=>{
   if(index === 0)
     {
       navigation.navigate('Profile');
     }
+    if(index === 6)
+      {
+        navigation.navigate('SearchService')
+      }
 }
   return (
     <ScrollView style={styles.MainContainer}>
