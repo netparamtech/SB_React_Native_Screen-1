@@ -115,10 +115,10 @@ const CityDrop = cityData ? cityData.map((City)=>({
                 <TouchableOpacity onPress={() => setIsModalVisible(false)}>
                   <Text>Close</Text>
                 </TouchableOpacity>
-                <View style={styles.modalOption}>
+                <TouchableOpacity style={styles.modalOption} onPress={()=>{navigation.navigate('ViewSerivce')}}>
                   <Image source={require('../Assets/service4.png')} style={styles.modalIcon} />
                   <Text style={styles.modalText}>VIEW/CREATE</Text>
-                </View>
+                </TouchableOpacity>
                 <View style={styles.modalOption}>
                   <Image source={require('../Assets/maintain.png')} style={styles.modalIcon} />
                   <Text style={styles.modalText}>MY SERVICES</Text>

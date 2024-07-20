@@ -23,6 +23,7 @@ import Education_info from '../Drawer/DashBoard/Education-info/Education_info';
 import Address_info from '../Drawer/DashBoard/Address_info/Address_info';
 import CurrentOpening from '../Drawer/CurrentOpening';
 import Search from '../Drawer/DashBoard/Events/Search';
+import ViewService from '../Services/ViewService';
 const Stack = createNativeStackNavigator();
 
 export default function StackApplication() {
@@ -53,6 +54,7 @@ export default function StackApplication() {
             <Stack.Screen name='Address_info' component={Address_info}/>
             <Stack.Screen name='CurrentOpening' component={CurrentOpening}/>
             <Stack.Screen name='SearchService' component={Search}/>
+            <Stack.Screen name='ViewSerivce' component={ViewService}/>
 
         </Stack.Navigator>
     </NavigationContainer>
