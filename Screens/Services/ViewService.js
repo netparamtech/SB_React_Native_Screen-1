@@ -56,16 +56,16 @@ const ViewService = () => {
                 <View style={styles.InformationContainerHeading}>
                     <Text style={styles.HeadingStyles}>REGISTERED SERVICES</Text>
                 </View>
-                <View style={{ padding: 5, paddingBottom: 22 }} >
+                <View style={{ padding: 5, paddingBottom: 22, padding: 10, }} >
                     {
                         Data.map(({ Sno, Title, Mobile1, Mobile2, Experience, State, City, Description }) => (
                             <View key={Sno} style={styles.container}>
                                 <View style={styles.ActionICON}>
                                     <TouchableOpacity onPress={() => { OnpressDelete() }}>
-                                        <AntDesign name='delete' size={23} color={'#333'} />
+                                        <AntDesign name='delete' size={23} color={'#008374'} />
                                     </TouchableOpacity>
                                     <TouchableOpacity>
-                                        <AntDesign name='edit' size={23} color={'#333'} />
+                                        <AntDesign name='edit' size={23} color={'#008374'} />
                                     </TouchableOpacity>
                                 </View>
                                 <View style={styles.pairContainer}>
@@ -147,7 +147,6 @@ export default ViewService
 const styles = StyleSheet.create({
     MainContainer: {
         flex: 1,
-        // padding: 10,
         backgroundColor: '#fff'
 
     },
@@ -155,7 +154,8 @@ const styles = StyleSheet.create({
     },
     Card: {
         borderWidth: 1,
-        padding: 15,
+        // padding: 20,
+
 
 
     },
@@ -171,24 +171,25 @@ const styles = StyleSheet.create({
     // },
     HeadingStyles: {
         fontSize: 17,
-        color: '#fff',
+        color: '#008374',
         fontWeight: 'bold',
         alignSelf:'center'
     },
     InformationContainerHeading: {
         // backgroundColor: 'orange',
-        backgroundColor: '#008577',
+        backgroundColor: '#e9ecef',
         padding: 9,
 
     },
     container: {
-        // padding: 10,
         marginTop: 16,
-        borderWidth: 0.2,
+        // borderWidth: 1,
         width: '100%', // Use full width of the container
         maxWidth: '100%', // Adjusts according to screen size
         borderRadius: 8,
-        
+        backgroundColor:'#fff',
+        borderColor:'#008374',
+        elevation:3
     },
 
     pairContainer: {
@@ -253,11 +254,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         // alignSelf: 'flex-end',
         gap: 20,
-        backgroundColor: 'orange',
+        backgroundColor: '#FF9933',
         // backgroundColor: '#008577',
         justifyContent: 'flex-end',
         padding:10,
-        borderRadius:7
+        // borderRadius:7,
+        borderWidth: 1,
+        borderColor:'#FF9933',
+        borderTopLeftRadius:7,
+        borderTopRightRadius:7
+
+
 
 
     }
