@@ -120,6 +120,10 @@ const HandleViewPress = (index)=>{
       {
         navigation.navigate('SearchService')
       }
+      if(index === 8)
+        {
+          navigation.navigate('Rating')
+        }
 }
   return (
     <ScrollView style={styles.MainContainer}>

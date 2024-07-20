@@ -3,8 +3,6 @@ import React, { useState } from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const ViewService = () => {
-    const [isPressed, setIsPressed] = useState(true)
-
     const Data = [
         {
             Sno: 1,
@@ -61,7 +59,7 @@ const ViewService = () => {
                         Data.map(({ Sno, Title, Mobile1, Mobile2, Experience, State, City, Description }) => (
                             <View key={Sno} style={styles.container}>
                                 <View style={styles.ActionICON}>
-                                    <TouchableOpacity onPress={() => { OnpressDelete() }}>
+                                    <TouchableOpacity>
                                         <AntDesign name='delete' size={23} color={'#008374'} />
                                     </TouchableOpacity>
                                     <TouchableOpacity>
@@ -173,7 +171,7 @@ const styles = StyleSheet.create({
         fontSize: 17,
         color: '#008374',
         fontWeight: 'bold',
-        alignSelf:'center'
+        alignSelf: 'center'
     },
     InformationContainerHeading: {
         // backgroundColor: 'orange',
@@ -187,9 +185,9 @@ const styles = StyleSheet.create({
         width: '100%', // Use full width of the container
         maxWidth: '100%', // Adjusts according to screen size
         borderRadius: 8,
-        backgroundColor:'#fff',
-        borderColor:'#008374',
-        elevation:3
+        backgroundColor: '#fff',
+        borderColor: '#008374',
+        elevation: 3
     },
 
     pairContainer: {
@@ -257,12 +255,12 @@ const styles = StyleSheet.create({
         backgroundColor: '#FF9933',
         // backgroundColor: '#008577',
         justifyContent: 'flex-end',
-        padding:10,
+        padding: 10,
         // borderRadius:7,
         borderWidth: 1,
-        borderColor:'#FF9933',
-        borderTopLeftRadius:7,
-        borderTopRightRadius:7
+        borderColor: '#FF9933',
+        borderTopLeftRadius: 7,
+        borderTopRightRadius: 7
 
 
 
