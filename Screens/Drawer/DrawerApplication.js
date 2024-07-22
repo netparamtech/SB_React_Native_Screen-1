@@ -13,7 +13,9 @@ import CustomDrawer from './CustomDrawer';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import ContactUS from './DashBoard/ContactUS';
 
 const Drawer = createDrawerNavigator();
 
@@ -110,6 +112,21 @@ export default function DrawerApplication() {
                 options={{
                     drawerIcon: ({ color }) => (
                         <FontAwesome name='handshake-o' size={22} color={color} />
+                    ),
+                    drawerLabelStyle: {
+                        marginLeft: -20,
+                        fontFamily: 'Roboto-Medium'
+                    },
+                    drawerActiveTintColor: '#FF9933',
+                    drawerInactiveTintColor: '#008374'
+                }}
+            />
+
+            <Drawer.Screen name='Contact Us' component={ContactUS}
+                options={{
+                    drawerIcon: ({ color }) => (
+                        <Ionicons
+                            name='call-sharp' size={22} color={color} />
                     ),
                     drawerLabelStyle: {
                         marginLeft: -20,
