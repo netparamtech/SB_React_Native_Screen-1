@@ -1,108 +1,186 @@
-import { useRef, useState } from "react";
-import { Button, FlatList, Image, Modal, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import axios from 'axios';
+import {useEffect, useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import {Dropdown} from 'react-native-element-dropdown';
+import Entypo from 'react-native-vector-icons/Entypo';
 
-const SignUp = (props) => {
-  const [selectedCommunity, setSelectedCommunity] = useState("Select Community");
-  const [isClicked, setIsClicked] = useState(false);
-  const searchRef = useRef();
+const SignUp = props => {
+  const token =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzY5LCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjAsInBlcm1pc3Npb25JZCI6MTksImlhdCI6MTcyMTIwNzQ4NCwiZXhwIjoxNzIyMDcxNDg0fQ.hTp6Z3i0gqYT1z7kkgOjrkJPx5xk7xdQLW8uBwpGSIU';
+  const [isFocus7, setIsFocus7] = useState(false);
+  const [value7, setValue7] = useState(null);
+  const [data, setData] = useState([]);
 
-  const community = [
-    { label: 'Agrawal', value: 'Agrawal' },
-    { label: 'Bania', value: 'Bania' },
-    { label: 'Muslim', value: 'Muslim' },
-    { label: 'Yadav', value: 'Yadav' },
-    { label: 'Brahmin', value: 'Brahmin' },
-    { label: 'Gujar', value: 'Gujar' },
-    { label: 'Ahir', value: 'Ahir' },
-    { label: 'Khatris', value: 'Khatris' }
-  ];
-  const [data, setData] = useState(community);
-  const onSearch = (txt) => {
-
-    if (txt !== '') {
-      let tempData = data.filter(item => {
-        return item.label.toLowerCase().indexOf(txt.toLowerCase()) > -1;
+  const renderLabel6 = () => {
+    if (value7 || isFocus7) {
+      return (
+        <Text style={[styles.label, isFocus7 && {color: '#198754'}]}>
+          JOB Selector
+        </Text>
+      );
+    }
+    return null;
+  };
+  const FetchCast = () => {
+    axios
+      .get('https://uat-api.socialbharat.org/api/all-active-communities', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        setData(response.data.data);
+      })
+      .catch(error => {
+        console.log('Error is = ', error);
       });
+  };
 
-      setData(tempData);
+  const CastDropDown = data
+    ? data.map(cast => ({
+        label: cast.name,
+        value: cast.id.toString(),
+      }))
+    : [];
 
-    }
-    else {
+  useEffect(() => {
+    FetchCast();
+  }, []);
 
-      setData(community)
-
-    }
-  }
   return (
     <View style={styles.mainView}>
-      {/* <Modal transparent={true}> */}
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.title}>Sign up</Text>
-            <TextInput placeholderTextColor={'#adb5bd'} placeholder="Enter your name" style={styles.txtInput1}></TextInput>
-            <TextInput placeholderTextColor={'#adb5bd'} placeholder="Enter your mobile Number" style={styles.txtInput2}></TextInput>
-            <TouchableOpacity style={styles.dropdown} onPress={() => setIsClicked(!isClicked)}>
-              <Text style={styles.dropdownText}> {selectedCommunity} </Text>
-              {/* <Image source={isClicked ? require('../Assets/down2.png') : require('../Assets/up.png')} style={styles.icon} /> */}
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          <Text style={styles.title}>Sign up</Text>
+          <TextInput
+            placeholderTextColor={'#adb5bd'}
+            placeholder="Enter your name"
+            style={styles.txtInput1}></TextInput>
+          <TextInput
+            placeholderTextColor={'#adb5bd'}
+            placeholder="Enter your mobile Number"
+            style={styles.txtInput2}></TextInput>
+
+          <View style={styles.containerDropDown5}>
+            {renderLabel6()}
+            <Dropdown
+              style={[styles.dropdown, isFocus7 && {borderColor: '#ffc107'}]}
+              placeholderStyle={styles.placeholderStyle}
+              selectedTextStyle={styles.selectedTextStyle}
+              inputSearchStyle={styles.inputSearchStyle}
+              iconStyle={styles.iconStyle}
+              data={CastDropDown}
+              maxHeight={300}
+              labelField="label"
+              valueField="value"
+              placeholder={!isFocus7 ? '--Select Community--' : '...'}
+              searchPlaceholder="Search..."
+              value={value7}
+              onFocus={() => setIsFocus7(true)}
+              onBlur={() => setIsFocus7(false)}
+              renderRightIcon={() => (
+                <TouchableOpacity
+                  onPress={() => {
+                    setValue7(null);
+                  }}>
+                  {value7 ? (
+                    <Entypo
+                      style={styles.iconAntDesign}
+                      color={isFocus7 ? 'green' : 'black'}
+                      name="circle-with-cross"
+                      size={20}
+                    />
+                  ) : null}
+                </TouchableOpacity>
+              )}
+              onChange={item => {
+                setValue7(item.value);
+                setIsFocus7(false);
+              }}
+            />
+          </View>
+          <TouchableOpacity
+            style={styles.RegiBtn}
+            onPress={() => {
+              props.navigation.navigate('Login');
+            }}>
+            <Text style={styles.RegiBtnTXT}>REGISTER</Text>
+          </TouchableOpacity>
+          <View style={{padding: 5, flexDirection: 'row'}}>
+            <Text style={{fontSize: 16, color: '#212529'}}>
+              Already User ?{' '}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('Login');
+              }}>
+              <Text
+                style={{fontSize: 16, fontStyle: 'italic', color: '#198754'}}>
+                Login
+              </Text>
             </TouchableOpacity>
+          </View>
 
-            {
-              isClicked ? <View style={styles.dropdownArea}>
-
-                <TextInput placeholder="Search" style={styles.SearchInput} onChangeText={txt => { onSearch(txt) }} ref={searchRef} />
-                <FlatList data={data} renderItem={({ item, index }) => {
-                  return (
-                    <TouchableOpacity style={styles.communityItem} onPress={() => {
-                      setSelectedCommunity(item.label);
-                      onSearch('')
-                      setIsClicked(false);
-                      searchRef.current.clear();
-                    }}>
-                      <Text>{item.label}</Text>
-                    </TouchableOpacity>
-                  );
-                }} />
-
-
-
-              </View>
-
-
-                : null
-            }
-
-
-            <View style={styles.RegiBtn}>
-              <Button color={"#198754"} title="Register" onPress={() => { props.navigation.navigate('Login') }} ></Button>
-            </View>
-            <View style={{ padding: 5, flexDirection: 'row' }}>
-
-              <Text style={{ fontSize: 16, color: '#212529' }}>Already User ? </Text><TouchableOpacity onPress={() => { props.navigation.navigate('Login') }} ><Text style={{ fontSize: 16, fontStyle: 'italic', color: '#198754' }}>Login</Text></TouchableOpacity>
-
-            </View>
-
+          <View
+            style={{
+              padding: 5,
+              flexDirection: 'row',
+            }}>
+            <Text style={{fontSize: 16, color: '#212529'}}>
+              If you encounter any issues during the registration process,
+              please
+              <TouchableOpacity
+                onPress={() => {
+                  props.navigation.navigate('Login');
+                }}>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    // fontStyle: 'italic',
+                    color: '#198754',
+                    borderWidth: 1,
+                  }}>
+                  {' '}
+                  click{' '}
+                </Text>
+              </TouchableOpacity>
+              here for assistance with your queries.{' '}
+            </Text>
+            {/* <TouchableOpacity
+              onPress={() => {
+                props.navigation.navigate('Login');
+              }}>
+              <Text
+                style={{fontSize: 16, fontStyle: 'italic', color: '#198754'}}>
+                Login
+              </Text>
+            </TouchableOpacity> */}
           </View>
         </View>
-      {/* </Modal> */}
+      </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   mainView: {
     backgroundColor: '#ced4da',
-    flex: 1
+    flex: 1,
+    alignItems: 'center',
   },
   communityItem: {
-
     width: '82%',
-    height: 40,
+    height: 41,
     borderBottomWidth: 1,
     borderBottomColor: '#8e8e8e',
     alignSelf: 'center',
     justifyContent: 'center',
-    justifyContent: 'center'
-
   },
   centeredView: {
     flex: 1,
@@ -114,39 +192,38 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     elevation: 5,
     margin: 17,
-
+    width: 350,
+    height: 500,
   },
   title: {
     fontSize: 30,
-    marginBottom: 20,
-    textAlign: 'left',
-    margin: 35
+    color: '#333',
+    padding: 12,
   },
   txtInput1: {
-    height: 40,
-    borderColor: '#adb5bd',
-    borderWidth: 1,
+    height: 46,
+    borderWidth: 1.1,
     borderRadius: 5,
     marginBottom: 20,
     paddingHorizontal: 10,
+    borderColor: '#adb5bd',
   },
   txtInput2: {
-    height: 40,
-    borderColor: '#adb5bd',
-    borderWidth: 1,
+    height: 46,
+    borderWidth: 1.1,
     borderRadius: 5,
     marginBottom: 20,
     paddingHorizontal: 10,
+    borderColor: '#adb5bd',
   },
   dropdown: {
-
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     width: 283,
-    height: 41,
+    height: 39,
     borderColor: '#adb5bd',
-    marginLeft: 1,
+    // marginLeft: 1,
     paddingHorizontal: 10,
     borderRadius: 5,
     borderWidth: 1.1,
@@ -154,33 +231,24 @@ const styles = StyleSheet.create({
   },
   dropdownText: {
     opacity: 0.7,
-
   },
   icon: {
     height: 20,
     width: 20,
-  },
-  dropdownButton: {
-    width: '87%',
-    height: 53,
-    borderWidth: 0.5,
-    borderColor: '#adb5bd',
-    marginLeft: 20,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-  },
-  dropdownButtonText: {
-    opacity: 0, // Hide the default button text
-  },
-  dropdownList: {
-    width: '87%',
-    marginLeft: 20,
   },
   dropdownItemText: {
     fontSize: 16,
   },
   RegiBtn: {
     margin: 20,
+    borderRadius: 5,
+    backgroundColor: '#198754',
+  },
+  RegiBtnTXT: {
+    fontSize: 14,
+    textAlign: 'center',
+    padding: 10,
+    color: '#ffff',
   },
 
   dropdownArea: {
@@ -190,7 +258,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     backgroundColor: '#fff',
     elevation: 5,
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   SearchInput: {
     width: '90%',
@@ -200,8 +268,39 @@ const styles = StyleSheet.create({
     borderColor: '#8e8e8e',
     alignSelf: 'center',
     margin: 20,
-    paddingLeft: 15
-  }
+    paddingLeft: 15,
+  },
+  containerDropDown5: {
+    height: 45,
+    marginBottom: 15,
+    marginTop: 5,
+  },
+  dropdown: {
+    height: 47,
+    borderColor: 'gray',
+    borderWidth: 0.5,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    width: 'auto',
+  },
+  placeholderStyle: {
+    fontSize: 15,
+    color: '#6c757d',
+  },
+  selectedTextStyle: {
+    fontSize: 16,
+    paddingHorizontal: 9,
+    color: '#0F0F0F',
+  },
+  inputSearchStyle: {
+    height: 40,
+    fontSize: 16,
+    color: '#6c757d',
+  },
+  iconStyle: {
+    width: 20,
+    height: 20,
+  },
 });
 
 export default SignUp;
