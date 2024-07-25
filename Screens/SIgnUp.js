@@ -11,6 +11,8 @@ import {Dropdown} from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 const SignUp = props => {
+  const [isClick, setIsClicked] = useState();
+
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzY5LCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjAsInBlcm1pc3Npb25JZCI6MTksImlhdCI6MTcyMTIwNzQ4NCwiZXhwIjoxNzIyMDcxNDg0fQ.hTp6Z3i0gqYT1z7kkgOjrkJPx5xk7xdQLW8uBwpGSIU';
   const [isFocus7, setIsFocus7] = useState(false);
@@ -52,7 +54,6 @@ const SignUp = props => {
   useEffect(() => {
     FetchCast();
   }, []);
-
   return (
     <View style={styles.mainView}>
       <View style={styles.centeredView}>
@@ -120,47 +121,37 @@ const SignUp = props => {
               onPress={() => {
                 props.navigation.navigate('Login');
               }}>
-              <Text
-                style={{fontSize: 16, fontStyle: 'italic', color: '#198754'}}>
-                Login
-              </Text>
+              <Text style={styles.LoginTXT}>Login</Text>
             </TouchableOpacity>
           </View>
-
-          <View
-            style={{
-              padding: 5,
-              flexDirection: 'row',
-            }}>
-            <Text style={{fontSize: 16, color: '#212529'}}>
+          <View>
+            <Text style={styles.RestTXT}>
               If you encounter any issues during the registration process,
               please
+            </Text>
+            <View style={{flexDirection: 'row'}}>
               <TouchableOpacity
                 onPress={() => {
-                  props.navigation.navigate('Login');
+                  setIsClicked(true);
                 }}>
-                <Text
-                  style={{
-                    fontSize: 18,
-                    // fontStyle: 'italic',
-                    color: '#198754',
-                    borderWidth: 1,
-                  }}>
-                  {' '}
-                  click{' '}
-                </Text>
+                <Text style={styles.ClickHereTXT}>click here </Text>
               </TouchableOpacity>
-              here for assistance with your queries.{' '}
-            </Text>
-            {/* <TouchableOpacity
-              onPress={() => {
-                props.navigation.navigate('Login');
-              }}>
-              <Text
-                style={{fontSize: 16, fontStyle: 'italic', color: '#198754'}}>
-                Login
+              <Text style={styles.RestTXT}>
+                for assistance with your queries.
               </Text>
-            </TouchableOpacity> */}
+            </View>
+            {isClick ? (
+              <View style={styles.QueryBTNcontainer}>
+                <TouchableOpacity style={styles.QueryBTNs}>
+                  <Text style={styles.QueryBTNtxt}>General Enquiries</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.QueryBTNs}>
+                  <Text style={styles.QueryBTNtxt}>
+                    Request For Specific Commumity
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            ) : null}
           </View>
         </View>
       </View>
@@ -193,7 +184,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     margin: 17,
     width: 350,
-    height: 500,
+    height: 'auto',
+    minHeight: 550,
   },
   title: {
     fontSize: 30,
@@ -300,6 +292,39 @@ const styles = StyleSheet.create({
   iconStyle: {
     width: 20,
     height: 20,
+  },
+  ClickHereTXT: {
+    fontSize: 17,
+    color: '#198754',
+    fontStyle: 'italic',
+  },
+  RestTXT: {
+    fontSize: 16,
+    color: '#A9A9A9',
+  },
+  LoginTXT: {
+    fontSize: 16,
+    fontStyle: 'italic',
+    color: '#198754',
+  },
+  QueryBTNs: {
+    borderWidth: 0.5,
+    margin: 10,
+    padding: 10,
+    borderRadius: 10,
+    backgroundColor: '#fd7e14',
+  },
+  QueryBTNcontainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    gap: 5,
+  },
+  QueryBTNtxt: {
+    fontSize: 14,
+    color: '#ffff',
+    textAlign: 'center',
+    alignItems: 'center',
   },
 });
 
