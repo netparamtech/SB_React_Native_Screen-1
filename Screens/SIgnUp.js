@@ -9,9 +9,11 @@ import {
 } from 'react-native';
 import {Dropdown} from 'react-native-element-dropdown';
 import Entypo from 'react-native-vector-icons/Entypo';
+import QueryForm from './QueryForm';
 
 const SignUp = props => {
-  const [isClick, setIsClicked] = useState();
+  const [isClick, setIsClicked] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const token =
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzY5LCJjb21tdW5pdHlJZCI6MTEsImlzQWRtaW4iOjAsInBlcm1pc3Npb25JZCI6MTksImlhdCI6MTcyMTIwNzQ4NCwiZXhwIjoxNzIyMDcxNDg0fQ.hTp6Z3i0gqYT1z7kkgOjrkJPx5xk7xdQLW8uBwpGSIU';
@@ -132,7 +134,7 @@ const SignUp = props => {
             <View style={{flexDirection: 'row'}}>
               <TouchableOpacity
                 onPress={() => {
-                  setIsClicked(true);
+                  setIsClicked(!isClick);
                 }}>
                 <Text style={styles.ClickHereTXT}>click here </Text>
               </TouchableOpacity>
@@ -145,13 +147,22 @@ const SignUp = props => {
                 <TouchableOpacity style={styles.QueryBTNs}>
                   <Text style={styles.QueryBTNtxt}>General Enquiries</Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.QueryBTNs}>
+                <TouchableOpacity
+                  style={styles.QueryBTNs}
+                  onPress={() => {
+                    setModalVisible(true);
+                  }}>
                   <Text style={styles.QueryBTNtxt}>
                     Request For Specific Commumity
                   </Text>
                 </TouchableOpacity>
               </View>
             ) : null}
+
+            <QueryForm
+              visible={modalVisible}
+              onPressClose={() => setModalVisible(false)}
+            />
           </View>
         </View>
       </View>
@@ -185,7 +196,7 @@ const styles = StyleSheet.create({
     margin: 17,
     width: 350,
     height: 'auto',
-    minHeight: 550,
+    minHeight: 500,
   },
   title: {
     fontSize: 30,
@@ -308,10 +319,10 @@ const styles = StyleSheet.create({
     color: '#198754',
   },
   QueryBTNs: {
-    borderWidth: 0.5,
+    // borderWidth: 0.5,
     margin: 10,
     padding: 10,
-    borderRadius: 10,
+    borderRadius: 12,
     backgroundColor: '#fd7e14',
   },
   QueryBTNcontainer: {
