@@ -49,6 +49,23 @@ const Login = ({navigation}) => {
             }}>
             <Text style={styles.RegiBtnTXT}>Login With Password</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('ForgotPassword');
+            }}
+            style={{alignSelf: 'flex-end'}}>
+            <Text
+              style={{
+                fontSize: 12,
+                color: '#198754',
+                bottom: 10,
+                paddingHorizontal: 24,
+              }}>
+              Forgot Password ?
+            </Text>
+          </TouchableOpacity>
+
           <View style={{alignItems: 'center'}}>
             <Text style={{fontSize: 20, color: '#212529'}}> OR</Text>
           </View>
@@ -70,6 +87,16 @@ const Login = ({navigation}) => {
                   Sign Up
                 </Text>
               </TouchableOpacity>
+
+              {/* <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('SignUp');
+                }}>
+                <Text
+                  style={{fontSize: 16, fontStyle: 'italic', color: '#198754'}}>
+                  Forgot Password ?
+                </Text>
+              </TouchableOpacity> */}
             </View>
           </View>
         </View>
